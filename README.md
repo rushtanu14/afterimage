@@ -19,7 +19,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - Prize fit section targeting Best Interactive Experience, Most Unique, and Best Overall Project.
 - Devpost requirements checklist for demo, public source, written description, and attribution readiness.
 - Build-period proof reminder for the public repo and Devpost submission.
-- MCP launch plan for GitHub, Vercel, demo-video, and Devpost submission ops.
+- MCP launch plan for GitHub source verification, Vercel deployment, demo-video, and Devpost submission ops.
 - Copyable judge link that turns the current deployment origin into `/?judge=1`.
 - Desktop judge layout keeps the living artwork in frame while reviewers scan the submission pack.
 - Copyable attribution block for the required third-party assets, libraries, and optional APIs.
@@ -75,11 +75,11 @@ Live medium proof:
 
 Demo link: Use the deployed site with `/?judge=1` to open directly on the final Santa Cruz Afterimage exhibit.
 
-Source handoff: Public repo should include `src/`, `public/demo/`, `scripts/`, `tests/`, `README.md`, `package.json`, `package-lock.json`, and the Vite/TypeScript/Vitest/Playwright config files. Public repo history should preserve the July 1 to August 1, 2026 build window. Exclude `node_modules`, `dist`, and local screenshots. Run `npm run test`, `npm run build`, `npm run test:e2e`, and `npm audit --json` before submitting.
+Source handoff: Devpost source URL is `https://github.com/rushtanu14/afterimage`. Public repo history `main @ 1f2e060` preserves the July 1 to August 1, 2026 build window. The repo includes `src/`, `public/demo/`, `scripts/`, `tests/`, `README.md`, `package.json`, `package-lock.json`, and the Vite/TypeScript/Vitest/Playwright config files. It excludes `node_modules`, `dist`, and local screenshots. Run `npm run test`, `npm run build`, `npm run test:e2e`, and `npm audit --json` before submitting.
 
 MCP launch plan:
 - Composio MCP belongs in submission ops, not the browser runtime.
-- GitHub MCP: publish the public source repository and preserve July 1 to August 1 build history.
+- GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.
 - Vercel connector: deploy the static build and verify `/?judge=1`.
 - Canva or recording workflow: assemble screenshots and the 45-second demo video.
 - Devpost package: paste the copied description, source URL, attribution, and demo video.

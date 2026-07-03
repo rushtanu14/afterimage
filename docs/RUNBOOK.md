@@ -14,7 +14,7 @@ Generated from `package.json`, Vite config, Playwright config, and current proje
 5. Run browser verification with `npm run test:e2e`.
 6. Deploy the generated `dist/` directory to the static host.
 7. Open the deployed root path and `/?judge=1`.
-8. Use the Source tab MCP launch plan for GitHub repo publishing, Vercel deployment, demo-video capture, and Devpost handoff.
+8. Use the Source tab MCP launch plan for GitHub repo verification, Vercel deployment, demo-video capture, and Devpost handoff.
 9. Copy the deployed `/?judge=1` URL into the Devpost demo link field, or use it as the source for the recorded walkthrough.
 <!-- /AUTO-GENERATED -->
 
@@ -46,7 +46,7 @@ There are no API health endpoints in the current app because it is a client-only
 | Build period proof is missing. | Keep public repo history and Devpost notes aligned with the July 1 to August 1, 2026 build window. |
 | MCP integration starts pulling secrets into the browser app. | Keep Composio/GitHub/Vercel tooling in submission ops; do not ship API keys or OAuth config in the static runtime. |
 | Devpost media assets are incomplete. | Use the Script tab media kit to capture the cover screenshot, proof/source screenshots, exported PNG artifact, and 45-second walkthrough video. |
-| Public source requirement is not ready. | Publish a public repository containing `src/`, `public/demo/`, `scripts/`, tests, configs, and docs while excluding generated build output and dependencies. |
+| Public source requirement needs proof. | Use the Source tab `Source repository` card and `https://github.com/rushtanu14/afterimage` for the Devpost source-code field. |
 
 ## Rollback
 

@@ -127,18 +127,29 @@ test('submission panel offers a copyable source handoff', async ({ page }) => {
   await expect(submissionRequirements).toContainText(/July 1 to August 1, 2026 build window/i)
   await expect(submissionRequirements).toContainText(/Public source/i)
   await expect(submissionRequirements).toContainText(/Publicly accessible source code repository/i)
+  const publicSourceRequirement = submissionRequirements
+    .locator('li')
+    .filter({ hasText: 'Public source' })
+  await expect(publicSourceRequirement).toContainText(/Ready/i)
+  await expect(publicSourceRequirement).toContainText(/https:\/\/github.com\/rushtanu14\/afterimage/i)
   await expect(submissionRequirements).toContainText(/Written description/i)
   await expect(submissionRequirements).toContainText(/Attribution/i)
 
   const sourceHandoff = page.getByRole('region', { name: /source handoff/i })
   await expect(sourceHandoff).toContainText(/Devpost requires demo, source, description, and attribution/i)
-  await expect(sourceHandoff).toContainText(/Public repo history should preserve the July 1 to August 1, 2026 build window/i)
+  await expect(sourceHandoff).toContainText(/Public repo history: main @ 1f2e060 preserves the July 1 to August 1, 2026 build window/i)
+  await expect(sourceHandoff).toContainText(/Devpost source URL: https:\/\/github.com\/rushtanu14\/afterimage/i)
   await expect(sourceHandoff).toContainText(/Public repo should include src\/, public\/demo\/, scripts\/, tests\/, README.md, and package-lock.json/i)
   await expect(sourceHandoff).toContainText(/Exclude node_modules, dist, and local screenshots/i)
   await expect(sourceHandoff).toContainText(/Run npm run test, npm run build, npm run test:e2e, and npm audit --json before submitting/i)
 
   await page.getByRole('button', { name: /copy source handoff/i }).click()
   await expect(sourceHandoff).toContainText(/Source handoff copied/i)
+
+  const sourceRepository = page.getByRole('region', { name: /source repository/i })
+  await expect(sourceRepository).toContainText(/https:\/\/github.com\/rushtanu14\/afterimage/i)
+  await page.getByRole('button', { name: /copy source url/i }).click()
+  await expect(sourceRepository).toContainText(/Source URL copied/i)
 
   const launchPlan = page.getByRole('region', { name: /mcp launch plan/i })
   await expect(launchPlan).toContainText(/Composio MCP belongs in submission ops/i)

@@ -1,6 +1,9 @@
 import { Copy } from 'lucide-react'
 import { type KeyboardEvent, useEffect, useState } from 'react'
 
+const SOURCE_REPOSITORY_URL = 'https://github.com/rushtanu14/afterimage'
+const SOURCE_COMMIT_PROOF = 'main @ 1f2e060'
+
 const DEVPOST_PACKAGE = `Title: Afterimage
 Tagline: Turn verified place photos into an evolving memory-space.
 
@@ -25,12 +28,13 @@ Demo link:
 Use the deployed site with /?judge=1 to open directly on the final Santa Cruz Afterimage exhibit.
 
 Source handoff:
-Public repo should include src/, public/demo/, scripts/, tests/, README.md, package.json, package-lock.json, and config files. Exclude node_modules, dist, and local screenshots. Run npm run test, npm run build, npm run test:e2e, and npm audit --json before submitting.
-Public repo history should preserve the July 1 to August 1, 2026 build window.
+Source URL: ${SOURCE_REPOSITORY_URL}
+Source proof: ${SOURCE_COMMIT_PROOF} preserves the July 1 to August 1, 2026 build window.
+Public repo includes src/, public/demo/, scripts/, tests/, README.md, package.json, package-lock.json, and config files. Excludes node_modules, dist, and local screenshots. Run npm run test, npm run build, npm run test:e2e, and npm audit --json before submitting.
 
 MCP launch plan:
 Composio MCP belongs in submission ops, not the browser runtime.
-GitHub MCP: publish the public source repo and preserve build history.
+GitHub MCP: verify the public source repo and build-history proof.
 Vercel connector: deploy the static app and verify /?judge=1.
 Devpost package: paste the copied description, source URL, attribution, and demo video.
 
@@ -71,14 +75,15 @@ The visible computation receipt links photo evidence, pixel sampling, render rec
 
 const SOURCE_HANDOFF = `Devpost requires demo, source, description, and attribution.
 Live link with /?judge=1 or recorded video should show the final exhibit.
-Public repo history should preserve the July 1 to August 1, 2026 build window.
+Devpost source URL: ${SOURCE_REPOSITORY_URL}
+Public repo history: ${SOURCE_COMMIT_PROOF} preserves the July 1 to August 1, 2026 build window.
 Public repo should include src/, public/demo/, scripts/, tests/, README.md, package.json, package-lock.json, and config files.
 Exclude node_modules, dist, and local screenshots.
 Run npm run test, npm run build, npm run test:e2e, and npm audit --json before submitting.
-Devpost source URL should point to the public repository after it is published.`
+Devpost source URL is ready for the submission form.`
 
 const LAUNCH_AUTOMATION_PLAN = `Composio MCP belongs in submission ops, not the browser runtime.
-GitHub MCP: publish the public source repository and preserve July 1 to August 1 build history.
+GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.
 Vercel connector: deploy the static build and verify /?judge=1.
 Canva or recording workflow: assemble screenshots and the 45-second demo video.
 Devpost package: paste the copied description, source URL, attribution, and demo video.`
@@ -171,7 +176,8 @@ const implementationLines = [
 const sourceHandoffLines = [
   'Devpost requires demo, source, description, and attribution.',
   'Live link with /?judge=1 or recorded video should show the final exhibit.',
-  'Public repo history should preserve the July 1 to August 1, 2026 build window.',
+  `Devpost source URL: ${SOURCE_REPOSITORY_URL}`,
+  `Public repo history: ${SOURCE_COMMIT_PROOF} preserves the July 1 to August 1, 2026 build window.`,
   'Public repo should include src/, public/demo/, scripts/, tests/, README.md, and package-lock.json.',
   'Include package.json plus Vite, TypeScript, Vitest, and Playwright config files.',
   'Exclude node_modules, dist, and local screenshots.',
@@ -180,7 +186,7 @@ const sourceHandoffLines = [
 
 const launchAutomationLines = [
   'Composio MCP belongs in submission ops, not the browser runtime.',
-  'GitHub MCP: publish the public source repository and preserve July 1 to August 1 build history.',
+  'GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.',
   'Vercel connector: deploy the static build and verify /?judge=1.',
   'Canva or recording workflow: assemble screenshots and the 45-second demo video.',
   'Devpost package: paste the copied description, source URL, attribution, and demo video.',
@@ -198,9 +204,9 @@ const submissionRequirements = [
     proof: 'Public repo history and Devpost notes should preserve the July 1 to August 1, 2026 build window.',
   },
   {
-    status: 'External',
+    status: 'Ready',
     title: 'Public source',
-    proof: 'Publicly accessible source code repository with app, demo assets, tests, and configs.',
+    proof: `Publicly accessible source code repository: ${SOURCE_REPOSITORY_URL} includes app source, demo assets, tests, docs, and commit proof ${SOURCE_COMMIT_PROOF}.`,
   },
   {
     status: 'Ready',
@@ -263,6 +269,9 @@ export function SubmissionPanel() {
   const [sourceHandoffCopyStatus, setSourceHandoffCopyStatus] = useState(
     'Source handoff ready.',
   )
+  const [sourceUrlCopyStatus, setSourceUrlCopyStatus] = useState(
+    'Source URL ready.',
+  )
   const [launchPlanCopyStatus, setLaunchPlanCopyStatus] = useState(
     'Launch plan ready.',
   )
@@ -301,6 +310,13 @@ export function SubmissionPanel() {
     const copied = await copyText(SOURCE_HANDOFF)
     setSourceHandoffCopyStatus(
       copied ? 'Source handoff copied.' : 'Copy failed; use the README source handoff.',
+    )
+  }
+
+  const handleSourceUrlCopy = async () => {
+    const copied = await copyText(SOURCE_REPOSITORY_URL)
+    setSourceUrlCopyStatus(
+      copied ? 'Source URL copied.' : 'Copy failed; use the README source URL.',
     )
   }
 
@@ -520,6 +536,21 @@ export function SubmissionPanel() {
             </button>
             <p className="brief-copy-status" aria-live="polite">
               {sourceHandoffCopyStatus}
+            </p>
+          </section>
+          <section className="source-repository" aria-label="Source repository">
+            <span className="eyebrow">Source repository</span>
+            <ul>
+              <li>{SOURCE_REPOSITORY_URL}</li>
+              <li>{SOURCE_COMMIT_PROOF} pushed to origin/main.</li>
+              <li>Ready for the Devpost source-code field.</li>
+            </ul>
+            <button className="brief-copy-button" type="button" onClick={handleSourceUrlCopy}>
+              <Copy size={16} aria-hidden="true" />
+              Copy source URL
+            </button>
+            <p className="brief-copy-status" aria-live="polite">
+              {sourceUrlCopyStatus}
             </p>
           </section>
           <section className="automation-plan" aria-label="MCP launch plan">
