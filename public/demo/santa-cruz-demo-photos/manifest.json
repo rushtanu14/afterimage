@@ -1,0 +1,11 @@
+{
+  "name": "Afterimage Santa Cruz Demo Folder",
+  "anchor": "Santa Cruz Beach Boardwalk / Main Beach",
+  "notes": "Prepared judging sample. The app uses these PNGs plus sidecar GPS/time/color signals so the demo is reliable without depending on iPhone EXIF.",
+  "photos": [
+    "01-boardwalk-gold.png",
+    "02-main-beach-blue.png",
+    "03-silhouette-haze.png",
+    "04-neon-waterline.png"
+  ]
+}
