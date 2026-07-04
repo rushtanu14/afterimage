@@ -58,6 +58,12 @@ const waitForPaintedCanvas = async (canvas: Locator) => {
 test('submission panel offers a copyable demo recording script', async ({ page }) => {
   await page.goto('/')
 
+  const evidenceStrip = page.getByRole('region', { name: /judge evidence strip/i })
+  await expect(evidenceStrip).toContainText(/Run live demo/i)
+  await expect(evidenceStrip).toContainText(/Proof reel/i)
+  await expect(evidenceStrip).toContainText(/45-second proof/i)
+  await expect(evidenceStrip).toContainText(/View source/i)
+
   await page.getByRole('tab', { name: 'Script' }).click()
   const demoScript = page.getByRole('region', { name: /demo script/i })
   await expect(demoScript).toContainText(/0:00 Run judge demo/i)
@@ -68,13 +74,21 @@ test('submission panel offers a copyable demo recording script', async ({ page }
   await page.getByRole('button', { name: /copy demo script/i }).click()
   await expect(demoScript).toContainText(/Demo script copied/i)
 
+  const proofReel = page.getByRole('region', { name: /proof reel/i })
+  await expect(proofReel).toContainText(/45-second proof reel/i)
+  await expect(proofReel).toContainText(/Record the deployed judge path/i)
+  await expect(proofReel).toContainText(/https:\/\/afterimage-omega\.vercel\.app\/\?judge=1/i)
+  await expect(proofReel).toContainText(/Show cursor drag, computation receipt, evolving canvas, export, and source proof/i)
+  await page.getByRole('button', { name: /copy proof reel brief/i }).click()
+  await expect(proofReel).toContainText(/Proof reel brief copied/i)
+
   const mediaKit = page.getByRole('region', { name: /submission media kit/i })
   await expect(mediaKit).toContainText(/Cover screenshot/i)
   await expect(mediaKit).toContainText(/Final Santa Cruz Afterimage canvas/i)
   await expect(mediaKit).toContainText(/Proof screenshot/i)
   await expect(mediaKit).toContainText(/Source screenshot/i)
   await expect(mediaKit).toContainText(/motion delta/i)
-  await expect(mediaKit).toContainText(/45-second walkthrough/i)
+  await expect(mediaKit).toContainText(/45-second proof reel/i)
   await page.getByRole('button', { name: /copy media kit/i }).click()
   await expect(mediaKit).toContainText(/Media kit copied/i)
 })

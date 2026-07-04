@@ -14,8 +14,8 @@ Generated from `package.json`, Vite config, Playwright config, and current proje
 5. Run browser verification with `npm run test:e2e`.
 6. Deploy the generated `dist/` directory to the static host.
 7. Open `https://afterimage-omega.vercel.app/` and `https://afterimage-omega.vercel.app/?judge=1`.
-8. Use the Source tab MCP launch plan for GitHub repo verification, Vercel deployment, demo-video capture, and Devpost handoff.
-9. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, or use it as the source for the recorded walkthrough.
+8. Use the Source tab MCP launch plan for GitHub repo verification, Vercel deployment, proof-reel capture, and Devpost handoff.
+9. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, then use the Script tab Proof Reel brief for the recorded walkthrough.
 <!-- /AUTO-GENERATED -->
 
 ## Health Checks
@@ -29,6 +29,8 @@ Generated from app routes and test coverage.
 | `/?judge=1` | The Santa Cruz Afterimage exhibit opens directly in the final composed state. |
 | `https://afterimage-omega.vercel.app/?judge=1` | Production judge path opens directly in the final composed state. |
 | Computation receipt | Transformation Engine shows photo evidence, pixel sampling, render recipe, motion delta, and evolving output. |
+| Judge evidence strip | Submission panel shows live demo, proof reel, source, and Devpost copy proof before the tabbed details. |
+| Proof reel brief | Script tab gives a copyable 45-second recording brief with live URL, cursor input, computation receipt, evolving canvas, export, and source proof. |
 | Browser console | No warnings or errors during the judge path. |
 | Layout overflow | `document.documentElement.scrollWidth - window.innerWidth` is `0` or within 1px. |
 | Export | `Save memory-space PNG` downloads `afterimage-santa-cruz-memory-space.png` with title, evidence, computation note, and motion delta. |
@@ -46,7 +48,7 @@ There are no API health endpoints in the current app because it is a client-only
 | PNG export does not start. | Load the demo or run judge mode first so the canvas has photo evidence. |
 | Build period proof is missing. | Keep public repo history and Devpost notes aligned with the July 1 to August 1, 2026 build window. |
 | MCP integration starts pulling secrets into the browser app. | Keep Composio/GitHub/Vercel tooling in submission ops; do not ship API keys or OAuth config in the static runtime. |
-| Devpost media assets are incomplete. | Use the Script tab media kit to capture the cover screenshot, proof/source screenshots, exported PNG artifact, and 45-second walkthrough video. |
+| Devpost media assets are incomplete. | Use the Script tab media kit and Proof Reel brief to capture the cover screenshot, proof/source screenshots, exported PNG artifact, and 45-second proof reel. |
 | Public source requirement needs proof. | Use the Source tab `Source repository` card and `https://github.com/rushtanu14/afterimage` for the Devpost source-code field. |
 | Live demo requirement needs proof. | Use the Source tab `Live demo` card and verify `https://afterimage-omega.vercel.app/?judge=1` with `PLAYWRIGHT_BASE_URL=https://afterimage-omega.vercel.app npx playwright test tests/app.spec.ts -g "judge presentation URL opens directly" --project=chromium`. |
 
@@ -61,7 +63,7 @@ Monitor the deployed judge path manually before submission:
 - Browser console warnings/errors.
 - Broken demo assets under `public/demo/santa-cruz-demo-photos/`.
 - Mobile and desktop overflow.
-- Devpost links for demo, source, attribution, and recorded video.
+- Devpost links for demo, source, attribution, and recorded proof reel.
 
 Escalate any broken deployed demo, source repository visibility issue, or Devpost submission issue before the Hack the Arts deadline. These are external submission blockers, not local app bugs.
 
@@ -72,8 +74,8 @@ Generated from Markdown file modification dates during this docs update.
 
 | Document | Last modified | Status |
 |----------|---------------|--------|
-| `README.md` | 2026-07-03 | Current. |
+| `README.md` | 2026-07-04 | Current. |
 | `public/demo/santa-cruz-demo-photos/README.md` | 2026-07-01 | Current. |
 | `docs/CONTRIBUTING.md` | 2026-07-03 | Current. |
-| `docs/RUNBOOK.md` | 2026-07-03 | Current. |
+| `docs/RUNBOOK.md` | 2026-07-04 | Current. |
 <!-- /AUTO-GENERATED -->

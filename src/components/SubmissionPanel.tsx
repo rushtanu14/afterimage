@@ -58,11 +58,23 @@ const DEMO_SCRIPT = `0:00 Run judge demo.
 0:35 Show the scorecard, save PNG, and copy the Devpost package.
 0:42 Close with the theme: this art depends on code, metadata, computation, and motion.`
 
+const PROOF_REEL_BRIEF = `45-second proof reel:
+Record the deployed judge path: ${LIVE_DEMO_URL}
+Opening frame: the Santa Cruz Afterimage exhibit is already alive, with the live URL visible.
+Interaction proof: show cursor drag, computation receipt, evolving canvas, export, and source proof.
+0:00 Open the live judge path and name the project.
+0:08 Show the canvas proof overlay and exhibit label.
+0:14 Drag the scene or run the judge demo so the art visibly responds.
+0:22 Show the Computation receipt and Live medium proof.
+0:32 Save the PNG artifact and open the Source tab.
+0:40 Show the public source URL, live demo URL, attribution, and Devpost copy.
+Upload target: Devpost demo video or linked walkthrough asset.`
+
 const SUBMISSION_MEDIA_KIT = `Cover screenshot: final Santa Cruz Afterimage canvas with the exhibit label visible.
 Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.
 Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.
 Artifact: exported afterimage-santa-cruz-memory-space.png with title, evidence, computation note, and motion delta.
-Video: 45-second walkthrough following the Script tab timing.`
+Video: 45-second proof reel following the Script tab brief, with live URL, cursor input, computation receipt, evolving canvas, export, and source proof visible.`
 
 const ATTRIBUTION_BLOCK = `Demo photos: procedural generated assets in public/demo/santa-cruz-demo-photos.
 Libraries: React, TypeScript, Canvas 2D, exifr, lucide-react.
@@ -87,7 +99,7 @@ Devpost source URL is ready for the submission form.`
 const LAUNCH_AUTOMATION_PLAN = `Composio MCP belongs in submission ops, not the browser runtime.
 GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.
 Vercel connector: production demo is live at ${LIVE_DEMO_URL}.
-Canva or recording workflow: assemble screenshots and the 45-second demo video.
+Canva or recording workflow: assemble screenshots and the 45-second proof reel.
 Devpost package: paste the copied description, source URL, attribution, and demo video.`
 
 const judgingFit = [
@@ -152,12 +164,20 @@ const demoScriptSteps = [
   '0:35 Show scorecard, save PNG, and copy package',
 ]
 
+const proofReelLines = [
+  '45-second proof reel for Devpost judges.',
+  `Record the deployed judge path: ${LIVE_DEMO_URL}`,
+  'Opening frame: Santa Cruz Afterimage is already alive with the live URL visible.',
+  'Show cursor drag, computation receipt, evolving canvas, export, and source proof.',
+  'Upload target: Devpost demo video or linked walkthrough asset.',
+]
+
 const mediaKitLines = [
   'Cover screenshot: Final Santa Cruz Afterimage canvas with the exhibit label visible.',
   'Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.',
   'Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.',
   'Artifact: exported afterimage-santa-cruz-memory-space.png with title, evidence, computation note, and motion delta.',
-  'Video: 45-second walkthrough following the Script tab timing.',
+  'Video: 45-second proof reel with live URL, cursor input, computation receipt, evolving canvas, export, and source proof visible.',
 ]
 
 const attributionLines = [
@@ -190,8 +210,27 @@ const launchAutomationLines = [
   'Composio MCP belongs in submission ops, not the browser runtime.',
   'GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.',
   `Vercel connector: production demo is live at ${LIVE_DEMO_URL}.`,
-  'Canva or recording workflow: assemble screenshots and the 45-second demo video.',
+  'Canva or recording workflow: assemble screenshots and the 45-second proof reel.',
   'Devpost package: paste the copied description, source URL, attribution, and demo video.',
+]
+
+const evidenceStripItems = [
+  {
+    label: 'Run live demo',
+    detail: 'Open the production judge path.',
+  },
+  {
+    label: 'Proof reel',
+    detail: '45-second proof of interaction, computation, and source.',
+  },
+  {
+    label: 'View source',
+    detail: 'Public repo and build-period proof.',
+  },
+  {
+    label: 'Copy package',
+    detail: 'Description, attribution, and Devpost handoff.',
+  },
 ]
 
 const submissionRequirements = [
@@ -263,6 +302,9 @@ export function SubmissionPanel() {
   const [activeTab, setActiveTab] = useState<SubmissionTab>('scorecard')
   const [devpostCopyStatus, setDevpostCopyStatus] = useState('Ready for Devpost copy.')
   const [scriptCopyStatus, setScriptCopyStatus] = useState('Demo script ready.')
+  const [proofReelCopyStatus, setProofReelCopyStatus] = useState(
+    'Proof reel brief ready.',
+  )
   const [mediaKitCopyStatus, setMediaKitCopyStatus] = useState('Media kit ready.')
   const [attributionCopyStatus, setAttributionCopyStatus] = useState('Attribution ready.')
   const [implementationCopyStatus, setImplementationCopyStatus] = useState(
@@ -292,6 +334,13 @@ export function SubmissionPanel() {
   const handleScriptCopy = async () => {
     const copied = await copyText(DEMO_SCRIPT)
     setScriptCopyStatus(copied ? 'Demo script copied.' : 'Copy failed; use the README script.')
+  }
+
+  const handleProofReelCopy = async () => {
+    const copied = await copyText(PROOF_REEL_BRIEF)
+    setProofReelCopyStatus(
+      copied ? 'Proof reel brief copied.' : 'Copy failed; use the README proof reel brief.',
+    )
   }
 
   const handleMediaKitCopy = async () => {
@@ -416,6 +465,14 @@ export function SubmissionPanel() {
       <p className="brief-copy-status" aria-live="polite">
         {judgeLinkCopyStatus}
       </p>
+      <section className="evidence-strip" aria-label="Judge evidence strip">
+        {evidenceStripItems.map((item) => (
+          <div key={item.label}>
+            <strong>{item.label}</strong>
+            <span>{item.detail}</span>
+          </div>
+        ))}
+      </section>
       <div className="submission-tabs" role="tablist" aria-label="Submission pack">
         {submissionTabs.map((tab) => (
           <button
@@ -616,6 +673,21 @@ export function SubmissionPanel() {
             </button>
             <p className="brief-copy-status" aria-live="polite">
               {scriptCopyStatus}
+            </p>
+          </section>
+          <section className="proof-reel" aria-label="Proof reel">
+            <span className="eyebrow">Proof reel</span>
+            <ul>
+              {proofReelLines.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+            <button className="brief-copy-button" type="button" onClick={handleProofReelCopy}>
+              <Copy size={16} aria-hidden="true" />
+              Copy proof reel brief
+            </button>
+            <p className="brief-copy-status" aria-live="polite">
+              {proofReelCopyStatus}
             </p>
           </section>
           <section className="media-kit" aria-label="Submission media kit">

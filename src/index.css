@@ -553,6 +553,36 @@ h2 {
   font-size: 0.78rem;
 }
 
+.evidence-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid rgba(39, 50, 64, 0.12);
+  border-radius: 8px;
+  background: rgba(39, 50, 64, 0.12);
+}
+
+.evidence-strip div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 9px 8px;
+  background: rgba(255, 253, 248, 0.76);
+}
+
+.evidence-strip strong {
+  color: var(--ink);
+  font-size: 0.72rem;
+  line-height: 1.18;
+}
+
+.evidence-strip span {
+  color: var(--ink-soft);
+  font-size: 0.66rem;
+  line-height: 1.22;
+}
+
 .submission-tabs {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -593,6 +623,7 @@ h2 {
 .implementation-receipt,
 .devpost-requirements,
 .media-kit,
+.proof-reel,
 .source-handoff,
 .demo-script {
   display: grid;
@@ -609,6 +640,7 @@ h2 {
 .implementation-receipt ul,
 .devpost-requirements ul,
 .media-kit ul,
+.proof-reel ul,
 .source-handoff ul,
 .demo-script ol {
   display: grid;
@@ -625,6 +657,7 @@ h2 {
 .implementation-receipt ul,
 .devpost-requirements ul,
 .media-kit ul,
+.proof-reel ul,
 .source-handoff ul {
   list-style: none;
 }
@@ -674,6 +707,7 @@ h2 {
 .implementation-receipt li,
 .devpost-requirements p,
 .media-kit li,
+.proof-reel li,
 .source-handoff li,
 .demo-script li {
   color: var(--ink-soft);
@@ -942,6 +976,10 @@ h2 {
     grid-template-columns: 1fr;
   }
 
+  .evidence-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .left-rail {
     order: 2;
   }
@@ -988,6 +1026,10 @@ h2 {
 
   .compose-button {
     min-width: 180px;
+  }
+
+  .evidence-strip {
+    grid-template-columns: 1fr;
   }
 
   .scene-proof,

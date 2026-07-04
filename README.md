@@ -21,13 +21,14 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - Build-period proof reminder for the public repo and Devpost submission.
 - MCP launch plan for GitHub source verification, Vercel deployment, demo-video, and Devpost submission ops.
 - Copyable live demo URL for the production judge path at `https://afterimage-omega.vercel.app/?judge=1`.
+- Always-visible judge evidence strip for live demo, proof reel, source, and Devpost copy.
 - Copyable judge link that turns the current deployment origin into `/?judge=1`.
 - Desktop judge layout keeps the living artwork in frame while reviewers scan the submission pack.
 - Copyable attribution block for the required third-party assets, libraries, and optional APIs.
 - Copyable implementation receipt that explains the computation pipeline behind the art.
 - Copyable source handoff for the public repository submission step.
-- Copyable demo recording script for a tight 45-second walkthrough.
-- Copyable submission media kit for cover screenshot, proof/source screenshots, PNG artifact, and walkthrough video.
+- Copyable demo recording script and Proof Reel brief for a tight 45-second judge video.
+- Copyable submission media kit for cover screenshot, proof/source screenshots, PNG artifact, and proof reel video.
 - Final exhibit label after Auto-compose, naming the generated artwork and its evidence trail.
 - One-click judge demo that runs the full transformation path without requiring manual brush input.
 - PNG export with title, evidence trail, artist statement, computation note, and motion delta for the submission gallery.
@@ -42,7 +43,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 4. Open the Script tab in the submission panel.
 5. Open the Source tab to review the Devpost requirements checklist.
 6. On desktop, keep the living artwork visible while scrolling the submission pack.
-7. Copy the judge link, save the contextual PNG artifact, and copy the Devpost package.
+7. Copy the Proof Reel brief, judge link, contextual PNG artifact, and Devpost package.
 
 For the slower proof path, load the Santa Cruz demo folder, enter the memory-space, drag across the canvas, and Auto-compose the residue into one scene.
 
@@ -76,13 +77,15 @@ Live medium proof:
 
 Demo link: Use `https://afterimage-omega.vercel.app/?judge=1` to open directly on the final Santa Cruz Afterimage exhibit.
 
+Proof reel: Record a 45-second proof reel from `https://afterimage-omega.vercel.app/?judge=1`. Show cursor drag, computation receipt, evolving canvas, PNG export, live demo URL, public source URL, attribution, and Devpost copy in one continuous walkthrough.
+
 Source handoff: Devpost source URL is `https://github.com/rushtanu14/afterimage`. Public repo history from `1f2e060` onward preserves the July 1 to August 1, 2026 build window. The repo includes `src/`, `public/demo/`, `scripts/`, `tests/`, `README.md`, `package.json`, `package-lock.json`, and the Vite/TypeScript/Vitest/Playwright config files. It excludes `node_modules`, `dist`, and local screenshots. Run `npm run test`, `npm run build`, `npm run test:e2e`, and `npm audit --json` before submitting.
 
 MCP launch plan:
 - Composio MCP belongs in submission ops, not the browser runtime.
 - GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.
 - Vercel connector: production demo is live at `https://afterimage-omega.vercel.app/?judge=1`.
-- Canva or recording workflow: assemble screenshots and the 45-second demo video.
+- Canva or recording workflow: assemble screenshots and the 45-second proof reel.
 - Devpost package: paste the copied description, source URL, attribution, and demo video.
 
 Attribution: Demo photos are procedural generated assets in `public/demo/santa-cruz-demo-photos`. Runtime libraries include React, TypeScript, Canvas 2D browser APIs, `exifr`, and `lucide-react`. Optional street-image provider lookups reference Mapillary, Panoramax, and KartaView only where coverage exists. No paid map, AI, or proprietary image provider is required for the judge demo.
@@ -115,13 +118,26 @@ Prize fit:
 
 0:42 Close with the theme: this art depends on code, metadata, computation, and motion.
 
+## Proof reel brief
+
+- Record the deployed judge path: `https://afterimage-omega.vercel.app/?judge=1`.
+- Opening frame: the Santa Cruz Afterimage exhibit is already alive, with the live URL visible.
+- Interaction proof: show cursor drag, computation receipt, evolving canvas, export, and source proof.
+- 0:00 Open the live judge path and name the project.
+- 0:08 Show the canvas proof overlay and exhibit label.
+- 0:14 Drag the scene or run the judge demo so the art visibly responds.
+- 0:22 Show the Computation receipt and Live medium proof.
+- 0:32 Save the PNG artifact and open the Source tab.
+- 0:40 Show the public source URL, live demo URL, attribution, and Devpost copy.
+- Upload target: Devpost demo video or linked walkthrough asset.
+
 ## Submission media kit
 
 - Cover screenshot: final Santa Cruz Afterimage canvas with the exhibit label visible.
 - Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.
 - Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.
 - Artifact: exported `afterimage-santa-cruz-memory-space.png` with title, evidence, computation note, and motion delta.
-- Video: 45-second walkthrough following the Script tab timing.
+- Video: 45-second proof reel with live URL, cursor input, computation receipt, evolving canvas, export, and source proof visible.
 
 ## Run
 
