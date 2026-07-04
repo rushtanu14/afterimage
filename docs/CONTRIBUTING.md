@@ -62,6 +62,7 @@ Run full browser verification before treating judge-facing changes as done:
 ```bash
 npm run build
 npm run test:e2e
+PLAYWRIGHT_BASE_URL=https://afterimage-omega.vercel.app npx playwright test tests/app.spec.ts -g "judge presentation URL opens directly" --project=chromium
 ```
 
 Unit tests live under `src/**/*.test.ts`. End-to-end coverage lives in `tests/app.spec.ts` and should keep assertions scoped to accessible roles, labels, and the judge path where possible.
@@ -84,4 +85,5 @@ Keep generated assets out of source edits unless the demo image generator intent
 - `npm run build` passes.
 - `npx oxlint .` passes.
 - `npm run test:e2e` passes or any skipped browser project is explained.
+- Deployed judge-path smoke passes against `https://afterimage-omega.vercel.app`.
 - `npm audit --json` shows zero vulnerabilities before public submission.

@@ -13,9 +13,9 @@ Generated from `package.json`, Vite config, Playwright config, and current proje
 4. Run production build verification with `npm run build`.
 5. Run browser verification with `npm run test:e2e`.
 6. Deploy the generated `dist/` directory to the static host.
-7. Open the deployed root path and `/?judge=1`.
+7. Open `https://afterimage-omega.vercel.app/` and `https://afterimage-omega.vercel.app/?judge=1`.
 8. Use the Source tab MCP launch plan for GitHub repo verification, Vercel deployment, demo-video capture, and Devpost handoff.
-9. Copy the deployed `/?judge=1` URL into the Devpost demo link field, or use it as the source for the recorded walkthrough.
+9. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, or use it as the source for the recorded walkthrough.
 <!-- /AUTO-GENERATED -->
 
 ## Health Checks
@@ -27,6 +27,7 @@ Generated from app routes and test coverage.
 |-------|-----------------|
 | `/` | App shell loads with the Afterimage header and `Run judge demo` control. |
 | `/?judge=1` | The Santa Cruz Afterimage exhibit opens directly in the final composed state. |
+| `https://afterimage-omega.vercel.app/?judge=1` | Production judge path opens directly in the final composed state. |
 | Computation receipt | Transformation Engine shows photo evidence, pixel sampling, render recipe, motion delta, and evolving output. |
 | Browser console | No warnings or errors during the judge path. |
 | Layout overflow | `document.documentElement.scrollWidth - window.innerWidth` is `0` or within 1px. |
@@ -47,6 +48,7 @@ There are no API health endpoints in the current app because it is a client-only
 | MCP integration starts pulling secrets into the browser app. | Keep Composio/GitHub/Vercel tooling in submission ops; do not ship API keys or OAuth config in the static runtime. |
 | Devpost media assets are incomplete. | Use the Script tab media kit to capture the cover screenshot, proof/source screenshots, exported PNG artifact, and 45-second walkthrough video. |
 | Public source requirement needs proof. | Use the Source tab `Source repository` card and `https://github.com/rushtanu14/afterimage` for the Devpost source-code field. |
+| Live demo requirement needs proof. | Use the Source tab `Live demo` card and verify `https://afterimage-omega.vercel.app/?judge=1` with `PLAYWRIGHT_BASE_URL=https://afterimage-omega.vercel.app npx playwright test tests/app.spec.ts -g "judge presentation URL opens directly" --project=chromium`. |
 
 ## Rollback
 
@@ -70,8 +72,8 @@ Generated from Markdown file modification dates during this docs update.
 
 | Document | Last modified | Status |
 |----------|---------------|--------|
-| `README.md` | 2026-07-02 | Current. |
+| `README.md` | 2026-07-03 | Current. |
 | `public/demo/santa-cruz-demo-photos/README.md` | 2026-07-01 | Current. |
-| `docs/CONTRIBUTING.md` | 2026-07-02 | Created by this workflow. |
-| `docs/RUNBOOK.md` | 2026-07-02 | Created by this workflow. |
+| `docs/CONTRIBUTING.md` | 2026-07-03 | Current. |
+| `docs/RUNBOOK.md` | 2026-07-03 | Current. |
 <!-- /AUTO-GENERATED -->

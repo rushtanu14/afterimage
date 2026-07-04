@@ -2,7 +2,9 @@ import { Copy } from 'lucide-react'
 import { type KeyboardEvent, useEffect, useState } from 'react'
 
 const SOURCE_REPOSITORY_URL = 'https://github.com/rushtanu14/afterimage'
-const SOURCE_COMMIT_PROOF = 'main @ 1f2e060'
+const SOURCE_COMMIT_PROOF = 'public history from 1f2e060 onward'
+const LIVE_DEMO_URL = 'https://afterimage-omega.vercel.app/?judge=1'
+const LIVE_DEMO_ROOT_URL = 'https://afterimage-omega.vercel.app'
 
 const DEVPOST_PACKAGE = `Title: Afterimage
 Tagline: Turn verified place photos into an evolving memory-space.
@@ -25,7 +27,7 @@ Evolves: the composed Canvas keeps changing after the final exhibit appears.
 Engages: the judge path produces a named exhibit, proof trail, and exportable PNG artifact.
 
 Demo link:
-Use the deployed site with /?judge=1 to open directly on the final Santa Cruz Afterimage exhibit.
+Use ${LIVE_DEMO_URL} to open directly on the final Santa Cruz Afterimage exhibit.
 
 Source handoff:
 Source URL: ${SOURCE_REPOSITORY_URL}
@@ -35,7 +37,7 @@ Public repo includes src/, public/demo/, scripts/, tests/, README.md, package.js
 MCP launch plan:
 Composio MCP belongs in submission ops, not the browser runtime.
 GitHub MCP: verify the public source repo and build-history proof.
-Vercel connector: deploy the static app and verify /?judge=1.
+Vercel connector: production demo is live at ${LIVE_DEMO_URL}.
 Devpost package: paste the copied description, source URL, attribution, and demo video.
 
 Judging fit:
@@ -58,7 +60,7 @@ const DEMO_SCRIPT = `0:00 Run judge demo.
 
 const SUBMISSION_MEDIA_KIT = `Cover screenshot: final Santa Cruz Afterimage canvas with the exhibit label visible.
 Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.
-Source screenshot: Devpost requirements and MCP launch plan visible in the Source tab.
+Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.
 Artifact: exported afterimage-santa-cruz-memory-space.png with title, evidence, computation note, and motion delta.
 Video: 45-second walkthrough following the Script tab timing.`
 
@@ -74,7 +76,7 @@ Brush motion and time phase keep the Canvas scene evolving after composition.
 The visible computation receipt links photo evidence, pixel sampling, render recipe, motion delta, and evolving output.`
 
 const SOURCE_HANDOFF = `Devpost requires demo, source, description, and attribution.
-Live link with /?judge=1 or recorded video should show the final exhibit.
+Live demo URL: ${LIVE_DEMO_URL}
 Devpost source URL: ${SOURCE_REPOSITORY_URL}
 Public repo history: ${SOURCE_COMMIT_PROOF} preserves the July 1 to August 1, 2026 build window.
 Public repo should include src/, public/demo/, scripts/, tests/, README.md, package.json, package-lock.json, and config files.
@@ -84,7 +86,7 @@ Devpost source URL is ready for the submission form.`
 
 const LAUNCH_AUTOMATION_PLAN = `Composio MCP belongs in submission ops, not the browser runtime.
 GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.
-Vercel connector: deploy the static build and verify /?judge=1.
+Vercel connector: production demo is live at ${LIVE_DEMO_URL}.
 Canva or recording workflow: assemble screenshots and the 45-second demo video.
 Devpost package: paste the copied description, source URL, attribution, and demo video.`
 
@@ -153,7 +155,7 @@ const demoScriptSteps = [
 const mediaKitLines = [
   'Cover screenshot: Final Santa Cruz Afterimage canvas with the exhibit label visible.',
   'Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.',
-  'Source screenshot: Devpost requirements and MCP launch plan visible in the Source tab.',
+  'Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.',
   'Artifact: exported afterimage-santa-cruz-memory-space.png with title, evidence, computation note, and motion delta.',
   'Video: 45-second walkthrough following the Script tab timing.',
 ]
@@ -175,7 +177,7 @@ const implementationLines = [
 
 const sourceHandoffLines = [
   'Devpost requires demo, source, description, and attribution.',
-  'Live link with /?judge=1 or recorded video should show the final exhibit.',
+  `Live demo URL: ${LIVE_DEMO_URL}`,
   `Devpost source URL: ${SOURCE_REPOSITORY_URL}`,
   `Public repo history: ${SOURCE_COMMIT_PROOF} preserves the July 1 to August 1, 2026 build window.`,
   'Public repo should include src/, public/demo/, scripts/, tests/, README.md, and package-lock.json.',
@@ -187,16 +189,16 @@ const sourceHandoffLines = [
 const launchAutomationLines = [
   'Composio MCP belongs in submission ops, not the browser runtime.',
   'GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.',
-  'Vercel connector: deploy the static build and verify /?judge=1.',
+  `Vercel connector: production demo is live at ${LIVE_DEMO_URL}.`,
   'Canva or recording workflow: assemble screenshots and the 45-second demo video.',
   'Devpost package: paste the copied description, source URL, attribution, and demo video.',
 ]
 
 const submissionRequirements = [
   {
-    status: 'External',
+    status: 'Ready',
     title: 'Working demo',
-    proof: 'Live link with /?judge=1 or recorded video showing the final exhibit.',
+    proof: `${LIVE_DEMO_URL} opens the final exhibit state on the production deployment.`,
   },
   {
     status: 'External',
@@ -272,6 +274,9 @@ export function SubmissionPanel() {
   const [sourceUrlCopyStatus, setSourceUrlCopyStatus] = useState(
     'Source URL ready.',
   )
+  const [liveDemoCopyStatus, setLiveDemoCopyStatus] = useState(
+    'Live demo URL ready.',
+  )
   const [launchPlanCopyStatus, setLaunchPlanCopyStatus] = useState(
     'Launch plan ready.',
   )
@@ -317,6 +322,13 @@ export function SubmissionPanel() {
     const copied = await copyText(SOURCE_REPOSITORY_URL)
     setSourceUrlCopyStatus(
       copied ? 'Source URL copied.' : 'Copy failed; use the README source URL.',
+    )
+  }
+
+  const handleLiveDemoCopy = async () => {
+    const copied = await copyText(LIVE_DEMO_URL)
+    setLiveDemoCopyStatus(
+      copied ? 'Live demo URL copied.' : 'Copy failed; use the README live demo URL.',
     )
   }
 
@@ -542,7 +554,7 @@ export function SubmissionPanel() {
             <span className="eyebrow">Source repository</span>
             <ul>
               <li>{SOURCE_REPOSITORY_URL}</li>
-              <li>{SOURCE_COMMIT_PROOF} pushed to origin/main.</li>
+              <li>{SOURCE_COMMIT_PROOF} is pushed to origin/main.</li>
               <li>Ready for the Devpost source-code field.</li>
             </ul>
             <button className="brief-copy-button" type="button" onClick={handleSourceUrlCopy}>
@@ -551,6 +563,21 @@ export function SubmissionPanel() {
             </button>
             <p className="brief-copy-status" aria-live="polite">
               {sourceUrlCopyStatus}
+            </p>
+          </section>
+          <section className="live-demo" aria-label="Live demo">
+            <span className="eyebrow">Live demo</span>
+            <ul>
+              <li>{LIVE_DEMO_URL}</li>
+              <li>{LIVE_DEMO_ROOT_URL} is the production root.</li>
+              <li>Ready for the Devpost demo-link field.</li>
+            </ul>
+            <button className="brief-copy-button" type="button" onClick={handleLiveDemoCopy}>
+              <Copy size={16} aria-hidden="true" />
+              Copy live demo URL
+            </button>
+            <p className="brief-copy-status" aria-live="polite">
+              {liveDemoCopyStatus}
             </p>
           </section>
           <section className="automation-plan" aria-label="MCP launch plan">

@@ -20,6 +20,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - Devpost requirements checklist for demo, public source, written description, and attribution readiness.
 - Build-period proof reminder for the public repo and Devpost submission.
 - MCP launch plan for GitHub source verification, Vercel deployment, demo-video, and Devpost submission ops.
+- Copyable live demo URL for the production judge path at `https://afterimage-omega.vercel.app/?judge=1`.
 - Copyable judge link that turns the current deployment origin into `/?judge=1`.
 - Desktop judge layout keeps the living artwork in frame while reviewers scan the submission pack.
 - Copyable attribution block for the required third-party assets, libraries, and optional APIs.
@@ -35,7 +36,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 
 ## Judge path
 
-1. Open `/?judge=1` on the deployed site, or press `Run judge demo` for the one-click finished artwork.
+1. Open `https://afterimage-omega.vercel.app/?judge=1`, or press `Run judge demo` locally for the one-click finished artwork.
 2. Read the generated exhibit label and evidence trail.
 3. Read the Transformation Engine computation receipt to see how photo evidence and brush motion become the rendered artwork.
 4. Open the Script tab in the submission panel.
@@ -73,14 +74,14 @@ Live medium proof:
 - Evolves: the composed Canvas keeps changing after the final exhibit appears.
 - Engages: the judge path produces a named exhibit, proof trail, and exportable PNG artifact.
 
-Demo link: Use the deployed site with `/?judge=1` to open directly on the final Santa Cruz Afterimage exhibit.
+Demo link: Use `https://afterimage-omega.vercel.app/?judge=1` to open directly on the final Santa Cruz Afterimage exhibit.
 
-Source handoff: Devpost source URL is `https://github.com/rushtanu14/afterimage`. Public repo history `main @ 1f2e060` preserves the July 1 to August 1, 2026 build window. The repo includes `src/`, `public/demo/`, `scripts/`, `tests/`, `README.md`, `package.json`, `package-lock.json`, and the Vite/TypeScript/Vitest/Playwright config files. It excludes `node_modules`, `dist`, and local screenshots. Run `npm run test`, `npm run build`, `npm run test:e2e`, and `npm audit --json` before submitting.
+Source handoff: Devpost source URL is `https://github.com/rushtanu14/afterimage`. Public repo history from `1f2e060` onward preserves the July 1 to August 1, 2026 build window. The repo includes `src/`, `public/demo/`, `scripts/`, `tests/`, `README.md`, `package.json`, `package-lock.json`, and the Vite/TypeScript/Vitest/Playwright config files. It excludes `node_modules`, `dist`, and local screenshots. Run `npm run test`, `npm run build`, `npm run test:e2e`, and `npm audit --json` before submitting.
 
 MCP launch plan:
 - Composio MCP belongs in submission ops, not the browser runtime.
 - GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.
-- Vercel connector: deploy the static build and verify `/?judge=1`.
+- Vercel connector: production demo is live at `https://afterimage-omega.vercel.app/?judge=1`.
 - Canva or recording workflow: assemble screenshots and the 45-second demo video.
 - Devpost package: paste the copied description, source URL, attribution, and demo video.
 
@@ -118,7 +119,7 @@ Prize fit:
 
 - Cover screenshot: final Santa Cruz Afterimage canvas with the exhibit label visible.
 - Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.
-- Source screenshot: Devpost requirements and MCP launch plan visible in the Source tab.
+- Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.
 - Artifact: exported `afterimage-santa-cruz-memory-space.png` with title, evidence, computation note, and motion delta.
 - Video: 45-second walkthrough following the Script tab timing.
 
@@ -142,3 +143,9 @@ npm audit --json
 ```
 
 The Playwright suite covers Chromium, mobile Chromium, desktop WebKit, and mobile WebKit.
+
+Run the deployed judge-path smoke with:
+
+```bash
+PLAYWRIGHT_BASE_URL=https://afterimage-omega.vercel.app npx playwright test tests/app.spec.ts -g "judge presentation URL opens directly" --project=chromium
+```

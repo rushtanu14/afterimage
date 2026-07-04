@@ -122,7 +122,13 @@ test('submission panel offers a copyable source handoff', async ({ page }) => {
   await page.getByRole('tab', { name: 'Source' }).click()
   const submissionRequirements = page.getByRole('region', { name: /devpost requirements/i })
   await expect(submissionRequirements).toContainText(/Working demo/i)
-  await expect(submissionRequirements).toContainText(/Live link with \/\?judge=1 or recorded video/i)
+  const workingDemoRequirement = submissionRequirements
+    .locator('li')
+    .filter({ hasText: 'Working demo' })
+  await expect(workingDemoRequirement).toContainText(/Ready/i)
+  await expect(workingDemoRequirement).toContainText(
+    /https:\/\/afterimage-omega\.vercel\.app\/\?judge=1/i,
+  )
   await expect(submissionRequirements).toContainText(/Build period proof/i)
   await expect(submissionRequirements).toContainText(/July 1 to August 1, 2026 build window/i)
   await expect(submissionRequirements).toContainText(/Public source/i)
@@ -137,7 +143,7 @@ test('submission panel offers a copyable source handoff', async ({ page }) => {
 
   const sourceHandoff = page.getByRole('region', { name: /source handoff/i })
   await expect(sourceHandoff).toContainText(/Devpost requires demo, source, description, and attribution/i)
-  await expect(sourceHandoff).toContainText(/Public repo history: main @ 1f2e060 preserves the July 1 to August 1, 2026 build window/i)
+  await expect(sourceHandoff).toContainText(/Public repo history: public history from 1f2e060 onward preserves the July 1 to August 1, 2026 build window/i)
   await expect(sourceHandoff).toContainText(/Devpost source URL: https:\/\/github.com\/rushtanu14\/afterimage/i)
   await expect(sourceHandoff).toContainText(/Public repo should include src\/, public\/demo\/, scripts\/, tests\/, README.md, and package-lock.json/i)
   await expect(sourceHandoff).toContainText(/Exclude node_modules, dist, and local screenshots/i)
@@ -150,6 +156,11 @@ test('submission panel offers a copyable source handoff', async ({ page }) => {
   await expect(sourceRepository).toContainText(/https:\/\/github.com\/rushtanu14\/afterimage/i)
   await page.getByRole('button', { name: /copy source url/i }).click()
   await expect(sourceRepository).toContainText(/Source URL copied/i)
+
+  const liveDemo = page.getByRole('region', { name: /live demo/i })
+  await expect(liveDemo).toContainText(/https:\/\/afterimage-omega\.vercel\.app\/\?judge=1/i)
+  await page.getByRole('button', { name: /copy live demo url/i }).click()
+  await expect(liveDemo).toContainText(/Live demo URL copied/i)
 
   const launchPlan = page.getByRole('region', { name: /mcp launch plan/i })
   await expect(launchPlan).toContainText(/Composio MCP belongs in submission ops/i)
