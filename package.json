@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "record:proof-reel": "node scripts/record-proof-reel.mjs",
     "generate:demo": "node scripts/generate-demo-images.mjs"
   },
   "dependencies": {

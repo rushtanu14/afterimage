@@ -553,6 +553,23 @@ h2 {
   font-size: 0.78rem;
 }
 
+.brief-link {
+  color: var(--blue);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.proof-reel-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid rgba(39, 50, 64, 0.14);
+  border-radius: 8px;
+  background: #17202b;
+}
+
 .evidence-strip {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

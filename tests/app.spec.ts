@@ -2,6 +2,7 @@ import { expect, test, type Locator, type Page } from '@playwright/test'
 import { resolve } from 'node:path'
 
 const demoFolder = resolve(process.cwd(), 'public/demo/santa-cruz-demo-photos')
+const proofReelPath = '/submission/afterimage-proof-reel.webm'
 
 const canvasSnapshot = async (canvas: Locator) =>
   canvas.evaluate((node) => {
@@ -76,8 +77,13 @@ test('submission panel offers a copyable demo recording script', async ({ page }
 
   const proofReel = page.getByRole('region', { name: /proof reel/i })
   await expect(proofReel).toContainText(/45-second proof reel/i)
+  await expect(proofReel).toContainText(/Hosted proof reel/i)
   await expect(proofReel).toContainText(/Record the deployed judge path/i)
   await expect(proofReel).toContainText(/https:\/\/afterimage-omega\.vercel\.app\/\?judge=1/i)
+  await expect(proofReel.locator('video')).toHaveAttribute('src', proofReelPath)
+  await expect(
+    proofReel.getByRole('link', { name: /open hosted proof reel/i }),
+  ).toHaveAttribute('href', proofReelPath)
   await expect(proofReel).toContainText(/Show cursor drag, computation receipt, evolving canvas, export, and source proof/i)
   await page.getByRole('button', { name: /copy proof reel brief/i }).click()
   await expect(proofReel).toContainText(/Proof reel brief copied/i)
@@ -445,6 +451,18 @@ test('one-click judge demo reaches the final exhibit state', async ({ page }) =>
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
   expect(overflow).toBeLessThanOrEqual(1)
+})
+
+test('hosted proof reel asset is public and playable', async ({ page, request }) => {
+  const response = await request.get(proofReelPath)
+  expect(response.ok()).toBe(true)
+  expect(response.headers()['content-type']).toContain('video/webm')
+  expect(Number(response.headers()['content-length'] ?? '0')).toBeGreaterThan(50_000)
+
+  await page.goto(proofReelPath)
+  const video = page.locator('video')
+  await expect(video).toBeVisible()
+  await expect(video).toHaveJSProperty('readyState', 4)
 })
 
 test('judge presentation URL opens directly to the final exhibit state', async ({ page }) => {

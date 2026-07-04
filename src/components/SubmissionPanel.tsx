@@ -5,6 +5,8 @@ const SOURCE_REPOSITORY_URL = 'https://github.com/rushtanu14/afterimage'
 const SOURCE_COMMIT_PROOF = 'public history from 1f2e060 onward'
 const LIVE_DEMO_URL = 'https://afterimage-omega.vercel.app/?judge=1'
 const LIVE_DEMO_ROOT_URL = 'https://afterimage-omega.vercel.app'
+const PROOF_REEL_ASSET_PATH = '/submission/afterimage-proof-reel.webm'
+const PROOF_REEL_PUBLIC_URL = `${LIVE_DEMO_ROOT_URL}${PROOF_REEL_ASSET_PATH}`
 
 const DEVPOST_PACKAGE = `Title: Afterimage
 Tagline: Turn verified place photos into an evolving memory-space.
@@ -28,6 +30,9 @@ Engages: the judge path produces a named exhibit, proof trail, and exportable PN
 
 Demo link:
 Use ${LIVE_DEMO_URL} to open directly on the final Santa Cruz Afterimage exhibit.
+
+Proof reel:
+Use ${PROOF_REEL_PUBLIC_URL} for the hosted 40-second proof reel that shows the live URL, cursor input, computation receipt, evolving canvas, source proof, and final artifact.
 
 Source handoff:
 Source URL: ${SOURCE_REPOSITORY_URL}
@@ -59,6 +64,7 @@ const DEMO_SCRIPT = `0:00 Run judge demo.
 0:42 Close with the theme: this art depends on code, metadata, computation, and motion.`
 
 const PROOF_REEL_BRIEF = `45-second proof reel:
+Hosted proof reel: ${PROOF_REEL_PUBLIC_URL}
 Record the deployed judge path: ${LIVE_DEMO_URL}
 Opening frame: the Santa Cruz Afterimage exhibit is already alive, with the live URL visible.
 Interaction proof: show cursor drag, computation receipt, evolving canvas, export, and source proof.
@@ -165,7 +171,8 @@ const demoScriptSteps = [
 ]
 
 const proofReelLines = [
-  '45-second proof reel for Devpost judges.',
+  '45-second proof reel: hosted 40-second public video asset for Devpost judges.',
+  `Open hosted proof reel: ${PROOF_REEL_PUBLIC_URL}`,
   `Record the deployed judge path: ${LIVE_DEMO_URL}`,
   'Opening frame: Santa Cruz Afterimage is already alive with the live URL visible.',
   'Show cursor drag, computation receipt, evolving canvas, export, and source proof.',
@@ -677,11 +684,24 @@ export function SubmissionPanel() {
           </section>
           <section className="proof-reel" aria-label="Proof reel">
             <span className="eyebrow">Proof reel</span>
+            <video
+              className="proof-reel-video"
+              controls
+              muted
+              playsInline
+              preload="metadata"
+              src={PROOF_REEL_ASSET_PATH}
+            >
+              The hosted proof reel shows the live Afterimage judge path.
+            </video>
             <ul>
               {proofReelLines.map((line) => (
                 <li key={line}>{line}</li>
               ))}
             </ul>
+            <a className="brief-link" href={PROOF_REEL_ASSET_PATH}>
+              Open hosted proof reel
+            </a>
             <button className="brief-copy-button" type="button" onClick={handleProofReelCopy}>
               <Copy size={16} aria-hidden="true" />
               Copy proof reel brief
