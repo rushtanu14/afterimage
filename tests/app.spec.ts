@@ -80,6 +80,7 @@ test('submission panel offers a copyable demo recording script', async ({ page }
   await expect(proofReel).toContainText(/Sub-50-second proof reel/i)
   await expect(proofReel).toContainText(/Hosted proof reel/i)
   await expect(proofReel).toContainText(/Record the deployed judge path/i)
+  await expect(proofReel).toContainText(/Leave an afterimage/i)
   await expect(proofReel).toContainText(/https:\/\/afterimage-omega\.vercel\.app\/\?judge=1/i)
   await expect(proofReel.locator('video')).toHaveAttribute('src', proofReelPath)
   await expect(
@@ -244,6 +245,33 @@ test('judge path starts with a skippable guided source-to-canvas reveal', async 
   await reveal.getByRole('button', { name: /skip guided reveal/i }).click()
   await expect(reveal).toBeHidden()
   await expect(page.getByRole('button', { name: /enter exhibit mode/i })).toBeVisible()
+})
+
+test('judge path lets judges leave an afterimage from the first viewport', async ({
+  page,
+}) => {
+  await page.goto('/?judge=1')
+  await expect(page.getByRole('status')).toContainText(/judge demo built/i)
+
+  const reveal = page.getByRole('region', { name: /guided reveal/i })
+  await reveal.getByRole('button', { name: /living canvas/i }).click()
+  await expect(reveal).toContainText(/leave an afterimage/i)
+  await expect(reveal).toContainText(/tap or drag this pad/i)
+  await expect(reveal).toContainText(/motion delta: 1 brush motion stroke/i)
+
+  const canvas = testCanvasLocator(page)
+  const before = await waitForPaintedCanvas(canvas)
+  const imprintPad = reveal.getByLabel(/leave an afterimage gesture pad/i)
+  await imprintPad.click()
+
+  await expect(page.getByRole('status')).toContainText(/residue saved/i)
+  await expect(reveal).toContainText(/motion delta: 2 brush motion strokes/i)
+  const after = await canvasSnapshot(canvas)
+  expect(after.checksum).not.toBe(before.checksum)
+
+  const computationReceipt = page.getByRole('region', { name: /computation receipt/i })
+  await computationReceipt.scrollIntoViewIfNeeded()
+  await expect(computationReceipt).toContainText(/2 strokes -> residue changes brush phase/i)
 })
 
 test('imports a folder, confirms confidence, paints, undoes, resets, and auto-composes', async ({

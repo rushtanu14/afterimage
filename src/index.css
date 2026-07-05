@@ -948,6 +948,73 @@ h2 {
   font-weight: 850;
 }
 
+.guided-intervention {
+  display: grid;
+  gap: 3px;
+  padding: 8px 9px;
+  border: 1px solid rgba(31, 155, 166, 0.2);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(31, 155, 166, 0.12), rgba(246, 200, 104, 0.13)),
+    rgba(255, 255, 255, 0.48);
+}
+
+.guided-intervention strong {
+  font-size: 0.78rem;
+  line-height: 1.15;
+}
+
+.guided-intervention span,
+.guided-intervention p {
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  line-height: 1.22;
+}
+
+.guided-imprint-pad {
+  position: relative;
+  min-height: 44px;
+  overflow: hidden;
+  border: 1px solid rgba(23, 32, 43, 0.14);
+  border-radius: 7px;
+  background:
+    linear-gradient(90deg, rgba(31, 155, 166, 0.16), transparent 34%),
+    linear-gradient(135deg, rgba(246, 200, 104, 0.24), rgba(239, 119, 91, 0.14)),
+    rgba(255, 253, 248, 0.58);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.guided-imprint-pad::before,
+.guided-imprint-pad::after,
+.guided-imprint-pad span {
+  content: '';
+  position: absolute;
+  inset: auto 12% 50% 12%;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(23, 32, 43, 0.16);
+}
+
+.guided-imprint-pad::before {
+  transform: translateY(-9px);
+}
+
+.guided-imprint-pad::after {
+  transform: translateY(9px);
+}
+
+.guided-imprint-pad[data-active='true'] {
+  border-color: rgba(31, 155, 166, 0.45);
+  box-shadow: inset 0 0 0 2px rgba(31, 155, 166, 0.16);
+}
+
+.guided-intervention p {
+  margin: 2px 0 0;
+  color: var(--blue);
+  font-weight: 850;
+}
+
 .guided-actions {
   justify-content: flex-end;
   gap: 8px;
@@ -1420,6 +1487,10 @@ h2 {
   .guided-reveal-body,
   .guided-actions {
     grid-template-columns: 1fr;
+  }
+
+  .guided-reveal[data-step='canvas'] .guided-media {
+    display: none;
   }
 
   .guided-actions {

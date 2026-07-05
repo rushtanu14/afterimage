@@ -28,11 +28,11 @@ Generated from app routes and test coverage.
 | `/` | App shell loads with the Afterimage header and `Run judge demo` control. |
 | `/?judge=1` | The judge path opens with a skippable Guided reveal and the final composed Santa Cruz Afterimage state. |
 | `https://afterimage-omega.vercel.app/?judge=1` | Production judge path opens with the Guided reveal, final exhibit label, and composed canvas state. |
-| Guided reveal | Source evidence, extracted signals, and living Canvas steps are visible, skippable, and do not create horizontal overflow. |
+| Guided reveal | Source evidence, extracted signals, and Leave an afterimage steps are visible, skippable, mutate the canvas, and do not create horizontal overflow. |
 | Exhibit mode | `Enter exhibit mode` hides the proof dashboard and presents the living artwork as an immersive gallery view. |
 | Computation receipt | Transformation Engine shows photo evidence, pixel sampling, render recipe, motion delta, and evolving output. |
 | Judge evidence strip | Submission panel shows live demo, proof reel, source, and Devpost copy proof before the tabbed details. |
-| Proof reel brief | Script tab gives a copyable sub-50-second recording brief with Guided reveal, live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof. |
+| Proof reel brief | Script tab gives a copyable sub-50-second recording brief with Guided reveal, Leave an afterimage, live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof. |
 | Hosted proof reel | `/submission/afterimage-proof-reel.webm` returns `video/webm` and plays as the public proof-reel asset. |
 | Browser console | No warnings or errors during the judge path. |
 | Layout overflow | `document.documentElement.scrollWidth - window.innerWidth` is `0` or within 1px. |

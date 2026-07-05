@@ -78,26 +78,25 @@ const main = async () => {
     await reveal.getByRole('button', { name: /extracted signals/i }).click()
     await wait(1_500)
     await reveal.getByRole('button', { name: /living canvas/i }).click()
-    await wait(1_500)
-    await reveal.getByRole('button', { name: /skip guided reveal/i }).click()
-    await page.getByText('Santa Cruz Afterimage', { exact: true }).waitFor({ state: 'visible' })
-    await wait(1_400)
-
+    const imprintPad = reveal.getByLabel(/leave an afterimage gesture pad/i)
+    const imprintBox = await imprintPad.boundingBox()
     const canvas = page.getByTestId('memory-canvas')
-    await canvas.scrollIntoViewIfNeeded()
-    const canvasBox = await canvas.boundingBox()
 
-    if (!canvasBox) {
-      throw new Error('Cannot record proof reel without canvas bounds')
+    if (!imprintBox) {
+      throw new Error('Cannot record proof reel without imprint pad bounds')
     }
 
-    await page.mouse.move(canvasBox.x + canvasBox.width * 0.22, canvasBox.y + canvasBox.height * 0.52)
+    await wait(1_200)
+    await page.mouse.move(imprintBox.x + imprintBox.width * 0.18, imprintBox.y + imprintBox.height * 0.52)
     await page.mouse.down()
-    await page.mouse.move(canvasBox.x + canvasBox.width * 0.72, canvasBox.y + canvasBox.height * 0.45, {
-      steps: 18,
+    await page.mouse.move(imprintBox.x + imprintBox.width * 0.82, imprintBox.y + imprintBox.height * 0.42, {
+      steps: 14,
     })
     await page.mouse.up()
-    await wait(2_200)
+    await wait(1_400)
+    await reveal.getByRole('button', { name: /skip guided reveal/i }).click()
+    await canvas.waitFor({ state: 'visible' })
+    await wait(1_600)
 
     await page.getByRole('region', { name: /computation receipt/i }).scrollIntoViewIfNeeded()
     await wait(3_200)

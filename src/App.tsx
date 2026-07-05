@@ -20,6 +20,7 @@ import {
   undoStroke,
 } from './lib/scene'
 import type {
+  BrushPoint,
   BrushStroke,
   MemoryPhoto,
   ProviderName,
@@ -225,6 +226,23 @@ function App() {
     setStatusMessage('Residue saved. Keep dragging, or auto-compose when it feels alive.')
   }
 
+  const handleGuidedImprint = useCallback((points: BrushPoint[]) => {
+    setScene((current) => {
+      if (current.signal.photoCount === 0) {
+        return current
+      }
+
+      const stroke = createBrushStroke(points, current.signal, current.strokes.length + 1)
+
+      return {
+        ...current,
+        strokes: addBrushStroke(current.strokes, stroke),
+        autoComposed: false,
+      }
+    })
+    setStatusMessage('Residue saved. Your afterimage changed the living canvas and Motion delta.')
+  }, [])
+
   const handleUndo = () => {
     setScene((current) => ({
       ...current,
@@ -353,6 +371,7 @@ function App() {
                 photos={photos}
                 scene={scene}
                 onEnterExhibit={handleEnterExhibitMode}
+                onImprint={handleGuidedImprint}
                 onSkip={() => setShowGuidedReveal(false)}
               />
             ) : null}

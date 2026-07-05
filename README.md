@@ -25,7 +25,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - Always-visible judge evidence strip for live demo, proof reel, source, and Devpost copy.
 - Hosted proof reel video at `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm`.
 - Copyable judge link that turns the current deployment origin into `/?judge=1`.
-- Skippable Guided reveal on the judge path that shows source photos, extracted signals, and the living Canvas before the dashboard.
+- Skippable Guided reveal on the judge path that shows source photos, extracted signals, and a first-viewport Leave an afterimage gesture on the living Canvas before the dashboard.
 - Desktop judge layout keeps the living artwork in frame while reviewers scan the submission pack.
 - Copyable attribution block for the required third-party assets, libraries, and optional APIs.
 - Copyable implementation receipt that explains the computation pipeline behind the art.
@@ -41,7 +41,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 ## Judge path
 
 1. Open `https://afterimage-omega.vercel.app/?judge=1`, or press `Run judge demo` locally for the one-click finished artwork.
-2. Use the Guided reveal to move from source photos to extracted signals to the living Canvas.
+2. Use the Guided reveal to move from source photos to extracted signals, then tap or drag the imprint pad to Leave an afterimage before the dashboard.
 3. Read the generated exhibit label and evidence trail.
 4. Press `Enter exhibit mode` to view the living artwork without the proof dashboard taking over the experience.
 5. Read the Transformation Engine computation receipt to see how photo evidence and brush motion become the rendered artwork.
@@ -73,7 +73,7 @@ Built with: React, TypeScript, Canvas 2D, EXIF parsing, local image color sampli
 
 Implementation: EXIF, GPS, and timestamps become confidence and place evidence. Browser pixel sampling becomes sky, water, sand, warmth, haze, and palette ratios. Brush motion and time phase keep the Canvas scene evolving after composition.
 
-Guided reveal: The judge path opens with a skippable source-to-canvas reveal that shows verified photos, extracted visual signals, and the living Canvas before the proof dashboard.
+Guided reveal: The judge path opens with a skippable source-to-canvas reveal that shows verified photos, extracted visual signals, and a first-viewport Leave an afterimage gesture on the living Canvas before the proof dashboard.
 
 Computation receipt: The Transformation Engine shows the live chain from photo evidence to pixel sampling, render recipe, motion delta, and evolving output, so judges can see the algorithm that makes the artwork.
 
@@ -114,7 +114,7 @@ Prize fit:
 
 0:00 Run judge demo.
 
-0:04 Use the Guided reveal: source evidence, extracted signals, and living canvas.
+0:04 Use the Guided reveal: source evidence, extracted signals, and Leave an afterimage on the living canvas.
 
 0:08 Name the artwork: Afterimage turns verified Santa Cruz photos into an evolving place-memory.
 
@@ -135,10 +135,10 @@ Prize fit:
 - Record the deployed judge path: `https://afterimage-omega.vercel.app/?judge=1`.
 - Hosted asset: `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm`.
 - Opening frame: the Santa Cruz Afterimage exhibit is already alive, with the live URL visible.
-- Guided reveal: scrub source evidence, extracted signals, and living canvas before skipping into the proof dashboard.
+- Guided reveal: scrub source evidence, extracted signals, and Leave an afterimage before skipping into the proof dashboard.
 - Interaction proof: show cursor drag, computation receipt, evolving canvas, export, and source proof.
 - 0:00 Open the live judge path and name the project.
-- 0:04 Use the Guided reveal to compress the transformation story.
+- 0:04 Use the Guided reveal to compress the transformation story and Leave an afterimage.
 - 0:08 Show the canvas proof overlay and exhibit label.
 - 0:14 Drag the scene or run the judge demo so the art visibly responds.
 - 0:22 Show the Computation receipt and Live medium proof.
