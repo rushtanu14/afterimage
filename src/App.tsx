@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { AlertTriangle, Check, Loader2 } from 'lucide-react'
+import { AlertTriangle, Check, Loader2, Maximize2, X } from 'lucide-react'
 import { ConfidencePanel } from './components/ConfidencePanel'
 import { Controls } from './components/Controls'
 import { Filmstrip } from './components/Filmstrip'
@@ -51,6 +51,7 @@ function App() {
   )
   const [confirmed, setConfirmed] = useState(false)
   const [providerDebugOpen, setProviderDebugOpen] = useState(false)
+  const [exhibitMode, setExhibitMode] = useState(false)
   const [selectedProvider, setSelectedProvider] = useState<ProviderName>('Manual')
   const [providerResult, setProviderResult] = useState<ProviderResult | undefined>()
 
@@ -100,6 +101,24 @@ function App() {
 
   const readyToPaint =
     photos.length > 0 && (scene.signal.confidence === 'Verified' || confirmed)
+
+  const exhibitProofItems = useMemo(() => {
+    if (photos.length === 0) {
+      return [
+        'Awaiting photo evidence',
+        'EXIF/GPS + color ratios',
+        'Brush motion drives the scene',
+      ]
+    }
+
+    const photoProof = `${photos.length} ${scene.signal.confidence.toLowerCase()} photo${photos.length === 1 ? '' : 's'}`
+    const placeProof =
+      scene.signal.gpsMatches > 0
+        ? `${scene.signal.gpsMatches} GPS match${scene.signal.gpsMatches === 1 ? '' : 'es'}`
+        : `${scene.signal.confidence} place anchor`
+
+    return [photoProof, placeProof, 'Brush motion drives the scene']
+  }, [photos.length, scene.signal.confidence, scene.signal.gpsMatches])
 
   const replacePhotos = (nextPhotos: MemoryPhoto[]) => {
     const signal = aggregateMemorySignal(nextPhotos, scene.anchor)
@@ -229,6 +248,14 @@ function App() {
     setStatusMessage('Auto-compose cleaned the residue into one cinematic memory-space.')
   }
 
+  const handleEnterExhibitMode = () => {
+    if (photos.length === 0) {
+      handleRunJudgeDemo()
+    }
+
+    setExhibitMode(true)
+  }
+
   const handleDownload = async () => {
     if (photos.length === 0) {
       setStatusMessage('Load photos before saving a memory-space PNG.')
@@ -315,6 +342,14 @@ function App() {
         </aside>
 
         <section className="scene-column" aria-label="Interactive memory-space">
+          <button
+            className="exhibit-mode-button"
+            type="button"
+            onClick={handleEnterExhibitMode}
+          >
+            <Maximize2 size={17} aria-hidden="true" />
+            Enter exhibit mode
+          </button>
           <MemoryCanvas
             ref={canvasRef}
             scene={scene}
@@ -328,6 +363,41 @@ function App() {
           <Filmstrip photos={photos} />
         </section>
       </section>
+      {exhibitMode ? (
+        <section className="exhibit-mode" aria-label="Immersive exhibit mode">
+          <div className="exhibit-mode-copy">
+            <span className="eyebrow">Immersive exhibit</span>
+            <h2>Santa Cruz Afterimage</h2>
+            <p>
+              GPS, color, time, and brush motion become one evolving canvas.
+            </p>
+          </div>
+          <div className="exhibit-mode-canvas">
+            <MemoryCanvas
+              scene={scene}
+              photos={photos}
+              readyToPaint={readyToPaint}
+              onStroke={handleStroke}
+              onParallaxChange={(parallax) =>
+                setScene((current) => ({ ...current, parallax }))
+              }
+            />
+          </div>
+          <div className="exhibit-mode-proof" aria-label="Exhibit proof">
+            {exhibitProofItems.map((item) => (
+              <span key={item}>{item}</span>
+            ))}
+          </div>
+          <button
+            className="exhibit-exit-button"
+            type="button"
+            onClick={() => setExhibitMode(false)}
+          >
+            <X size={17} aria-hidden="true" />
+            Exit exhibit mode
+          </button>
+        </section>
+      ) : null}
     </main>
   )
 }

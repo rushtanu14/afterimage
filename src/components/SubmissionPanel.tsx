@@ -27,12 +27,13 @@ Live medium proof:
 Responds: brush motion and parallax reshape the scene.
 Evolves: the composed Canvas keeps changing after the final exhibit appears.
 Engages: the judge path produces a named exhibit, proof trail, and exportable PNG artifact.
+Exhibit mode: judges can hide the proof dashboard and view the living artwork as an immersive gallery piece.
 
 Demo link:
 Use ${LIVE_DEMO_URL} to open directly on the final Santa Cruz Afterimage exhibit.
 
 Proof reel:
-Use ${PROOF_REEL_PUBLIC_URL} for the hosted 40-second proof reel that shows the live URL, cursor input, computation receipt, evolving canvas, source proof, and final artifact.
+Use ${PROOF_REEL_PUBLIC_URL} for the hosted sub-50-second proof reel that shows the live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, source proof, and final artifact.
 
 Source handoff:
 Source URL: ${SOURCE_REPOSITORY_URL}
@@ -60,10 +61,11 @@ const DEMO_SCRIPT = `0:00 Run judge demo.
 0:14 Point to the canvas proof overlay and final exhibit label.
 0:20 Show the Computation receipt: photo evidence becomes pixel sampling, render recipe, motion delta, and evolving output.
 0:28 Show the Live medium proof: responds, evolves, and engages.
-0:35 Show the scorecard, save PNG, and copy the Devpost package.
-0:42 Close with the theme: this art depends on code, metadata, computation, and motion.`
+0:35 Enter Exhibit mode so the artwork takes over the viewport.
+0:42 Show the scorecard, save PNG, and copy the Devpost package.
+0:45 Close with the theme: this art depends on code, metadata, computation, and motion.`
 
-const PROOF_REEL_BRIEF = `45-second proof reel:
+const PROOF_REEL_BRIEF = `Sub-50-second proof reel:
 Hosted proof reel: ${PROOF_REEL_PUBLIC_URL}
 Record the deployed judge path: ${LIVE_DEMO_URL}
 Opening frame: the Santa Cruz Afterimage exhibit is already alive, with the live URL visible.
@@ -72,15 +74,15 @@ Interaction proof: show cursor drag, computation receipt, evolving canvas, expor
 0:08 Show the canvas proof overlay and exhibit label.
 0:14 Drag the scene or run the judge demo so the art visibly responds.
 0:22 Show the Computation receipt and Live medium proof.
-0:32 Save the PNG artifact and open the Source tab.
+0:32 Enter Exhibit mode, save the PNG artifact, and open the Source tab.
 0:40 Show the public source URL, live demo URL, attribution, and Devpost copy.
 Upload target: Devpost demo video or linked walkthrough asset.`
 
-const SUBMISSION_MEDIA_KIT = `Cover screenshot: final Santa Cruz Afterimage canvas with the exhibit label visible.
+const SUBMISSION_MEDIA_KIT = `Cover screenshot: Exhibit mode with the final Santa Cruz Afterimage canvas and exhibit label visible.
 Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.
 Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.
 Artifact: exported afterimage-santa-cruz-memory-space.png with title, evidence, computation note, and motion delta.
-Video: 45-second proof reel following the Script tab brief, with live URL, cursor input, computation receipt, evolving canvas, export, and source proof visible.`
+Video: sub-50-second proof reel following the Script tab brief, with live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof visible.`
 
 const ATTRIBUTION_BLOCK = `Demo photos: procedural generated assets in public/demo/santa-cruz-demo-photos.
 Libraries: React, TypeScript, Canvas 2D, exifr, lucide-react.
@@ -105,7 +107,7 @@ Devpost source URL is ready for the submission form.`
 const LAUNCH_AUTOMATION_PLAN = `Composio MCP belongs in submission ops, not the browser runtime.
 GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.
 Vercel connector: production demo is live at ${LIVE_DEMO_URL}.
-Canva or recording workflow: assemble screenshots and the 45-second proof reel.
+Canva or recording workflow: assemble screenshots and the sub-50-second proof reel.
 Devpost package: paste the copied description, source URL, attribution, and demo video.`
 
 const judgingFit = [
@@ -159,6 +161,10 @@ const mediumProof = [
     signal: 'Engages',
     proof: 'The judge path ends with a named exhibit, evidence trail, and exportable PNG artifact.',
   },
+  {
+    signal: 'Immerses',
+    proof: 'Exhibit mode lets judges view the living artwork without the proof dashboard taking over the experience.',
+  },
 ]
 
 const demoScriptSteps = [
@@ -167,24 +173,27 @@ const demoScriptSteps = [
   '0:14 Point to the proof overlay and exhibit label',
   '0:20 Show the Computation receipt',
   '0:28 Show the Live medium proof',
-  '0:35 Show scorecard, save PNG, and copy package',
+  '0:35 Enter Exhibit mode so the artwork takes over the viewport',
+  '0:42 Show the scorecard, save PNG, and copy the Devpost package',
+  '0:45 Close with the theme: this art depends on code, metadata, computation, and motion',
 ]
 
 const proofReelLines = [
-  '45-second proof reel: hosted 40-second public video asset for Devpost judges.',
+  'Sub-50-second proof reel: hosted public video asset for Devpost judges.',
   `Open hosted proof reel: ${PROOF_REEL_PUBLIC_URL}`,
   `Record the deployed judge path: ${LIVE_DEMO_URL}`,
   'Opening frame: Santa Cruz Afterimage is already alive with the live URL visible.',
   'Show cursor drag, computation receipt, evolving canvas, export, and source proof.',
+  'Enter Exhibit mode so the artwork fills the viewport before the final source proof.',
   'Upload target: Devpost demo video or linked walkthrough asset.',
 ]
 
 const mediaKitLines = [
-  'Cover screenshot: Final Santa Cruz Afterimage canvas with the exhibit label visible.',
+  'Cover screenshot: Exhibit mode with the final Santa Cruz Afterimage canvas and exhibit label visible.',
   'Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.',
   'Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.',
   'Artifact: exported afterimage-santa-cruz-memory-space.png with title, evidence, computation note, and motion delta.',
-  'Video: 45-second proof reel with live URL, cursor input, computation receipt, evolving canvas, export, and source proof visible.',
+  'Video: sub-50-second proof reel with live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof visible.',
 ]
 
 const attributionLines = [
@@ -217,7 +226,7 @@ const launchAutomationLines = [
   'Composio MCP belongs in submission ops, not the browser runtime.',
   'GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.',
   `Vercel connector: production demo is live at ${LIVE_DEMO_URL}.`,
-  'Canva or recording workflow: assemble screenshots and the 45-second proof reel.',
+  'Canva or recording workflow: assemble screenshots and the sub-50-second proof reel.',
   'Devpost package: paste the copied description, source URL, attribution, and demo video.',
 ]
 
@@ -228,7 +237,7 @@ const evidenceStripItems = [
   },
   {
     label: 'Proof reel',
-    detail: '45-second proof of interaction, computation, and source.',
+    detail: 'Sub-50-second proof of interaction, computation, and source.',
   },
   {
     label: 'View source',

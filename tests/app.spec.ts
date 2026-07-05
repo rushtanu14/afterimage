@@ -62,7 +62,7 @@ test('submission panel offers a copyable demo recording script', async ({ page }
   const evidenceStrip = page.getByRole('region', { name: /judge evidence strip/i })
   await expect(evidenceStrip).toContainText(/Run live demo/i)
   await expect(evidenceStrip).toContainText(/Proof reel/i)
-  await expect(evidenceStrip).toContainText(/45-second proof/i)
+  await expect(evidenceStrip).toContainText(/Sub-50-second proof/i)
   await expect(evidenceStrip).toContainText(/View source/i)
 
   await page.getByRole('tab', { name: 'Script' }).click()
@@ -70,13 +70,14 @@ test('submission panel offers a copyable demo recording script', async ({ page }
   await expect(demoScript).toContainText(/0:00 Run judge demo/i)
   await expect(demoScript).toContainText(/0:20 Show the Computation receipt/i)
   await expect(demoScript).toContainText(/0:28 Show the Live medium proof/i)
-  await expect(demoScript).toContainText(/0:35 Show scorecard, save PNG, and copy package/i)
+  await expect(demoScript).toContainText(/0:35 Enter Exhibit mode/i)
+  await expect(demoScript).toContainText(/0:42 Show the scorecard, save PNG, and copy the Devpost package/i)
 
   await page.getByRole('button', { name: /copy demo script/i }).click()
   await expect(demoScript).toContainText(/Demo script copied/i)
 
   const proofReel = page.getByRole('region', { name: /proof reel/i })
-  await expect(proofReel).toContainText(/45-second proof reel/i)
+  await expect(proofReel).toContainText(/Sub-50-second proof reel/i)
   await expect(proofReel).toContainText(/Hosted proof reel/i)
   await expect(proofReel).toContainText(/Record the deployed judge path/i)
   await expect(proofReel).toContainText(/https:\/\/afterimage-omega\.vercel\.app\/\?judge=1/i)
@@ -85,16 +86,18 @@ test('submission panel offers a copyable demo recording script', async ({ page }
     proofReel.getByRole('link', { name: /open hosted proof reel/i }),
   ).toHaveAttribute('href', proofReelPath)
   await expect(proofReel).toContainText(/Show cursor drag, computation receipt, evolving canvas, export, and source proof/i)
+  await expect(proofReel).toContainText(/Enter Exhibit mode/i)
   await page.getByRole('button', { name: /copy proof reel brief/i }).click()
   await expect(proofReel).toContainText(/Proof reel brief copied/i)
 
   const mediaKit = page.getByRole('region', { name: /submission media kit/i })
   await expect(mediaKit).toContainText(/Cover screenshot/i)
-  await expect(mediaKit).toContainText(/Final Santa Cruz Afterimage canvas/i)
+  await expect(mediaKit).toContainText(/Exhibit mode/i)
+  await expect(mediaKit).toContainText(/final Santa Cruz Afterimage canvas/i)
   await expect(mediaKit).toContainText(/Proof screenshot/i)
   await expect(mediaKit).toContainText(/Source screenshot/i)
   await expect(mediaKit).toContainText(/motion delta/i)
-  await expect(mediaKit).toContainText(/45-second proof reel/i)
+  await expect(mediaKit).toContainText(/sub-50-second proof reel/i)
   await page.getByRole('button', { name: /copy media kit/i }).click()
   await expect(mediaKit).toContainText(/Media kit copied/i)
 })
@@ -191,6 +194,26 @@ test('submission panel offers a copyable source handoff', async ({ page }) => {
   await expect(launchPlan).toContainText(/Launch plan copied/i)
 })
 
+test('judge path can switch from proof dashboard into immersive exhibit mode', async ({
+  page,
+}) => {
+  await page.goto('/?judge=1')
+  await expect(page.getByRole('status')).toContainText(/judge demo built/i)
+
+  await page.getByRole('button', { name: /enter exhibit mode/i }).click()
+
+  const exhibit = page.getByRole('region', { name: /immersive exhibit mode/i })
+  await expect(exhibit).toBeVisible()
+  await expect(exhibit).toContainText(/Santa Cruz Afterimage/i)
+  await expect(exhibit).toContainText(/GPS, color, time, and brush motion/i)
+  await expect(exhibit).toContainText(/evolving canvas/i)
+  await expect(exhibit.getByTestId('memory-canvas')).toBeVisible()
+
+  await page.getByRole('button', { name: /exit exhibit mode/i }).click()
+  await expect(exhibit).toBeHidden()
+  await expect(page.getByRole('region', { name: /submission brief/i })).toBeVisible()
+})
+
 test('imports a folder, confirms confidence, paints, undoes, resets, and auto-composes', async ({
   page,
 }, testInfo) => {
@@ -241,6 +264,9 @@ test('imports a folder, confirms confidence, paints, undoes, resets, and auto-co
   await page.getByRole('button', { name: /copy devpost package/i }).click()
   await expect(page.getByRole('region', { name: /submission brief/i })).toContainText(
     /Devpost package copied/i,
+  )
+  await expect(page.getByRole('region', { name: /submission brief/i })).toContainText(
+    /Exhibit mode/i,
   )
   await expect(page.getByTestId('provider-picker')).toBeHidden()
   await expect(page.getByText('Load photos first')).toBeVisible()

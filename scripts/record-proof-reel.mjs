@@ -97,6 +97,12 @@ const main = async () => {
     await page.getByRole('region', { name: /live medium proof/i }).scrollIntoViewIfNeeded()
     await wait(5_000)
 
+    await page.getByRole('button', { name: /enter exhibit mode/i }).click()
+    await page.getByRole('region', { name: /immersive exhibit mode/i }).waitFor({ state: 'visible' })
+    await wait(5_500)
+    await page.getByRole('button', { name: /exit exhibit mode/i }).click()
+    await wait(1_000)
+
     await page.getByRole('tab', { name: 'Source' }).click()
     await page.getByRole('region', { name: /devpost requirements/i }).scrollIntoViewIfNeeded()
     await wait(5_000)

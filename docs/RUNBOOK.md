@@ -15,7 +15,7 @@ Generated from `package.json`, Vite config, Playwright config, and current proje
 6. Deploy the generated `dist/` directory to the static host.
 7. Open `https://afterimage-omega.vercel.app/` and `https://afterimage-omega.vercel.app/?judge=1`.
 8. Use the Source tab MCP launch plan for GitHub repo verification, Vercel deployment, proof-reel capture, and Devpost handoff.
-9. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, then use the Script tab Proof Reel player or `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the recorded walkthrough.
+9. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, use Exhibit mode for the cover/hero screenshot, then use the Script tab Proof Reel player or `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the recorded walkthrough.
 <!-- /AUTO-GENERATED -->
 
 ## Health Checks
@@ -28,9 +28,10 @@ Generated from app routes and test coverage.
 | `/` | App shell loads with the Afterimage header and `Run judge demo` control. |
 | `/?judge=1` | The Santa Cruz Afterimage exhibit opens directly in the final composed state. |
 | `https://afterimage-omega.vercel.app/?judge=1` | Production judge path opens directly in the final composed state. |
+| Exhibit mode | `Enter exhibit mode` hides the proof dashboard and presents the living artwork as an immersive gallery view. |
 | Computation receipt | Transformation Engine shows photo evidence, pixel sampling, render recipe, motion delta, and evolving output. |
 | Judge evidence strip | Submission panel shows live demo, proof reel, source, and Devpost copy proof before the tabbed details. |
-| Proof reel brief | Script tab gives a copyable 45-second recording brief with live URL, cursor input, computation receipt, evolving canvas, export, and source proof. |
+| Proof reel brief | Script tab gives a copyable sub-50-second recording brief with live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof. |
 | Hosted proof reel | `/submission/afterimage-proof-reel.webm` returns `video/webm` and plays as the public proof-reel asset. |
 | Browser console | No warnings or errors during the judge path. |
 | Layout overflow | `document.documentElement.scrollWidth - window.innerWidth` is `0` or within 1px. |
@@ -50,6 +51,7 @@ There are no API health endpoints in the current app because it is a client-only
 | Build period proof is missing. | Keep public repo history and Devpost notes aligned with the July 1 to August 1, 2026 build window. |
 | MCP integration starts pulling secrets into the browser app. | Keep Composio/GitHub/Vercel tooling in submission ops; do not ship API keys or OAuth config in the static runtime. |
 | Devpost media assets are incomplete. | Use the Script tab media kit, Proof Reel player, and `npm run record:proof-reel` to refresh the cover screenshot, proof/source screenshots, exported PNG artifact, and hosted proof reel. |
+| Cover screenshot still looks like an operations dashboard. | Open `/?judge=1`, press `Enter exhibit mode`, then capture the immersive canvas view. |
 | Public source requirement needs proof. | Use the Source tab `Source repository` card and `https://github.com/rushtanu14/afterimage` for the Devpost source-code field. |
 | Live demo requirement needs proof. | Use the Source tab `Live demo` card and verify `https://afterimage-omega.vercel.app/?judge=1` with `PLAYWRIGHT_BASE_URL=https://afterimage-omega.vercel.app npx playwright test tests/app.spec.ts -g "judge presentation URL opens directly" --project=chromium`. |
 

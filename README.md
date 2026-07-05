@@ -11,6 +11,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - Local color, brightness, warmth, sky, water, and sand signal extraction.
 - Interactive Canvas 2D memory-space with parallax drag and permanent low-opacity residue.
 - Evolving composed canvas state after the final artwork appears.
+- Exhibit mode that lets judges hide the proof dashboard and view the living artwork as an immersive gallery piece.
 - Undo, Reset, and Auto-compose controls.
 - Transformation Engine panel that makes the photo -> signal -> living-scene computation visible.
 - Live computation receipt showing photo evidence -> pixel sampling -> render recipe -> motion delta -> evolving output.
@@ -28,7 +29,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - Copyable attribution block for the required third-party assets, libraries, and optional APIs.
 - Copyable implementation receipt that explains the computation pipeline behind the art.
 - Copyable source handoff for the public repository submission step.
-- Copyable demo recording script and Proof Reel brief for a tight 45-second judge video.
+- Copyable demo recording script and Proof Reel brief for a tight sub-50-second judge video.
 - Copyable submission media kit for cover screenshot, proof/source screenshots, PNG artifact, and proof reel video.
 - Final exhibit label after Auto-compose, naming the generated artwork and its evidence trail.
 - One-click judge demo that runs the full transformation path without requiring manual brush input.
@@ -40,11 +41,12 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 
 1. Open `https://afterimage-omega.vercel.app/?judge=1`, or press `Run judge demo` locally for the one-click finished artwork.
 2. Read the generated exhibit label and evidence trail.
-3. Read the Transformation Engine computation receipt to see how photo evidence and brush motion become the rendered artwork.
-4. Open the Script tab in the submission panel.
-5. Open the Source tab to review the Devpost requirements checklist.
-6. On desktop, keep the living artwork visible while scrolling the submission pack.
-7. Copy the Proof Reel brief, judge link, contextual PNG artifact, and Devpost package.
+3. Press `Enter exhibit mode` to view the living artwork without the proof dashboard taking over the experience.
+4. Read the Transformation Engine computation receipt to see how photo evidence and brush motion become the rendered artwork.
+5. Open the Script tab in the submission panel.
+6. Open the Source tab to review the Devpost requirements checklist.
+7. On desktop, keep the living artwork visible while scrolling the submission pack.
+8. Copy the Proof Reel brief, judge link, contextual PNG artifact, and Devpost package.
 
 For the slower proof path, load the Santa Cruz demo folder, enter the memory-space, drag across the canvas, and Auto-compose the residue into one scene.
 
@@ -75,10 +77,11 @@ Live medium proof:
 - Responds: brush motion and parallax reshape the scene.
 - Evolves: the composed Canvas keeps changing after the final exhibit appears.
 - Engages: the judge path produces a named exhibit, proof trail, and exportable PNG artifact.
+- Exhibit mode: judges can hide the proof dashboard and view the living artwork as an immersive gallery piece.
 
 Demo link: Use `https://afterimage-omega.vercel.app/?judge=1` to open directly on the final Santa Cruz Afterimage exhibit.
 
-Proof reel: Use `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the hosted 40-second proof reel, or record a fresh 45-second reel from `https://afterimage-omega.vercel.app/?judge=1`. Show cursor drag, computation receipt, evolving canvas, PNG export, live demo URL, public source URL, attribution, and Devpost copy in one continuous walkthrough.
+Proof reel: Use `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the hosted sub-50-second proof reel, or record a fresh walkthrough from `https://afterimage-omega.vercel.app/?judge=1`. Show cursor drag, computation receipt, Exhibit mode, evolving canvas, PNG export, live demo URL, public source URL, attribution, and Devpost copy in one continuous walkthrough.
 
 Source handoff: Devpost source URL is `https://github.com/rushtanu14/afterimage`. Public repo history from `1f2e060` onward preserves the July 1 to August 1, 2026 build window. The repo includes `src/`, `public/demo/`, `scripts/`, `tests/`, `README.md`, `package.json`, `package-lock.json`, and the Vite/TypeScript/Vitest/Playwright config files. It excludes `node_modules`, `dist`, and local screenshots. Run `npm run test`, `npm run build`, `npm run test:e2e`, and `npm audit --json` before submitting.
 
@@ -86,7 +89,7 @@ MCP launch plan:
 - Composio MCP belongs in submission ops, not the browser runtime.
 - GitHub MCP: verify the public source repository and preserve July 1 to August 1 build history.
 - Vercel connector: production demo is live at `https://afterimage-omega.vercel.app/?judge=1`.
-- Canva or recording workflow: assemble screenshots and the 45-second proof reel.
+- Canva or recording workflow: assemble screenshots and the sub-50-second proof reel.
 - Devpost package: paste the copied description, source URL, attribution, and demo video.
 
 Attribution: Demo photos are procedural generated assets in `public/demo/santa-cruz-demo-photos`. Runtime libraries include React, TypeScript, Canvas 2D browser APIs, `exifr`, and `lucide-react`. Optional street-image provider lookups reference Mapillary, Panoramax, and KartaView only where coverage exists. No paid map, AI, or proprietary image provider is required for the judge demo.
@@ -115,9 +118,11 @@ Prize fit:
 
 0:28 Show the Live medium proof: responds, evolves, and engages.
 
-0:35 Show the scorecard, save PNG, and copy the Devpost package.
+0:35 Enter Exhibit mode so the artwork takes over the viewport.
 
-0:42 Close with the theme: this art depends on code, metadata, computation, and motion.
+0:42 Show the scorecard, save PNG, and copy the Devpost package.
+
+0:45 Close with the theme: this art depends on code, metadata, computation, and motion.
 
 ## Proof reel brief
 
@@ -129,17 +134,17 @@ Prize fit:
 - 0:08 Show the canvas proof overlay and exhibit label.
 - 0:14 Drag the scene or run the judge demo so the art visibly responds.
 - 0:22 Show the Computation receipt and Live medium proof.
-- 0:32 Save the PNG artifact and open the Source tab.
+- 0:32 Enter Exhibit mode, then save the PNG artifact and open the Source tab.
 - 0:40 Show the public source URL, live demo URL, attribution, and Devpost copy.
 - Upload target: Devpost demo video or linked walkthrough asset.
 
 ## Submission media kit
 
-- Cover screenshot: final Santa Cruz Afterimage canvas with the exhibit label visible.
+- Cover screenshot: Exhibit mode with the final Santa Cruz Afterimage canvas and exhibit label visible.
 - Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.
 - Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.
 - Artifact: exported `afterimage-santa-cruz-memory-space.png` with title, evidence, computation note, and motion delta.
-- Video: hosted 40-second proof reel with live URL, cursor input, computation receipt, evolving canvas, export, and source proof visible.
+- Video: hosted sub-50-second proof reel with live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof visible.
 
 ## Run
 
