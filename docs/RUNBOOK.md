@@ -26,12 +26,13 @@ Generated from app routes and test coverage.
 | Check | Expected result |
 |-------|-----------------|
 | `/` | App shell loads with the Afterimage header and `Run judge demo` control. |
-| `/?judge=1` | The Santa Cruz Afterimage exhibit opens directly in the final composed state. |
-| `https://afterimage-omega.vercel.app/?judge=1` | Production judge path opens directly in the final composed state. |
+| `/?judge=1` | The judge path opens with a skippable Guided reveal and the final composed Santa Cruz Afterimage state. |
+| `https://afterimage-omega.vercel.app/?judge=1` | Production judge path opens with the Guided reveal, final exhibit label, and composed canvas state. |
+| Guided reveal | Source evidence, extracted signals, and living Canvas steps are visible, skippable, and do not create horizontal overflow. |
 | Exhibit mode | `Enter exhibit mode` hides the proof dashboard and presents the living artwork as an immersive gallery view. |
 | Computation receipt | Transformation Engine shows photo evidence, pixel sampling, render recipe, motion delta, and evolving output. |
 | Judge evidence strip | Submission panel shows live demo, proof reel, source, and Devpost copy proof before the tabbed details. |
-| Proof reel brief | Script tab gives a copyable sub-50-second recording brief with live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof. |
+| Proof reel brief | Script tab gives a copyable sub-50-second recording brief with Guided reveal, live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof. |
 | Hosted proof reel | `/submission/afterimage-proof-reel.webm` returns `video/webm` and plays as the public proof-reel asset. |
 | Browser console | No warnings or errors during the judge path. |
 | Layout overflow | `document.documentElement.scrollWidth - window.innerWidth` is `0` or within 1px. |
@@ -77,8 +78,8 @@ Generated from Markdown file modification dates during this docs update.
 
 | Document | Last modified | Status |
 |----------|---------------|--------|
-| `README.md` | 2026-07-04 | Current. |
+| `README.md` | 2026-07-05 | Current. |
 | `public/demo/santa-cruz-demo-photos/README.md` | 2026-07-01 | Current. |
-| `docs/CONTRIBUTING.md` | 2026-07-03 | Current. |
-| `docs/RUNBOOK.md` | 2026-07-04 | Current. |
+| `docs/CONTRIBUTING.md` | 2026-07-05 | Current. |
+| `docs/RUNBOOK.md` | 2026-07-05 | Current. |
 <!-- /AUTO-GENERATED -->

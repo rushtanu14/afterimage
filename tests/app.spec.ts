@@ -214,6 +214,38 @@ test('judge path can switch from proof dashboard into immersive exhibit mode', a
   await expect(page.getByRole('region', { name: /submission brief/i })).toBeVisible()
 })
 
+test('judge path starts with a skippable guided source-to-canvas reveal', async ({
+  page,
+}) => {
+  await page.goto('/?judge=1')
+  await expect(page.getByRole('status')).toContainText(/judge demo built/i)
+
+  const reveal = page.getByRole('region', { name: /guided reveal/i })
+  await expect(reveal).toBeVisible()
+  await expect(reveal).toBeInViewport({ ratio: 0.5 })
+  await expect(reveal).toContainText(/source evidence/i)
+  await expect(reveal).toContainText(/4 verified photos/i)
+  await expect(reveal).toContainText(/4 GPS matches/i)
+
+  await reveal.getByRole('button', { name: /extracted signals/i }).click()
+  await expect(reveal).toContainText(/sky/i)
+  await expect(reveal).toContainText(/water/i)
+  await expect(reveal).toContainText(/sand/i)
+  await expect(reveal).toContainText(/warmth/i)
+
+  await reveal.getByRole('button', { name: /living canvas/i }).click()
+  await expect(reveal).toContainText(/brush motion/i)
+  await expect(reveal).toContainText(/time phase/i)
+  await expect(reveal).toContainText(/evolving canvas/i)
+
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+  expect(overflow).toBeLessThanOrEqual(1)
+
+  await reveal.getByRole('button', { name: /skip guided reveal/i }).click()
+  await expect(reveal).toBeHidden()
+  await expect(page.getByRole('button', { name: /enter exhibit mode/i })).toBeVisible()
+})
+
 test('imports a folder, confirms confidence, paints, undoes, resets, and auto-composes', async ({
   page,
 }, testInfo) => {

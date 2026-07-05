@@ -46,6 +46,7 @@ Generated from `package.json`.
 | `npm run test` | Run the Vitest unit suite once. |
 | `npm run test:watch` | Run Vitest in watch mode. |
 | `npm run test:e2e` | Run the Playwright end-to-end suite across desktop and mobile browser projects. |
+| `npm run record:proof-reel` | Record the hosted proof-reel WebM from the judge path. |
 | `npm run generate:demo` | Regenerate the prepared Santa Cruz demo PNG assets. |
 <!-- /AUTO-GENERATED -->
 

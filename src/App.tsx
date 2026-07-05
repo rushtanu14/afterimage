@@ -3,6 +3,7 @@ import { AlertTriangle, Check, Loader2, Maximize2, X } from 'lucide-react'
 import { ConfidencePanel } from './components/ConfidencePanel'
 import { Controls } from './components/Controls'
 import { Filmstrip } from './components/Filmstrip'
+import { GuidedReveal } from './components/GuidedReveal'
 import { MemoryCanvas, type MemoryCanvasHandle } from './components/MemoryCanvas'
 import { ProviderDebug } from './components/ProviderDebug'
 import { SubmissionPanel } from './components/SubmissionPanel'
@@ -52,6 +53,9 @@ function App() {
   const [confirmed, setConfirmed] = useState(false)
   const [providerDebugOpen, setProviderDebugOpen] = useState(false)
   const [exhibitMode, setExhibitMode] = useState(false)
+  const [showGuidedReveal, setShowGuidedReveal] = useState(
+    () => new URLSearchParams(window.location.search).get('judge') === '1',
+  )
   const [selectedProvider, setSelectedProvider] = useState<ProviderName>('Manual')
   const [providerResult, setProviderResult] = useState<ProviderResult | undefined>()
 
@@ -147,6 +151,7 @@ function App() {
 
   const handleRunJudgeDemo = useCallback(() => {
     setLoadState('loading')
+    setShowGuidedReveal(true)
     const demoPhotos = createDemoPhotos()
     const signal = aggregateMemorySignal(demoPhotos, scene.anchor)
     const judgeStroke = createBrushStroke(JUDGE_DEMO_POINTS, signal, 1)
@@ -342,14 +347,24 @@ function App() {
         </aside>
 
         <section className="scene-column" aria-label="Interactive memory-space">
-          <button
-            className="exhibit-mode-button"
-            type="button"
-            onClick={handleEnterExhibitMode}
-          >
-            <Maximize2 size={17} aria-hidden="true" />
-            Enter exhibit mode
-          </button>
+          <div className="scene-actions">
+            {showGuidedReveal ? (
+              <GuidedReveal
+                photos={photos}
+                scene={scene}
+                onEnterExhibit={handleEnterExhibitMode}
+                onSkip={() => setShowGuidedReveal(false)}
+              />
+            ) : null}
+            <button
+              className="exhibit-mode-button"
+              type="button"
+              onClick={handleEnterExhibitMode}
+            >
+              <Maximize2 size={17} aria-hidden="true" />
+              Enter exhibit mode
+            </button>
+          </div>
           <MemoryCanvas
             ref={canvasRef}
             scene={scene}

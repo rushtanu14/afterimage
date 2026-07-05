@@ -72,8 +72,16 @@ const main = async () => {
 
     await page.goto(judgeURL)
     await page.getByRole('status').waitFor({ state: 'visible' })
+    const reveal = page.getByRole('region', { name: /guided reveal/i })
+    await reveal.waitFor({ state: 'visible' })
+    await wait(1_500)
+    await reveal.getByRole('button', { name: /extracted signals/i }).click()
+    await wait(1_500)
+    await reveal.getByRole('button', { name: /living canvas/i }).click()
+    await wait(1_500)
+    await reveal.getByRole('button', { name: /skip guided reveal/i }).click()
     await page.getByText('Santa Cruz Afterimage', { exact: true }).waitFor({ state: 'visible' })
-    await wait(4_000)
+    await wait(1_400)
 
     const canvas = page.getByTestId('memory-canvas')
     await canvas.scrollIntoViewIfNeeded()
@@ -89,33 +97,33 @@ const main = async () => {
       steps: 18,
     })
     await page.mouse.up()
-    await wait(3_500)
+    await wait(2_200)
 
     await page.getByRole('region', { name: /computation receipt/i }).scrollIntoViewIfNeeded()
-    await wait(5_500)
+    await wait(3_200)
 
     await page.getByRole('region', { name: /live medium proof/i }).scrollIntoViewIfNeeded()
-    await wait(5_000)
+    await wait(3_000)
 
     await page.getByRole('button', { name: /enter exhibit mode/i }).click()
     await page.getByRole('region', { name: /immersive exhibit mode/i }).waitFor({ state: 'visible' })
-    await wait(5_500)
+    await wait(4_000)
     await page.getByRole('button', { name: /exit exhibit mode/i }).click()
-    await wait(1_000)
+    await wait(800)
 
     await page.getByRole('tab', { name: 'Source' }).click()
     await page.getByRole('region', { name: /devpost requirements/i }).scrollIntoViewIfNeeded()
-    await wait(5_000)
+    await wait(3_000)
 
     await page.getByRole('region', { name: /live demo/i }).scrollIntoViewIfNeeded()
-    await wait(4_500)
+    await wait(2_600)
 
     await page.getByRole('tab', { name: 'Script' }).click()
     await page.getByRole('region', { name: /proof reel/i }).scrollIntoViewIfNeeded()
-    await wait(5_500)
+    await wait(3_200)
 
     await page.locator('.scene-shell').scrollIntoViewIfNeeded()
-    await wait(6_000)
+    await wait(3_600)
 
     const video = page.video()
     await context.close()

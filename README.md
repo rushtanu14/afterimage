@@ -25,6 +25,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - Always-visible judge evidence strip for live demo, proof reel, source, and Devpost copy.
 - Hosted proof reel video at `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm`.
 - Copyable judge link that turns the current deployment origin into `/?judge=1`.
+- Skippable Guided reveal on the judge path that shows source photos, extracted signals, and the living Canvas before the dashboard.
 - Desktop judge layout keeps the living artwork in frame while reviewers scan the submission pack.
 - Copyable attribution block for the required third-party assets, libraries, and optional APIs.
 - Copyable implementation receipt that explains the computation pipeline behind the art.
@@ -40,13 +41,14 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 ## Judge path
 
 1. Open `https://afterimage-omega.vercel.app/?judge=1`, or press `Run judge demo` locally for the one-click finished artwork.
-2. Read the generated exhibit label and evidence trail.
-3. Press `Enter exhibit mode` to view the living artwork without the proof dashboard taking over the experience.
-4. Read the Transformation Engine computation receipt to see how photo evidence and brush motion become the rendered artwork.
-5. Open the Script tab in the submission panel.
-6. Open the Source tab to review the Devpost requirements checklist.
-7. On desktop, keep the living artwork visible while scrolling the submission pack.
-8. Copy the Proof Reel brief, judge link, contextual PNG artifact, and Devpost package.
+2. Use the Guided reveal to move from source photos to extracted signals to the living Canvas.
+3. Read the generated exhibit label and evidence trail.
+4. Press `Enter exhibit mode` to view the living artwork without the proof dashboard taking over the experience.
+5. Read the Transformation Engine computation receipt to see how photo evidence and brush motion become the rendered artwork.
+6. Open the Script tab in the submission panel.
+7. Open the Source tab to review the Devpost requirements checklist.
+8. On desktop, keep the living artwork visible while scrolling the submission pack.
+9. Copy the Proof Reel brief, judge link, contextual PNG artifact, and Devpost package.
 
 For the slower proof path, load the Santa Cruz demo folder, enter the memory-space, drag across the canvas, and Auto-compose the residue into one scene.
 
@@ -70,6 +72,8 @@ Description: Afterimage is a computational artwork for Hack the Arts. It transfo
 Built with: React, TypeScript, Canvas 2D, EXIF parsing, local image color sampling, procedural demo assets, and optional Mapillary / Panoramax / KartaView place-source lookups.
 
 Implementation: EXIF, GPS, and timestamps become confidence and place evidence. Browser pixel sampling becomes sky, water, sand, warmth, haze, and palette ratios. Brush motion and time phase keep the Canvas scene evolving after composition.
+
+Guided reveal: The judge path opens with a skippable source-to-canvas reveal that shows verified photos, extracted visual signals, and the living Canvas before the proof dashboard.
 
 Computation receipt: The Transformation Engine shows the live chain from photo evidence to pixel sampling, render recipe, motion delta, and evolving output, so judges can see the algorithm that makes the artwork.
 
@@ -110,6 +114,8 @@ Prize fit:
 
 0:00 Run judge demo.
 
+0:04 Use the Guided reveal: source evidence, extracted signals, and living canvas.
+
 0:08 Name the artwork: Afterimage turns verified Santa Cruz photos into an evolving place-memory.
 
 0:14 Point to the canvas proof overlay and final exhibit label.
@@ -129,8 +135,10 @@ Prize fit:
 - Record the deployed judge path: `https://afterimage-omega.vercel.app/?judge=1`.
 - Hosted asset: `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm`.
 - Opening frame: the Santa Cruz Afterimage exhibit is already alive, with the live URL visible.
+- Guided reveal: scrub source evidence, extracted signals, and living canvas before skipping into the proof dashboard.
 - Interaction proof: show cursor drag, computation receipt, evolving canvas, export, and source proof.
 - 0:00 Open the live judge path and name the project.
+- 0:04 Use the Guided reveal to compress the transformation story.
 - 0:08 Show the canvas proof overlay and exhibit label.
 - 0:14 Drag the scene or run the judge demo so the art visibly responds.
 - 0:22 Show the Computation receipt and Live medium proof.

@@ -1,5 +1,5 @@
 import { Copy } from 'lucide-react'
-import { type KeyboardEvent, useEffect, useState } from 'react'
+import { type KeyboardEvent, useEffect, useRef, useState } from 'react'
 
 const SOURCE_REPOSITORY_URL = 'https://github.com/rushtanu14/afterimage'
 const SOURCE_COMMIT_PROOF = 'public history from 1f2e060 onward'
@@ -19,6 +19,9 @@ React, TypeScript, Canvas 2D, EXIF parsing, local image color sampling, procedur
 
 Implementation:
 EXIF, GPS, and timestamps become confidence and place evidence. Browser pixel sampling becomes sky, water, sand, warmth, haze, and palette ratios. Brush motion and time phase keep the Canvas scene evolving after composition.
+
+Guided reveal:
+The judge path opens with a skippable source-to-canvas reveal that shows verified photos, extracted visual signals, and the living Canvas before the proof dashboard.
 
 Computation receipt:
 The Transformation Engine shows the live chain from photo evidence to pixel sampling, render recipe, motion delta, and evolving output, so judges can see the algorithm that makes the artwork.
@@ -57,6 +60,7 @@ Attribution:
 Demo photos are procedural generated assets in public/demo/santa-cruz-demo-photos. Runtime libraries include React, TypeScript, Canvas 2D browser APIs, exifr, and lucide-react. Optional street-image provider lookups reference Mapillary, Panoramax, and KartaView only where coverage exists.`
 
 const DEMO_SCRIPT = `0:00 Run judge demo.
+0:04 Use the Guided reveal: source evidence, extracted signals, and living canvas.
 0:08 Name the artwork: Afterimage turns verified Santa Cruz photos into an evolving place-memory.
 0:14 Point to the canvas proof overlay and final exhibit label.
 0:20 Show the Computation receipt: photo evidence becomes pixel sampling, render recipe, motion delta, and evolving output.
@@ -69,8 +73,10 @@ const PROOF_REEL_BRIEF = `Sub-50-second proof reel:
 Hosted proof reel: ${PROOF_REEL_PUBLIC_URL}
 Record the deployed judge path: ${LIVE_DEMO_URL}
 Opening frame: the Santa Cruz Afterimage exhibit is already alive, with the live URL visible.
+Guided reveal: scrub source evidence, extracted signals, and living canvas before skipping into the proof dashboard.
 Interaction proof: show cursor drag, computation receipt, evolving canvas, export, and source proof.
 0:00 Open the live judge path and name the project.
+0:04 Use the Guided reveal to compress the transformation story.
 0:08 Show the canvas proof overlay and exhibit label.
 0:14 Drag the scene or run the judge demo so the art visibly responds.
 0:22 Show the Computation receipt and Live medium proof.
@@ -169,6 +175,7 @@ const mediumProof = [
 
 const demoScriptSteps = [
   '0:00 Run judge demo',
+  '0:04 Use the Guided reveal: source evidence, extracted signals, and living canvas',
   '0:08 Name Afterimage as an evolving place-memory',
   '0:14 Point to the proof overlay and exhibit label',
   '0:20 Show the Computation receipt',
@@ -183,6 +190,7 @@ const proofReelLines = [
   `Open hosted proof reel: ${PROOF_REEL_PUBLIC_URL}`,
   `Record the deployed judge path: ${LIVE_DEMO_URL}`,
   'Opening frame: Santa Cruz Afterimage is already alive with the live URL visible.',
+  'Guided reveal: scrub source evidence, extracted signals, and living canvas before the proof dashboard.',
   'Show cursor drag, computation receipt, evolving canvas, export, and source proof.',
   'Enter Exhibit mode so the artwork fills the viewport before the final source proof.',
   'Upload target: Devpost demo video or linked walkthrough asset.',
@@ -315,6 +323,7 @@ const copyText = async (text: string) => {
 }
 
 export function SubmissionPanel() {
+  const didMountRef = useRef(false)
   const [activeTab, setActiveTab] = useState<SubmissionTab>('scorecard')
   const [devpostCopyStatus, setDevpostCopyStatus] = useState('Ready for Devpost copy.')
   const [scriptCopyStatus, setScriptCopyStatus] = useState('Demo script ready.')
@@ -411,7 +420,14 @@ export function SubmissionPanel() {
   }
 
   useEffect(() => {
-    document.getElementById(`submission-tab-${activeTab}`)?.focus()
+    if (!didMountRef.current) {
+      didMountRef.current = true
+      return
+    }
+
+    document.getElementById(`submission-tab-${activeTab}`)?.focus({
+      preventScroll: true,
+    })
   }, [activeTab])
 
   const selectTab = (tab: SubmissionTab) => {
