@@ -107,10 +107,9 @@ test('submission panel copies the current judge presentation URL', async ({ page
   await page.goto('/')
 
   const submissionBrief = page.getByRole('region', { name: /submission brief/i })
+  const expectedJudgeUrl = `${new URL(page.url()).origin}/?judge=1`
   await page.getByRole('button', { name: /copy judge link/i }).click()
-  await expect(submissionBrief).toContainText(
-    /Judge link copied: http:\/\/127\.0\.0\.1:5173\/\?judge=1/i,
-  )
+  await expect(submissionBrief).toContainText(`Judge link copied: ${expectedJudgeUrl}`)
 })
 
 test('submission panel offers a copyable attribution block', async ({ page }) => {
