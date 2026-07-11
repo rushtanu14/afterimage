@@ -3,6 +3,7 @@ import { resolve } from 'node:path'
 
 const demoFolder = resolve(process.cwd(), 'public/demo/santa-cruz-demo-photos')
 const proofReelPath = '/submission/afterimage-proof-reel.webm'
+const proofReelPosterPath = '/submission/afterimage-proof-reel-poster.png'
 
 const canvasSnapshot = async (canvas: Locator) =>
   canvas.evaluate((node) => {
@@ -83,6 +84,7 @@ test('submission panel offers a copyable demo recording script', async ({ page }
   await expect(proofReel).toContainText(/Leave an afterimage/i)
   await expect(proofReel).toContainText(/https:\/\/afterimage-omega\.vercel\.app\/\?judge=1/i)
   await expect(proofReel.locator('video')).toHaveAttribute('src', proofReelPath)
+  await expect(proofReel.locator('video')).toHaveAttribute('poster', proofReelPosterPath)
   await expect(
     proofReel.getByRole('link', { name: /open hosted proof reel/i }),
   ).toHaveAttribute('href', proofReelPath)
@@ -539,6 +541,11 @@ test('one-click judge demo reaches the final exhibit state', async ({ page }) =>
 })
 
 test('hosted proof reel asset is public and playable', async ({ page, request }) => {
+  const posterResponse = await request.get(proofReelPosterPath)
+  expect(posterResponse.ok()).toBe(true)
+  expect(posterResponse.headers()['content-type']).toContain('image/png')
+  expect(Number(posterResponse.headers()['content-length'] ?? '0')).toBeGreaterThan(50_000)
+
   const response = await request.get(proofReelPath)
   expect(response.ok()).toBe(true)
   expect(response.headers()['content-type']).toContain('video/webm')

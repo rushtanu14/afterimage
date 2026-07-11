@@ -23,7 +23,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - MCP launch plan for GitHub source verification, Vercel deployment, demo-video, and Devpost submission ops.
 - Copyable live demo URL for the production judge path at `https://afterimage-omega.vercel.app/?judge=1`.
 - Always-visible judge evidence strip for live demo, proof reel, source, and Devpost copy.
-- Hosted proof reel video at `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm`.
+- Hosted proof reel video at `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` with a nonblank poster/title card at `/submission/afterimage-proof-reel-poster.png`.
 - Copyable judge link that turns the current deployment origin into `/?judge=1`.
 - Skippable Guided reveal on the judge path that shows source photos, extracted signals, and a first-viewport Leave an afterimage gesture on the living Canvas before the dashboard.
 - Desktop judge layout keeps the living artwork in frame while reviewers scan the submission pack.
@@ -85,7 +85,7 @@ Live medium proof:
 
 Demo link: Use `https://afterimage-omega.vercel.app/?judge=1` to open directly on the final Santa Cruz Afterimage exhibit.
 
-Proof reel: Use `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the hosted sub-50-second proof reel, or record a fresh walkthrough from `https://afterimage-omega.vercel.app/?judge=1`. Show cursor drag, computation receipt, Exhibit mode, evolving canvas, PNG export, live demo URL, public source URL, attribution, and Devpost copy in one continuous walkthrough.
+Proof reel: Use `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the hosted proof reel with a nonblank title-card opening, or record a fresh walkthrough from `https://afterimage-omega.vercel.app/?judge=1`. Show cursor drag, computation receipt, Exhibit mode, evolving canvas, PNG export, live demo URL, public source URL, attribution, and Devpost copy in one continuous walkthrough.
 
 Source handoff: Devpost source URL is `https://github.com/rushtanu14/afterimage`. Public repo history from `1f2e060` onward preserves the July 1 to August 1, 2026 build window. The repo includes `src/`, `public/demo/`, `scripts/`, `tests/`, `README.md`, `package.json`, `package-lock.json`, and the Vite/TypeScript/Vitest/Playwright config files. It excludes `node_modules`, `dist`, and local screenshots. Run `npm run test`, `npm run build`, `npm run test:e2e`, and `npm audit --json` before submitting.
 
@@ -134,6 +134,7 @@ Prize fit:
 
 - Record the deployed judge path: `https://afterimage-omega.vercel.app/?judge=1`.
 - Hosted asset: `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm`.
+- Poster/title card: `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel-poster.png`.
 - Opening frame: the Santa Cruz Afterimage exhibit is already alive, with the live URL visible.
 - Guided reveal: scrub source evidence, extracted signals, and Leave an afterimage before skipping into the proof dashboard.
 - Interaction proof: show cursor drag, computation receipt, evolving canvas, export, and source proof.
@@ -152,7 +153,7 @@ Prize fit:
 - Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.
 - Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.
 - Artifact: exported `afterimage-santa-cruz-memory-space.png` with title, evidence, computation note, and motion delta.
-- Video: hosted sub-50-second proof reel with live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof visible.
+- Video: hosted proof reel with title-card opening, live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof visible.
 
 ## Run
 

@@ -6,6 +6,7 @@ const SOURCE_COMMIT_PROOF = 'public history from 1f2e060 onward'
 const LIVE_DEMO_URL = 'https://afterimage-omega.vercel.app/?judge=1'
 const LIVE_DEMO_ROOT_URL = 'https://afterimage-omega.vercel.app'
 const PROOF_REEL_ASSET_PATH = '/submission/afterimage-proof-reel.webm'
+const PROOF_REEL_POSTER_PATH = '/submission/afterimage-proof-reel-poster.png'
 const PROOF_REEL_PUBLIC_URL = `${LIVE_DEMO_ROOT_URL}${PROOF_REEL_ASSET_PATH}`
 
 const DEVPOST_PACKAGE = `Title: Afterimage
@@ -714,6 +715,7 @@ export function SubmissionPanel() {
               controls
               muted
               playsInline
+              poster={PROOF_REEL_POSTER_PATH}
               preload="metadata"
               src={PROOF_REEL_ASSET_PATH}
             >

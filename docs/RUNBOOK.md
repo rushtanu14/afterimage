@@ -15,7 +15,7 @@ Generated from `package.json`, Vite config, Playwright config, and current proje
 6. Deploy the generated `dist/` directory to the static host.
 7. Open `https://afterimage-omega.vercel.app/` and `https://afterimage-omega.vercel.app/?judge=1`.
 8. Use the Source tab MCP launch plan for GitHub repo verification, Vercel deployment, proof-reel capture, and Devpost handoff.
-9. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, use Exhibit mode for the cover/hero screenshot, then use the Script tab Proof Reel player or `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the recorded walkthrough.
+9. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, use Exhibit mode for the cover/hero screenshot, then use the Script tab Proof Reel player or `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the recorded walkthrough and `/submission/afterimage-proof-reel-poster.png` for the thumbnail/title card if Devpost asks for one.
 <!-- /AUTO-GENERATED -->
 
 ## Health Checks
@@ -33,7 +33,8 @@ Generated from app routes and test coverage.
 | Computation receipt | Transformation Engine shows photo evidence, pixel sampling, render recipe, motion delta, and evolving output. |
 | Judge evidence strip | Submission panel shows live demo, proof reel, source, and Devpost copy proof before the tabbed details. |
 | Proof reel brief | Script tab gives a copyable sub-50-second recording brief with Guided reveal, Leave an afterimage, live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof. |
-| Hosted proof reel | `/submission/afterimage-proof-reel.webm` returns `video/webm` and plays as the public proof-reel asset. |
+| Hosted proof reel | `/submission/afterimage-proof-reel.webm` returns `video/webm`, opens with a nonblank title card, and plays as the public proof-reel asset. |
+| Proof reel poster | `/submission/afterimage-proof-reel-poster.png` returns `image/png` and gives Devpost a nonblank thumbnail/title-card fallback. |
 | Browser console | No warnings or errors during the judge path. |
 | Layout overflow | `document.documentElement.scrollWidth - window.innerWidth` is `0` or within 1px. |
 | Export | `Save memory-space PNG` downloads `afterimage-santa-cruz-memory-space.png` with title, evidence, computation note, and motion delta. |
