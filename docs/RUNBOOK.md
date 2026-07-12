@@ -33,8 +33,8 @@ Generated from app routes and test coverage.
 | Computation receipt | Transformation Engine shows photo evidence, pixel sampling, render recipe, motion delta, and evolving output. |
 | Judge evidence strip | Submission panel shows live demo, proof reel, source, and Devpost copy proof before the tabbed details. |
 | Proof reel brief | Script tab gives a copyable sub-50-second recording brief with Guided reveal, Leave an afterimage, live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof. |
-| Hosted proof reel | `/submission/afterimage-proof-reel.webm` returns `video/webm`, opens with a nonblank title card, and plays as the public proof-reel asset. |
-| Proof reel poster | `/submission/afterimage-proof-reel-poster.png` returns `image/png` and gives Devpost a nonblank thumbnail/title-card fallback. |
+| Hosted proof reel | `/submission/afterimage-proof-reel.webm` returns `video/webm`, opens with a nonblank title card that shows the live judge URL, and plays as the public proof-reel asset. |
+| Proof reel poster | `/submission/afterimage-proof-reel-poster.png` returns `image/png` and gives Devpost a nonblank, URL-visible thumbnail/title-card fallback. |
 | Browser console | No warnings or errors during the judge path. |
 | Layout overflow | `document.documentElement.scrollWidth - window.innerWidth` is `0` or within 1px. |
 | Export | `Save memory-space PNG` downloads `afterimage-santa-cruz-memory-space.png` with title, evidence, computation note, and motion delta. |

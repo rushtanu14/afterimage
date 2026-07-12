@@ -73,6 +73,7 @@ const DEMO_SCRIPT = `0:00 Run judge demo.
 const PROOF_REEL_BRIEF = `Sub-50-second proof reel:
 Hosted proof reel: ${PROOF_REEL_PUBLIC_URL}
 Record the deployed judge path: ${LIVE_DEMO_URL}
+Title card: the live judge URL is visible on the opening frame (${LIVE_DEMO_URL}).
 Opening frame: the Santa Cruz Afterimage exhibit is already alive, with the live URL visible.
 Guided reveal: scrub source evidence, extracted signals, and Leave an afterimage on the living canvas before skipping into the proof dashboard.
 Interaction proof: show cursor drag, computation receipt, evolving canvas, export, and source proof.
@@ -89,7 +90,7 @@ const SUBMISSION_MEDIA_KIT = `Cover screenshot: Exhibit mode with the final Sant
 Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.
 Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.
 Artifact: exported afterimage-santa-cruz-memory-space.png with title, evidence, computation note, and motion delta.
-Video: sub-50-second proof reel following the Script tab brief, with live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof visible.`
+Video: sub-50-second proof reel with a URL-visible title card, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof visible.`
 
 const ATTRIBUTION_BLOCK = `Demo photos: procedural generated assets in public/demo/santa-cruz-demo-photos.
 Libraries: React, TypeScript, Canvas 2D, exifr, lucide-react.
@@ -190,6 +191,7 @@ const proofReelLines = [
   'Sub-50-second proof reel: hosted public video asset for Devpost judges.',
   `Open hosted proof reel: ${PROOF_REEL_PUBLIC_URL}`,
   `Record the deployed judge path: ${LIVE_DEMO_URL}`,
+  `Title card shows the live judge URL: ${LIVE_DEMO_URL}`,
   'Opening frame: Santa Cruz Afterimage is already alive with the live URL visible.',
   'Guided reveal: scrub source evidence, extracted signals, and Leave an afterimage before the proof dashboard.',
   'Show cursor drag, computation receipt, evolving canvas, export, and source proof.',
@@ -202,7 +204,7 @@ const mediaKitLines = [
   'Proof screenshot: Computation receipt plus Live medium proof visible in the judge path.',
   'Source screenshot: Devpost requirements, live demo URL, source repository, and MCP launch plan visible in the Source tab.',
   'Artifact: exported afterimage-santa-cruz-memory-space.png with title, evidence, computation note, and motion delta.',
-  'Video: sub-50-second proof reel with live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof visible.',
+  'Video: sub-50-second proof reel with a URL-visible title card, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof visible.',
 ]
 
 const attributionLines = [
