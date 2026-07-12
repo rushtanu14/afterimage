@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
+import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
 const demoFolder = resolve(process.cwd(), 'public/demo/santa-cruz-demo-photos')
@@ -57,8 +58,14 @@ const waitForPaintedCanvas = async (canvas: Locator) => {
   return latest
 }
 
+const openScriptTab = async (page: Page) => {
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
+
+  await page.getByRole('tab', { name: 'Script' }).click()
+}
+
 test('submission panel offers a copyable demo recording script', async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
 
   const evidenceStrip = page.getByRole('region', { name: /judge evidence strip/i })
   await expect(evidenceStrip).toContainText(/Run live demo/i)
@@ -76,6 +83,10 @@ test('submission panel offers a copyable demo recording script', async ({ page }
 
   await page.getByRole('button', { name: /copy demo script/i }).click()
   await expect(demoScript).toContainText(/Demo script copied/i)
+})
+
+test('submission panel offers hosted proof reel evidence', async ({ page }) => {
+  await openScriptTab(page)
 
   const proofReel = page.getByRole('region', { name: /proof reel/i })
   await expect(proofReel).toContainText(/Sub-50-second proof reel/i)
@@ -86,6 +97,7 @@ test('submission panel offers a copyable demo recording script', async ({ page }
   await expect(proofReel).toContainText(/https:\/\/afterimage-omega\.vercel\.app\/\?judge=1/i)
   await expect(proofReel.locator('video')).toHaveAttribute('src', proofReelPath)
   await expect(proofReel.locator('video')).toHaveAttribute('poster', proofReelPosterPath)
+  await expect(proofReel.locator('video')).toHaveAttribute('preload', 'none')
   await expect(
     proofReel.getByRole('link', { name: /open hosted proof reel/i }),
   ).toHaveAttribute('href', proofReelPath)
@@ -93,6 +105,10 @@ test('submission panel offers a copyable demo recording script', async ({ page }
   await expect(proofReel).toContainText(/Enter Exhibit mode/i)
   await page.getByRole('button', { name: /copy proof reel brief/i }).click()
   await expect(proofReel).toContainText(/Proof reel brief copied/i)
+})
+
+test('submission panel offers a copyable media kit', async ({ page }) => {
+  await openScriptTab(page)
 
   const mediaKit = page.getByRole('region', { name: /submission media kit/i })
   await expect(mediaKit).toContainText(/Cover screenshot/i)
@@ -204,17 +220,25 @@ test('judge path can switch from proof dashboard into immersive exhibit mode', a
   await page.goto('/?judge=1')
   await expect(page.getByRole('status')).toContainText(/judge demo built/i)
 
-  await page.getByRole('button', { name: /enter exhibit mode/i }).click()
+  const exhibitTrigger = page.getByRole('button', { name: /enter exhibit mode/i })
+  await exhibitTrigger.click()
 
-  const exhibit = page.getByRole('region', { name: /immersive exhibit mode/i })
+  const exhibit = page.getByRole('dialog', { name: /santa cruz afterimage/i })
   await expect(exhibit).toBeVisible()
   await expect(exhibit).toContainText(/Santa Cruz Afterimage/i)
   await expect(exhibit).toContainText(/GPS, color, time, and brush motion/i)
   await expect(exhibit).toContainText(/evolving canvas/i)
   await expect(exhibit.getByTestId('memory-canvas')).toBeVisible()
+  await expect(page.locator('.workspace')).toHaveAttribute('inert', '')
 
-  await page.getByRole('button', { name: /exit exhibit mode/i }).click()
+  await expect(page.getByRole('button', { name: /exit exhibit mode/i })).toBeFocused()
+  await page.keyboard.press('Tab')
+  await expect(exhibit.getByTestId('memory-canvas')).toBeFocused()
+  await page.keyboard.press('Shift+Tab')
+  await expect(page.getByRole('button', { name: /exit exhibit mode/i })).toBeFocused()
+  await page.keyboard.press('Escape')
   await expect(exhibit).toBeHidden()
+  await expect(exhibitTrigger).toBeFocused()
   await expect(page.getByRole('region', { name: /submission brief/i })).toBeVisible()
 })
 
@@ -277,12 +301,8 @@ test('judge path lets judges leave an afterimage from the first viewport', async
   await expect(computationReceipt).toContainText(/2 strokes -> residue changes brush phase/i)
 })
 
-test('imports a folder, confirms confidence, paints, undoes, resets, and auto-composes', async ({
-  page,
-}, testInfo) => {
-  test.setTimeout(60_000)
-
-  await page.goto('/')
+test('submission panel exposes judging proof and keyboard tab navigation', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
 
   await expect(page.getByRole('heading', { name: /living memory-space/i })).toBeVisible()
   await expect(page.getByText(/code turns GPS, color, time, and brush motion into the artwork/i)).toBeVisible()
@@ -331,6 +351,15 @@ test('imports a folder, confirms confidence, paints, undoes, resets, and auto-co
   await expect(page.getByRole('region', { name: /submission brief/i })).toContainText(
     /Exhibit mode/i,
   )
+})
+
+test('imports a folder, confirms confidence, paints, undoes, resets, and auto-composes', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60_000)
+
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
+
   await expect(page.getByTestId('provider-picker')).toBeHidden()
   await expect(page.getByText('Load photos first')).toBeVisible()
   await expect(page.getByText('Awaiting folder / procedural base')).toBeVisible()
@@ -458,7 +487,7 @@ test('imports a folder, confirms confidence, paints, undoes, resets, and auto-co
 test('loads the prepared Santa Cruz demo and avoids mobile overflow', async ({
   page,
 }, testInfo) => {
-  await page.goto('/')
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
 
   await page.getByRole('button', { name: /load santa cruz demo folder/i }).click()
   await expect(page.getByText('Verified', { exact: true })).toBeVisible()
@@ -482,6 +511,44 @@ test('loads the prepared Santa Cruz demo and avoids mobile overflow', async ({
   })
 })
 
+test('the latest load action wins over an earlier folder scan', async ({ page }) => {
+  test.setTimeout(60_000)
+  await page.addInitScript(() => {
+    const source = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src')
+    if (!source?.set) {
+      return
+    }
+
+    Object.defineProperty(HTMLImageElement.prototype, 'src', {
+      ...source,
+      set(value: string) {
+        window.setTimeout(() => source.set?.call(this, value), 75)
+      },
+    })
+  })
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
+
+  const demoBytes = await readFile(resolve(demoFolder, '01-boardwalk-gold.png'))
+  const folderInput = page.getByLabel('Import photo folder')
+  await folderInput.evaluate((input) => {
+    input.removeAttribute('directory')
+    input.removeAttribute('webkitdirectory')
+  })
+  await folderInput.setInputFiles(
+    Array.from({ length: 32 }, (_, index) => ({
+      name: `slow-import-${index}.png`,
+      mimeType: 'image/png',
+      buffer: demoBytes,
+    })),
+  )
+  await page.getByRole('button', { name: /run judge demo/i }).click()
+
+  await expect(page.getByRole('status')).toContainText(/judge demo built/i)
+  await page.waitForTimeout(1_000)
+  await expect(page.getByRole('status')).toContainText(/judge demo built/i)
+  await expect(page.getByText(/4 photos \/ 4 GPS \/ evolving scene/i)).toBeVisible()
+})
+
 test('keyboard and screen-reader simulation reaches the guided flow', async ({ page }) => {
   await page.goto('/')
 
@@ -490,7 +557,7 @@ test('keyboard and screen-reader simulation reaches the guided flow', async ({ p
   await expect(page.getByRole('button', { name: /run judge demo/i })).toBeVisible()
   await expect(page.getByRole('button', { name: /import folder/i })).toBeVisible()
   await expect(
-    page.getByRole('img', { name: /interactive santa cruz memory-space canvas/i }),
+    page.getByRole('button', { name: /interactive santa cruz memory-space canvas/i }),
   ).toBeVisible()
   await expect(page.getByRole('status')).toContainText(/load the santa cruz demo/i)
 
@@ -501,9 +568,15 @@ test('keyboard and screen-reader simulation reaches the guided flow', async ({ p
   await page.getByRole('button', { name: /enter memory-space/i }).focus()
   await page.keyboard.press('Enter')
   await expect(page.getByRole('status')).toContainText(/memory-space entered/i)
-  await expect(
-    page.getByRole('img', { name: /interactive santa cruz memory-space canvas/i }),
-  ).toBeFocused()
+  const canvas = page.getByRole('button', {
+    name: /interactive santa cruz memory-space canvas/i,
+  })
+  await expect(canvas).toBeFocused()
+
+  await page.keyboard.press('Space')
+  await expect(page.getByRole('status')).toContainText(/residue saved/i)
+  await expect(page.getByText(/4 photos \/ 4 GPS \/ 1 stroke/i)).toBeVisible()
+  await expect(page.getByRole('button', { name: /auto-compose/i })).toBeEnabled()
 })
 
 test('one-click judge demo reaches the final exhibit state', async ({ page }) => {

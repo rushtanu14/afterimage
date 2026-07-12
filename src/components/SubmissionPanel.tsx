@@ -718,7 +718,7 @@ export function SubmissionPanel() {
               muted
               playsInline
               poster={PROOF_REEL_POSTER_PATH}
-              preload="metadata"
+              preload="none"
               src={PROOF_REEL_ASSET_PATH}
             >
               The hosted proof reel shows the live Afterimage judge path.

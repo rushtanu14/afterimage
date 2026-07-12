@@ -1110,6 +1110,11 @@ h2 {
   cursor: grabbing;
 }
 
+.memory-canvas:focus-visible {
+  outline: 3px solid rgba(246, 200, 104, 0.9);
+  outline-offset: -5px;
+}
+
 .brush-badge {
   position: absolute;
   right: 14px;

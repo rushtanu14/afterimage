@@ -6,12 +6,13 @@ Artist statement: verified photos become an evolving place-memory; code turns GP
 
 The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experience for hackathon judging. It works without any AI provider or paid map API:
 
-- Folder import with JPEG/PNG/WebP analysis and HEIC best-effort messaging.
+- Folder import with JPEG/PNG/WebP analysis, HEIC best-effort messaging, and bounded four-at-a-time decoding (64 photos, 25 MB each, 256 MB total).
 - Metadata confidence states: Verified, Partial, Manual.
 - Local color, brightness, warmth, sky, water, and sand signal extraction.
 - Interactive Canvas 2D memory-space with parallax drag and permanent low-opacity residue.
+- Keyboard Canvas input: Enter or Space leaves an afterimage for the custom-photo flow.
 - Evolving composed canvas state after the final artwork appears.
-- Exhibit mode that lets judges hide the proof dashboard and view the living artwork as an immersive gallery piece.
+- Modal Exhibit mode with Escape/focus restoration that lets judges hide the proof dashboard and view the living artwork as an immersive gallery piece.
 - Undo, Reset, and Auto-compose controls.
 - Transformation Engine panel that makes the photo -> signal -> living-scene computation visible.
 - Live computation receipt showing photo evidence -> pixel sampling -> render recipe -> motion delta -> evolving output.
@@ -23,7 +24,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - MCP launch plan for GitHub source verification, Vercel deployment, demo-video, and Devpost submission ops.
 - Copyable live demo URL for the production judge path at `https://afterimage-omega.vercel.app/?judge=1`.
 - Always-visible judge evidence strip for live demo, proof reel, source, and Devpost copy.
-- Hosted proof reel video at `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` with a nonblank, URL-visible poster/title card at `/submission/afterimage-proof-reel-poster.png`.
+- Hosted proof reel video at `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` with a nonblank, URL-visible poster/title card at `/submission/afterimage-proof-reel-poster.png`; the embedded player waits for judge playback before loading media.
 - Copyable judge link that turns the current deployment origin into `/?judge=1`.
 - Skippable Guided reveal on the judge path that shows source photos, extracted signals, and a first-viewport Leave an afterimage gesture on the living Canvas before the dashboard.
 - Desktop judge layout keeps the living artwork in frame while reviewers scan the submission pack.
@@ -37,6 +38,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - PNG export with title, evidence trail, artist statement, computation note, and motion delta for the submission gallery.
 - Prepared Santa Cruz sample folder at `public/demo/santa-cruz-demo-photos`.
 - Hidden developer source picker for Mapillary, Panoramax, KartaView, and Manual fallback.
+- GitHub CI for unit tests, lint, production build, dependency audit, and Chromium judge-flow coverage.
 
 ## Judge path
 
@@ -169,6 +171,7 @@ Open `http://127.0.0.1:5173/`.
 
 ```bash
 npm run test
+npm run lint
 npm run build
 npm run test:e2e
 npm run record:proof-reel
@@ -176,6 +179,7 @@ npm audit --json
 ```
 
 The Playwright suite covers Chromium, mobile Chromium, desktop WebKit, and mobile WebKit.
+GitHub CI runs the Chromium judge-flow subset with `npm run test:e2e:ci`; run the full matrix locally before submission.
 
 Run the deployed judge-path smoke with:
 

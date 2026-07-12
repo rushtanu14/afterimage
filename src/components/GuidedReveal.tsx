@@ -7,7 +7,7 @@ type RevealStep = 'source' | 'signals' | 'canvas'
 interface GuidedRevealProps {
   photos: MemoryPhoto[]
   scene: SceneState
-  onEnterExhibit: () => void
+  onEnterExhibit: (trigger?: HTMLElement) => void
   onImprint: (points: BrushPoint[]) => void
   onSkip: () => void
 }
@@ -250,7 +250,11 @@ export function GuidedReveal({
         <button className="guided-text-button" type="button" onClick={onSkip}>
           Skip guided reveal
         </button>
-        <button className="guided-exhibit-button" type="button" onClick={onEnterExhibit}>
+        <button
+          className="guided-exhibit-button"
+          type="button"
+          onClick={(event) => onEnterExhibit(event.currentTarget)}
+        >
           <Maximize2 size={16} aria-hidden="true" />
           Open exhibit
         </button>

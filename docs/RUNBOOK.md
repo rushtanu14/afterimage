@@ -10,12 +10,15 @@ Generated from `package.json`, Vite config, Playwright config, and current proje
 1. Install dependencies with `npm install`.
 2. Regenerate prepared demo assets with `npm run generate:demo`.
 3. Run unit verification with `npm run test`.
-4. Run production build verification with `npm run build`.
-5. Run browser verification with `npm run test:e2e`.
-6. Deploy the generated `dist/` directory to the static host.
-7. Open `https://afterimage-omega.vercel.app/` and `https://afterimage-omega.vercel.app/?judge=1`.
-8. Use the Source tab MCP launch plan for GitHub repo verification, Vercel deployment, proof-reel capture, and Devpost handoff.
-9. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, use Exhibit mode for the cover/hero screenshot, then use the Script tab Proof Reel player or `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the recorded walkthrough and `/submission/afterimage-proof-reel-poster.png` for the thumbnail/title card if Devpost asks for one.
+4. Run lint verification with `npm run lint`.
+5. Run production build verification with `npm run build`.
+6. Run dependency verification with `npm audit --audit-level=high`.
+7. Run browser verification with `npm run test:e2e`.
+8. Confirm GitHub CI passes its Chromium judge-flow gate.
+9. Deploy the generated `dist/` directory to the static host.
+10. Open `https://afterimage-omega.vercel.app/` and `https://afterimage-omega.vercel.app/?judge=1`.
+11. Use the Source tab MCP launch plan for GitHub repo verification, Vercel deployment, proof-reel capture, and Devpost handoff.
+12. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, use Exhibit mode for the cover/hero screenshot, then use the Script tab Proof Reel player or `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the recorded walkthrough and `/submission/afterimage-proof-reel-poster.png` for the thumbnail/title card if Devpost asks for one.
 <!-- /AUTO-GENERATED -->
 
 ## Health Checks
@@ -29,11 +32,12 @@ Generated from app routes and test coverage.
 | `/?judge=1` | The judge path opens with a skippable Guided reveal and the final composed Santa Cruz Afterimage state. |
 | `https://afterimage-omega.vercel.app/?judge=1` | Production judge path opens with the Guided reveal, final exhibit label, and composed canvas state. |
 | Guided reveal | Source evidence, extracted signals, and Leave an afterimage steps are visible, skippable, mutate the canvas, and do not create horizontal overflow. |
-| Exhibit mode | `Enter exhibit mode` hides the proof dashboard and presents the living artwork as an immersive gallery view. |
+| Exhibit mode | `Enter exhibit mode` hides the proof dashboard, focuses Exit, traps interaction in the modal, closes with Escape, and restores trigger focus. |
+| Keyboard canvas | After photos are ready, Enter or Space on the focused Canvas creates a brush stroke and enables Auto-compose. |
 | Computation receipt | Transformation Engine shows photo evidence, pixel sampling, render recipe, motion delta, and evolving output. |
 | Judge evidence strip | Submission panel shows live demo, proof reel, source, and Devpost copy proof before the tabbed details. |
 | Proof reel brief | Script tab gives a copyable sub-50-second recording brief with Guided reveal, Leave an afterimage, live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof. |
-| Hosted proof reel | `/submission/afterimage-proof-reel.webm` returns `video/webm`, opens with a nonblank title card that shows the live judge URL, and plays as the public proof-reel asset. |
+| Hosted proof reel | `/submission/afterimage-proof-reel.webm` returns `video/webm`, opens with a nonblank title card that shows the live judge URL, defers embedded loading until playback, and plays as the public proof-reel asset. |
 | Proof reel poster | `/submission/afterimage-proof-reel-poster.png` returns `image/png` and gives Devpost a nonblank, URL-visible thumbnail/title-card fallback. |
 | Browser console | No warnings or errors during the judge path. |
 | Layout overflow | `document.documentElement.scrollWidth - window.innerWidth` is `0` or within 1px. |
@@ -47,6 +51,7 @@ There are no API health endpoints in the current app because it is a client-only
 | Issue | Fix |
 |-------|-----|
 | Demo photos are missing or stale. | Run `npm run generate:demo`, then verify `public/demo/santa-cruz-demo-photos/`. |
+| A folder import is rejected. | Keep the selection to 64 supported photos, 25 MB per photo, and 256 MB total; Afterimage decodes four photos at a time. |
 | E2E cannot bind port `5173`. | Stop the existing local server or let Playwright reuse it when not running in CI. |
 | Judge link opens the normal app state. | Confirm the URL includes `/?judge=1` exactly. |
 | PNG export does not start. | Load the demo or run judge mode first so the canvas has photo evidence. |
@@ -79,8 +84,8 @@ Generated from Markdown file modification dates during this docs update.
 
 | Document | Last modified | Status |
 |----------|---------------|--------|
-| `README.md` | 2026-07-05 | Current. |
+| `README.md` | 2026-07-11 | Current. |
 | `public/demo/santa-cruz-demo-photos/README.md` | 2026-07-01 | Current. |
-| `docs/CONTRIBUTING.md` | 2026-07-05 | Current. |
-| `docs/RUNBOOK.md` | 2026-07-05 | Current. |
+| `docs/CONTRIBUTING.md` | 2026-07-11 | Current. |
+| `docs/RUNBOOK.md` | 2026-07-11 | Current. |
 <!-- /AUTO-GENERATED -->

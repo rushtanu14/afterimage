@@ -16,6 +16,9 @@ test-results
 .tmp-proof-reel-recording
 .worktrees
 *.local
+.env
+.env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*

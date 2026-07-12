@@ -1,10 +1,15 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { createDemoPhotos, SANTA_CRUZ_ANCHOR } from '../data/demo'
 import type { ColorSample } from '../types'
 import {
   aggregateMemorySignal,
   analyzePixelSamples,
   classifySceneRatios,
+  MAX_MEMORY_FILE_BYTES,
+  MAX_MEMORY_PHOTOS,
+  MAX_MEMORY_TOTAL_BYTES,
+  revokeMemoryPreviewUrls,
+  selectMemoryImageFiles,
 } from './analysis'
 
 describe('local image signal analysis', () => {
@@ -42,5 +47,74 @@ describe('local image signal analysis', () => {
     expect(analysis.status).toBe('ready')
     expect(analysis.palette.length).toBeGreaterThanOrEqual(3)
     expect(analysis.dominantColor).toMatch(/^#/)
+  })
+
+  it('preserves legitimate zero-valued image signals', () => {
+    const [demoPhoto] = createDemoPhotos()
+    const signal = aggregateMemorySignal(
+      [
+        {
+          ...demoPhoto,
+          analysis: {
+            ...demoPhoto.analysis,
+            brightness: 0,
+            warmth: 0,
+            skyRatio: 0,
+            waterRatio: 0,
+            sandRatio: 0,
+          },
+        },
+      ],
+      SANTA_CRUZ_ANCHOR,
+    )
+
+    expect(signal).toMatchObject({
+      brightness: 0,
+      warmth: 0,
+      skyRatio: 0,
+      waterRatio: 0,
+      sandRatio: 0,
+    })
+  })
+
+  it('rejects folders that exceed safe photo count or file size limits', () => {
+    const file = (name: string, size = 1) =>
+      ({ name, size, type: 'image/jpeg' }) as File
+
+    expect(() =>
+      selectMemoryImageFiles(
+        Array.from({ length: MAX_MEMORY_PHOTOS + 1 }, (_, index) =>
+          file(`photo-${index}.jpg`),
+        ),
+      ),
+    ).toThrow(`up to ${MAX_MEMORY_PHOTOS} photos`)
+
+    expect(() =>
+      selectMemoryImageFiles([file('oversized.jpg', MAX_MEMORY_FILE_BYTES + 1)]),
+    ).toThrow('25 MB or smaller')
+
+    const aggregateOverflowCount =
+      Math.floor(MAX_MEMORY_TOTAL_BYTES / MAX_MEMORY_FILE_BYTES) + 1
+    expect(() =>
+      selectMemoryImageFiles(
+        Array.from({ length: aggregateOverflowCount }, (_, index) =>
+          file(`large-${index}.jpg`, MAX_MEMORY_FILE_BYTES),
+        ),
+      ),
+    ).toThrow('total 256 MB or less')
+  })
+
+  it('revokes only imported blob preview URLs', () => {
+    const revokeObjectURL = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+    const [demoPhoto] = createDemoPhotos()
+
+    revokeMemoryPreviewUrls([
+      demoPhoto,
+      { ...demoPhoto, id: 'upload', previewUrl: 'blob:afterimage-upload' },
+    ])
+
+    expect(revokeObjectURL).toHaveBeenCalledOnce()
+    expect(revokeObjectURL).toHaveBeenCalledWith('blob:afterimage-upload')
+    revokeObjectURL.mockRestore()
   })
 })

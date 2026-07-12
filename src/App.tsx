@@ -9,7 +9,11 @@ import { ProviderDebug } from './components/ProviderDebug'
 import { SubmissionPanel } from './components/SubmissionPanel'
 import { TransformationPanel } from './components/TransformationPanel'
 import { createDemoPhotos, SANTA_CRUZ_ANCHOR } from './data/demo'
-import { aggregateMemorySignal, scanMemoryFiles } from './lib/analysis'
+import {
+  aggregateMemorySignal,
+  revokeMemoryPreviewUrls,
+  scanMemoryFiles,
+} from './lib/analysis'
 import { findProviderResult, providerAdapters } from './lib/providers'
 import {
   addBrushStroke,
@@ -42,7 +46,10 @@ const JUDGE_DEMO_POINTS = [
 function App() {
   const folderInputRef = useRef<HTMLInputElement | null>(null)
   const canvasRef = useRef<MemoryCanvasHandle | null>(null)
+  const exhibitExitRef = useRef<HTMLButtonElement | null>(null)
+  const exhibitReturnFocusRef = useRef<HTMLElement | null>(null)
   const judgeDemoStartedRef = useRef(false)
+  const loadRequestRef = useRef(0)
   const [photos, setPhotos] = useState<MemoryPhoto[]>([])
   const [scene, setScene] = useState<SceneState>(() =>
     createInitialScene(SANTA_CRUZ_ANCHOR),
@@ -96,6 +103,65 @@ function App() {
     }
   }, [selectedProvider])
 
+  useEffect(
+    () => () => {
+      revokeMemoryPreviewUrls(photos)
+    },
+    [photos],
+  )
+
+  useEffect(() => {
+    if (!exhibitMode) {
+      return
+    }
+
+    const returnFocusTarget = exhibitReturnFocusRef.current
+    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setExhibitMode(false)
+        return
+      }
+
+      if (event.key !== 'Tab') {
+        return
+      }
+
+      const dialog = exhibitExitRef.current?.closest<HTMLElement>('[role="dialog"]')
+      const focusable = dialog
+        ? [...dialog.querySelectorAll<HTMLElement>('button:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+        : []
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (!first || !last) {
+        return
+      }
+
+      if (event.shiftKey && (document.activeElement === first || !dialog?.contains(document.activeElement))) {
+        event.preventDefault()
+        last.focus()
+      } else if (
+        !event.shiftKey &&
+        (document.activeElement === last || !dialog?.contains(document.activeElement))
+      ) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    exhibitExitRef.current?.focus()
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      window.requestAnimationFrame(() => {
+        if (returnFocusTarget?.isConnected) {
+          returnFocusTarget.focus()
+        }
+      })
+    }
+  }, [exhibitMode])
+
   const needsConfirmation = useMemo(
     () =>
       photos.length > 0 &&
@@ -145,12 +211,20 @@ function App() {
   }
 
   const handleLoadDemo = () => {
+    const requestId = loadRequestRef.current + 1
+    loadRequestRef.current = requestId
     setLoadState('loading')
     const demoPhotos = createDemoPhotos()
-    window.setTimeout(() => replacePhotos(demoPhotos), 180)
+    window.setTimeout(() => {
+      if (loadRequestRef.current === requestId) {
+        replacePhotos(demoPhotos)
+      }
+    }, 180)
   }
 
   const handleRunJudgeDemo = useCallback(() => {
+    const requestId = loadRequestRef.current + 1
+    loadRequestRef.current = requestId
     setLoadState('loading')
     setShowGuidedReveal(true)
     const demoPhotos = createDemoPhotos()
@@ -159,6 +233,10 @@ function App() {
     const composedStrokes = autoComposeStrokes([judgeStroke], signal)
 
     window.setTimeout(() => {
+      if (loadRequestRef.current !== requestId) {
+        return
+      }
+
       setPhotos(demoPhotos)
       setScene((current) => ({
         ...current,
@@ -191,9 +269,16 @@ function App() {
 
     setLoadState('loading')
     setStatusMessage('Scanning folder for GPS, timestamps, color, sky, water, and sand signals.')
+    const requestId = loadRequestRef.current + 1
+    loadRequestRef.current = requestId
 
     try {
       const result = await scanMemoryFiles([...fileList], scene.anchor)
+      if (loadRequestRef.current !== requestId) {
+        revokeMemoryPreviewUrls(result.photos)
+        return
+      }
+
       replacePhotos(result.photos)
       const unsupported = result.photos.filter(
         (photo) => photo.analysis.status === 'unsupported',
@@ -205,6 +290,10 @@ function App() {
         )
       }
     } catch (error) {
+      if (loadRequestRef.current !== requestId) {
+        return
+      }
+
       setLoadState('error')
       setStatusMessage(
         error instanceof Error ? error.message : 'Folder scan failed. Try JPEG or PNG files.',
@@ -271,7 +360,10 @@ function App() {
     setStatusMessage('Auto-compose cleaned the residue into one cinematic memory-space.')
   }
 
-  const handleEnterExhibitMode = () => {
+  const handleEnterExhibitMode = (trigger?: HTMLElement) => {
+    exhibitReturnFocusRef.current =
+      trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
+
     if (photos.length === 0) {
       handleRunJudgeDemo()
     }
@@ -301,10 +393,11 @@ function App() {
         type="file"
         accept="image/png,image/jpeg,image/jpg,image/webp,image/heic,image/heif"
         multiple
+        tabIndex={-1}
         aria-label="Import photo folder"
         onChange={(event) => handleFiles(event.currentTarget.files)}
       />
-      <header className="app-topbar">
+      <header className="app-topbar" inert={exhibitMode ? true : undefined}>
         <div>
           <span className="eyebrow">Afterimage</span>
           <h1>Living memory-space</h1>
@@ -331,7 +424,7 @@ function App() {
         />
       </header>
 
-      <section className="workspace">
+      <section className="workspace" inert={exhibitMode ? true : undefined}>
         <aside className="left-rail">
           <Controls
             canUndo={scene.strokes.length > 0}
@@ -378,30 +471,37 @@ function App() {
             <button
               className="exhibit-mode-button"
               type="button"
-              onClick={handleEnterExhibitMode}
+              onClick={(event) => handleEnterExhibitMode(event.currentTarget)}
             >
               <Maximize2 size={17} aria-hidden="true" />
               Enter exhibit mode
             </button>
           </div>
-          <MemoryCanvas
-            ref={canvasRef}
-            scene={scene}
-            photos={photos}
-            readyToPaint={readyToPaint}
-            onStroke={handleStroke}
-            onParallaxChange={(parallax) =>
-              setScene((current) => ({ ...current, parallax }))
-            }
-          />
+          {!exhibitMode ? (
+            <MemoryCanvas
+              ref={canvasRef}
+              scene={scene}
+              photos={photos}
+              readyToPaint={readyToPaint}
+              onStroke={handleStroke}
+              onParallaxChange={(parallax) =>
+                setScene((current) => ({ ...current, parallax }))
+              }
+            />
+          ) : null}
           <Filmstrip photos={photos} />
         </section>
       </section>
       {exhibitMode ? (
-        <section className="exhibit-mode" aria-label="Immersive exhibit mode">
+        <section
+          className="exhibit-mode"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="exhibit-mode-title"
+        >
           <div className="exhibit-mode-copy">
             <span className="eyebrow">Immersive exhibit</span>
-            <h2>Santa Cruz Afterimage</h2>
+            <h2 id="exhibit-mode-title">Santa Cruz Afterimage</h2>
             <p>
               GPS, color, time, and brush motion become one evolving canvas.
             </p>
@@ -423,6 +523,7 @@ function App() {
             ))}
           </div>
           <button
+            ref={exhibitExitRef}
             className="exhibit-exit-button"
             type="button"
             onClick={() => setExhibitMode(false)}

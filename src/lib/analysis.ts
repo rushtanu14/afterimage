@@ -28,10 +28,59 @@ export const EMPTY_ANALYSIS: PhotoAnalysis = {
   status: 'ready',
 }
 
+export const MAX_MEMORY_PHOTOS = 64
+export const MAX_MEMORY_FILE_BYTES = 25 * 1024 * 1024
+export const MAX_MEMORY_TOTAL_BYTES = 256 * 1024 * 1024
+const MEMORY_ANALYSIS_BATCH_SIZE = 4
+const SUPPORTED_IMAGE_TYPES = new Set([
+  'image/heic',
+  'image/heif',
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+])
+const SUPPORTED_IMAGE_EXTENSION = /\.(png|jpe?g|webp|heic|heif)$/i
+
 export const isHeicLike = (file: File) =>
   file.type.includes('heic') ||
   file.type.includes('heif') ||
   /\.(heic|heif)$/i.test(file.name)
+
+export const selectMemoryImageFiles = (files: File[]) => {
+  const images = files.filter(
+    (file) =>
+      SUPPORTED_IMAGE_TYPES.has(file.type.toLowerCase()) ||
+      SUPPORTED_IMAGE_EXTENSION.test(file.name),
+  )
+
+  if (images.length === 0) {
+    throw new Error('No supported photos found. Choose JPEG, PNG, WebP, HEIC, or HEIF files.')
+  }
+
+  if (images.length > MAX_MEMORY_PHOTOS) {
+    throw new Error(`Choose up to ${MAX_MEMORY_PHOTOS} photos at a time.`)
+  }
+
+  if (images.some((file) => file.size > MAX_MEMORY_FILE_BYTES)) {
+    throw new Error('Each photo must be 25 MB or smaller.')
+  }
+
+  const totalBytes = images.reduce((sum, file) => sum + file.size, 0)
+  if (totalBytes > MAX_MEMORY_TOTAL_BYTES) {
+    throw new Error('Selected photos must total 256 MB or less.')
+  }
+
+  return images
+}
+
+export const revokeMemoryPreviewUrls = (photos: MemoryPhoto[]) => {
+  for (const photo of photos) {
+    if (photo.previewUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(photo.previewUrl)
+    }
+  }
+}
 
 export const classifySceneRatios = (samples: ColorSample[]) => {
   if (samples.length === 0) {
@@ -142,6 +191,7 @@ export const aggregateMemorySignal = (
 ): MemorySignal => {
   const ready = photos.filter((photo) => photo.analysis.status === 'ready')
   const analyses = ready.map((photo) => photo.analysis)
+  const hasAnalysis = analyses.length > 0
   const photoCount = photos.length
   const palette = analyses
     .flatMap((analysis) => analysis.palette)
@@ -170,11 +220,11 @@ export const aggregateMemorySignal = (
     palette: palette.length > 0 ? palette : EMPTY_ANALYSIS.palette,
     dominantColor:
       analyses[0]?.dominantColor ?? averageHex(palette.length ? palette : EMPTY_ANALYSIS.palette),
-    warmth: clamp(warmth || EMPTY_ANALYSIS.warmth),
-    brightness: clamp(brightness || EMPTY_ANALYSIS.brightness),
-    skyRatio: clamp(skyRatio || EMPTY_ANALYSIS.skyRatio),
-    waterRatio: clamp(waterRatio || EMPTY_ANALYSIS.waterRatio),
-    sandRatio: clamp(sandRatio || EMPTY_ANALYSIS.sandRatio),
+    warmth: clamp(hasAnalysis ? warmth : EMPTY_ANALYSIS.warmth),
+    brightness: clamp(hasAnalysis ? brightness : EMPTY_ANALYSIS.brightness),
+    skyRatio: clamp(hasAnalysis ? skyRatio : EMPTY_ANALYSIS.skyRatio),
+    waterRatio: clamp(hasAnalysis ? waterRatio : EMPTY_ANALYSIS.waterRatio),
+    sandRatio: clamp(hasAnalysis ? sandRatio : EMPTY_ANALYSIS.sandRatio),
     confidence: confidence.state,
     confidenceScore: confidence.score,
     confidenceReasons: confidence.reasons,
@@ -335,13 +385,18 @@ export const scanMemoryFiles = async (
   files: File[],
   anchor: PlaceAnchor,
 ) => {
-  const images = files.filter(
-    (file) =>
-      file.type.startsWith('image/') || /\.(png|jpe?g|webp|heic|heif)$/i.test(file.name),
-  )
-  const photos = await Promise.all(
-    images.map((file, index) => analyzeMemoryFile(file, `upload-${index}-${file.name}`)),
-  )
+  const images = selectMemoryImageFiles(files)
+  let photos: MemoryPhoto[] = []
+
+  for (let start = 0; start < images.length; start += MEMORY_ANALYSIS_BATCH_SIZE) {
+    const batch = images.slice(start, start + MEMORY_ANALYSIS_BATCH_SIZE)
+    const analyzed = await Promise.all(
+      batch.map((file, index) =>
+        analyzeMemoryFile(file, `upload-${start + index}-${file.name}`),
+      ),
+    )
+    photos = [...photos, ...analyzed]
+  }
 
   return {
     photos,

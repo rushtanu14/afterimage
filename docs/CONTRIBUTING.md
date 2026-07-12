@@ -43,9 +43,11 @@ Generated from `package.json`.
 | `npm run dev` | Start the Vite development server on `127.0.0.1`. |
 | `npm run build` | Type-check the project with `tsc -b` and create the production Vite build. |
 | `npm run preview` | Preview the production build locally on `127.0.0.1`. |
+| `npm run lint` | Run Oxlint across the repository. |
 | `npm run test` | Run the Vitest unit suite once. |
 | `npm run test:watch` | Run Vitest in watch mode. |
 | `npm run test:e2e` | Run the Playwright end-to-end suite across desktop and mobile browser projects. |
+| `npm run test:e2e:ci` | Run the Chromium judge-flow subset used by GitHub CI. |
 | `npm run record:proof-reel` | Record the hosted proof-reel WebM from the judge path. |
 | `npm run generate:demo` | Regenerate the prepared Santa Cruz demo PNG assets. |
 <!-- /AUTO-GENERATED -->
@@ -73,7 +75,7 @@ Unit tests live under `src/**/*.test.ts`. End-to-end coverage lives in `tests/ap
 Use TypeScript and the existing React component patterns. Run:
 
 ```bash
-npx oxlint .
+npm run lint
 ```
 
 Keep generated assets out of source edits unless the demo image generator intentionally changed. Do not commit `node_modules`, `dist`, `test-results`, or local screenshots.
@@ -84,7 +86,8 @@ Keep generated assets out of source edits unless the demo image generator intent
 - README and docs match source-of-truth files.
 - `npm run test` passes.
 - `npm run build` passes.
-- `npx oxlint .` passes.
+- `npm run lint` passes.
 - `npm run test:e2e` passes or any skipped browser project is explained.
+- GitHub CI passes its Chromium judge-flow gate.
 - Deployed judge-path smoke passes against `https://afterimage-omega.vercel.app`.
 - `npm audit --json` shows zero vulnerabilities before public submission.

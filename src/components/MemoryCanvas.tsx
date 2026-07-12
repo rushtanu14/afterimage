@@ -35,6 +35,13 @@ interface DragState {
   points: BrushPoint[]
 }
 
+const KEYBOARD_STROKE_POINTS: BrushPoint[] = [
+  { x: 0.2, y: 0.54, pressure: 0.72 },
+  { x: 0.42, y: 0.46, pressure: 0.8 },
+  { x: 0.64, y: 0.5, pressure: 0.76 },
+  { x: 0.82, y: 0.44, pressure: 0.68 },
+]
+
 const drawSmoothStroke = (
   context: CanvasRenderingContext2D,
   stroke: BrushStroke,
@@ -542,15 +549,27 @@ export const MemoryCanvas = forwardRef<MemoryCanvasHandle, MemoryCanvasProps>(
     setIsPainting(false)
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLCanvasElement>) => {
+    if (!readyToPaint || (event.key !== 'Enter' && event.key !== ' ')) {
+      return
+    }
+
+    event.preventDefault()
+    sequenceRef.current += 1
+    onStroke(createBrushStroke(KEYBOARD_STROKE_POINTS, scene.signal, sequenceRef.current))
+  }
+
   return (
     <div className="scene-shell" data-painting={isPainting ? 'true' : 'false'}>
       <canvas
         ref={canvasRef}
         className="memory-canvas"
         data-testid="memory-canvas"
-        aria-label="Interactive Santa Cruz memory-space canvas"
-        role="img"
+        aria-label="Interactive Santa Cruz memory-space canvas. Press Enter or Space to leave an afterimage."
+        aria-disabled={!readyToPaint}
+        role="button"
         tabIndex={0}
+        onKeyDown={handleKeyDown}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
