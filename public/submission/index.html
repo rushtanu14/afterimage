@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Afterimage Submission Pack</title>
+    <meta
+      name="description"
+      content="Afterimage Hack the Arts submission links: live demo, proof reel, source code, attribution, and judging summary."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #1a2330;
+        --muted: #5a6674;
+        --line: #d9e1e8;
+        --paper: #fffdf8;
+        --wash: #edf7f4;
+        --teal: #1f8a8a;
+        --blue: #3f6fa9;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      main {
+        width: min(980px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 42px 0 56px;
+      }
+
+      header {
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 24px;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--teal);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.2rem, 7vw, 5rem);
+        line-height: 0.95;
+      }
+
+      .lede {
+        max-width: 760px;
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 1.06rem;
+      }
+
+      .link-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin: 24px 0;
+      }
+
+      a {
+        color: var(--blue);
+        font-weight: 800;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
+      }
+
+      .link-card {
+        display: block;
+        min-height: 116px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+        color: var(--ink);
+        background: var(--wash);
+        text-decoration: none;
+      }
+
+      .link-card strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--ink);
+        font-size: 1rem;
+      }
+
+      .link-card span {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      section {
+        border-top: 1px solid var(--line);
+        padding-top: 24px;
+        margin-top: 26px;
+      }
+
+      h2 {
+        margin: 0 0 10px;
+        font-size: 1.2rem;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      code {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 2px 6px;
+        background: #ffffff;
+        font-size: 0.9em;
+      }
+
+      @media (max-width: 700px) {
+        main {
+          width: min(100% - 24px, 980px);
+          padding-top: 28px;
+        }
+
+        .link-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Hack the Arts submission pack</p>
+        <h1>Afterimage</h1>
+        <p class="lede">
+          A computational artwork that turns verified place photos into an evolving
+          memory-space. This page is the direct handoff for judges: demo, proof reel,
+          source, attribution, and the project story.
+        </p>
+      </header>
+
+      <nav class="link-grid" aria-label="Submission links">
+        <a class="link-card" href="/?judge=1">
+          <strong>Live judge demo</strong>
+          <span>Open the finished Santa Cruz Afterimage exhibit.</span>
+        </a>
+        <a class="link-card" href="/submission/afterimage-proof-reel.webm">
+          <strong>Hosted proof reel</strong>
+          <span>Sub-50-second walkthrough with the live URL visible.</span>
+        </a>
+        <a class="link-card" href="https://github.com/rushtanu14/afterimage">
+          <strong>Public source repository</strong>
+          <span>React, TypeScript, Canvas, tests, docs, and build history.</span>
+        </a>
+        <a class="link-card" href="/submission/afterimage-proof-reel-poster.png">
+          <strong>Proof reel poster</strong>
+          <span>Nonblank title card for the hosted walkthrough.</span>
+        </a>
+      </nav>
+
+      <section aria-labelledby="summary-heading">
+        <h2 id="summary-heading">Judge Summary</h2>
+        <ul>
+          <li>
+            <strong>Creativity:</strong> place evidence becomes a living memory-space,
+            not a conventional filter or static gallery.
+          </li>
+          <li>
+            <strong>Technology:</strong> EXIF/GPS confidence, local pixel sampling,
+            color ratios, brush motion, and Canvas rendering generate the artwork.
+          </li>
+          <li>
+            <strong>Interactivity:</strong> judges can run the demo, leave an
+            afterimage, inspect the computation receipt, enter Exhibit mode, and export
+            the final artifact.
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="devpost-heading">
+        <h2 id="devpost-heading">Devpost Fields</h2>
+        <ul>
+          <li><strong>Title:</strong> Afterimage</li>
+          <li>
+            <strong>Tagline:</strong> Turn verified place photos into an evolving
+            memory-space.
+          </li>
+          <li>
+            <strong>Demo:</strong>
+            <a href="https://afterimage-omega.vercel.app/?judge=1"
+              >https://afterimage-omega.vercel.app/?judge=1</a
+            >
+          </li>
+          <li>
+            <strong>Source:</strong>
+            <a href="https://github.com/rushtanu14/afterimage"
+              >https://github.com/rushtanu14/afterimage</a
+            >
+          </li>
+          <li>
+            <strong>Proof reel:</strong>
+            <a href="https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm"
+              >hosted WebM walkthrough</a
+            >
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="attribution-heading">
+        <h2 id="attribution-heading">Attribution</h2>
+        <ul>
+          <li>Demo photos are procedural generated assets in <code>public/demo</code>.</li>
+          <li>Runtime libraries: React, TypeScript, Canvas 2D, exifr, and lucide-react.</li>
+          <li>
+            Optional place-source lookups reference Mapillary, Panoramax, and KartaView
+            when coverage exists.
+          </li>
+          <li>No paid map, AI, or proprietary image provider is required for the judge demo.</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

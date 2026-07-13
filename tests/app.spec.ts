@@ -226,6 +226,24 @@ test('submission panel offers a copyable source handoff', async ({ page }) => {
   await expect(launchPlan).toContainText(/Launch plan copied/i)
 })
 
+test('hosted submission pack exposes judge handoff links', async ({ page }) => {
+  await page.goto('/submission/index.html')
+
+  await expect(page.getByRole('heading', { name: 'Afterimage' })).toBeVisible()
+  await expect(page.getByText(/Hack the Arts submission pack/i)).toBeVisible()
+  await expect(
+    page.getByRole('link', { name: /Live judge demo/i }),
+  ).toHaveAttribute('href', '/?judge=1')
+  await expect(
+    page.getByRole('link', { name: /Hosted proof reel/i }),
+  ).toHaveAttribute('href', proofReelPath)
+  await expect(
+    page.getByRole('link', { name: /Public source repository/i }),
+  ).toHaveAttribute('href', 'https://github.com/rushtanu14/afterimage')
+  await expect(page.getByRole('heading', { name: 'Judge Summary' })).toBeVisible()
+  await expect(page.getByText(/No paid map, AI, or proprietary image provider/i)).toBeVisible()
+})
+
 test('judge path can switch from proof dashboard into immersive exhibit mode', async ({
   page,
 }) => {
