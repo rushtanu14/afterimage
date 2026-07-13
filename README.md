@@ -33,7 +33,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - Copyable source handoff for the public repository submission step.
 - Copyable demo recording script and Proof Reel brief for a tight sub-50-second judge video.
 - Copyable submission media kit for cover screenshot, proof/source screenshots, PNG artifact, and proof reel video.
-- Hosted submission pack at `https://afterimage-omega.vercel.app/submission/` for direct judge handoff links.
+- Hosted submission pack at `https://afterimage-omega.vercel.app/submission/` for direct judge handoff links, written project description, implementation receipt, criteria map, attribution, and proof assets.
 - Final exhibit label after Auto-compose, naming the generated artwork and its evidence trail.
 - One-click judge demo that runs the full transformation path without requiring manual brush input.
 - PNG export with title, evidence trail, artist statement, computation note, and motion delta for the submission gallery.
@@ -88,7 +88,7 @@ Live medium proof:
 
 Demo link: Use `https://afterimage-omega.vercel.app/?judge=1` to open directly on the final Santa Cruz Afterimage exhibit.
 
-Submission pack: Use `https://afterimage-omega.vercel.app/submission/` as a direct judge handoff for the live demo, proof reel, public source, poster, attribution, and Devpost fields.
+Submission pack: Use `https://afterimage-omega.vercel.app/submission/` as a direct judge handoff for the live demo, proof reel, public source, poster, written project description, implementation receipt, criteria map, attribution, and Devpost fields.
 
 Proof reel: Use `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.mp4` for the hosted MP4 proof reel with a nonblank title-card opening that visibly shows `https://afterimage-omega.vercel.app/?judge=1`; keep `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` as a WebM fallback, or record a fresh walkthrough from the same judge URL. Show cursor drag, computation receipt, Exhibit mode, evolving canvas, PNG export, live demo URL, public source URL, attribution, and Devpost copy in one continuous walkthrough.
 

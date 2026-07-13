@@ -18,7 +18,7 @@ Generated from `package.json`, Vite config, Playwright config, and current proje
 9. Deploy the generated `dist/` directory to the static host.
 10. Open `https://afterimage-omega.vercel.app/` and `https://afterimage-omega.vercel.app/?judge=1`.
 11. Use the Source tab MCP launch plan for GitHub repo verification, Vercel deployment, proof-reel capture, and Devpost handoff.
-12. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, use Exhibit mode for the cover/hero screenshot, then use the Script tab Proof Reel player or `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.webm` for the recorded walkthrough and `/submission/afterimage-proof-reel-poster.png` for the thumbnail/title card if Devpost asks for one.
+12. Copy `https://afterimage-omega.vercel.app/?judge=1` into the Devpost demo link field, use Exhibit mode for the cover/hero screenshot, then use the Script tab Proof Reel player or `https://afterimage-omega.vercel.app/submission/afterimage-proof-reel.mp4` for the recorded walkthrough, keeping `/submission/afterimage-proof-reel.webm` as the fallback and `/submission/afterimage-proof-reel-poster.png` as the thumbnail/title card if Devpost asks for one.
 <!-- /AUTO-GENERATED -->
 
 ## Health Checks
@@ -37,7 +37,7 @@ Generated from app routes and test coverage.
 | Computation receipt | Transformation Engine shows photo evidence, pixel sampling, render recipe, motion delta, and evolving output. |
 | Judge evidence strip | Submission panel shows live demo, proof reel, source, and Devpost copy proof before the tabbed details. |
 | Proof reel brief | Script tab gives a copyable sub-50-second recording brief with Guided reveal, Leave an afterimage, live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof. |
-| Hosted proof reel | `/submission/afterimage-proof-reel.webm` returns `video/webm`, opens with a nonblank title card that shows the live judge URL, defers embedded loading until playback, and plays as the public proof-reel asset. |
+| Hosted proof reel | `/submission/afterimage-proof-reel.mp4` returns `video/mp4`, opens with a nonblank title card that shows the live judge URL, defers embedded loading until playback, and plays as the public proof-reel asset. Keep `/submission/afterimage-proof-reel.webm` as a WebM fallback. |
 | Proof reel poster | `/submission/afterimage-proof-reel-poster.png` returns `image/png` and gives Devpost a nonblank, URL-visible thumbnail/title-card fallback. |
 | Browser console | No warnings or errors during the judge path. |
 | Layout overflow | `document.documentElement.scrollWidth - window.innerWidth` is `0` or within 1px. |

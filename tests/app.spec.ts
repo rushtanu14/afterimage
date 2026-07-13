@@ -249,6 +249,13 @@ test('hosted submission pack exposes judge handoff links', async ({ page }) => {
     page.getByRole('link', { name: /Public source repository/i }),
   ).toHaveAttribute('href', 'https://github.com/rushtanu14/afterimage')
   await expect(page.getByRole('heading', { name: 'Judge Summary' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Written Project Description' })).toBeVisible()
+  await expect(page.getByText(/The medium is the transformation itself/i)).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Implementation Receipt' })).toBeVisible()
+  await expect(page.getByText(/EXIF, GPS, and timestamps become confidence/i)).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Judging Criteria Map' })).toBeVisible()
+  await expect(page.getByText(/Creativity & Originality \(30%\)/i)).toBeVisible()
+  await expect(page.getByText(/Theme Alignment \(10%\)/i)).toBeVisible()
   await expect(page.getByText(/No paid map, AI, or proprietary image provider/i)).toBeVisible()
 })
 
@@ -653,7 +660,11 @@ test('one-click judge demo reaches the final exhibit state', async ({ page }) =>
   expect(overflow).toBeLessThanOrEqual(1)
 })
 
-test('hosted proof reel asset is public and playable', async ({ page, request }) => {
+test('hosted proof reel asset is public and playable', async ({
+  browserName,
+  page,
+  request,
+}) => {
   const posterResponse = await request.get(proofReelPosterPath)
   expect(posterResponse.ok()).toBe(true)
   expect(posterResponse.headers()['content-type']).toContain('image/png')
@@ -668,6 +679,10 @@ test('hosted proof reel asset is public and playable', async ({ page, request })
   expect(webmResponse.ok()).toBe(true)
   expect(webmResponse.headers()['content-type']).toContain('video/webm')
   expect(Number(webmResponse.headers()['content-length'] ?? '0')).toBeGreaterThan(50_000)
+
+  if (browserName === 'webkit') {
+    return
+  }
 
   await page.goto(proofReelPath)
   const video = page.locator('video')

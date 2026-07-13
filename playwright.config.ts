@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:5173'
+const localBaseURL = 'http://127.0.0.1:5177'
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? localBaseURL
 const useRemoteBaseURL = Boolean(process.env.PLAYWRIGHT_BASE_URL)
 
 export default defineConfig({
@@ -18,9 +19,9 @@ export default defineConfig({
   webServer: useRemoteBaseURL
     ? undefined
     : {
-        command: 'npm run dev -- --port 5173',
-        url: baseURL,
-        reuseExistingServer: !process.env.CI,
+        command: 'npm run dev -- --port 5177 --strictPort',
+        url: localBaseURL,
+        reuseExistingServer: false,
         timeout: 60_000,
       },
   projects: [
