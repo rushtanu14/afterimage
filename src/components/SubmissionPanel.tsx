@@ -5,9 +5,11 @@ const SOURCE_REPOSITORY_URL = 'https://github.com/rushtanu14/afterimage'
 const SOURCE_COMMIT_PROOF = 'public history from 1f2e060 onward'
 const LIVE_DEMO_URL = 'https://afterimage-omega.vercel.app/?judge=1'
 const LIVE_DEMO_ROOT_URL = 'https://afterimage-omega.vercel.app'
-const PROOF_REEL_ASSET_PATH = '/submission/afterimage-proof-reel.webm'
+const PROOF_REEL_ASSET_PATH = '/submission/afterimage-proof-reel.mp4'
+const PROOF_REEL_WEBM_ASSET_PATH = '/submission/afterimage-proof-reel.webm'
 const PROOF_REEL_POSTER_PATH = '/submission/afterimage-proof-reel-poster.png'
 const PROOF_REEL_PUBLIC_URL = `${LIVE_DEMO_ROOT_URL}${PROOF_REEL_ASSET_PATH}`
+const PROOF_REEL_WEBM_PUBLIC_URL = `${LIVE_DEMO_ROOT_URL}${PROOF_REEL_WEBM_ASSET_PATH}`
 
 const DEVPOST_PACKAGE = `Title: Afterimage
 Tagline: Turn verified place photos into an evolving memory-space.
@@ -37,7 +39,7 @@ Demo link:
 Use ${LIVE_DEMO_URL} to open directly on the final Santa Cruz Afterimage exhibit.
 
 Proof reel:
-Use ${PROOF_REEL_PUBLIC_URL} for the hosted sub-50-second proof reel that shows the live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, source proof, and final artifact.
+Use ${PROOF_REEL_PUBLIC_URL} for the hosted sub-50-second MP4 proof reel that shows the live URL, cursor input, computation receipt, Exhibit mode, evolving canvas, source proof, and final artifact. WebM fallback: ${PROOF_REEL_WEBM_PUBLIC_URL}
 
 Source handoff:
 Source URL: ${SOURCE_REPOSITORY_URL}
@@ -71,7 +73,8 @@ const DEMO_SCRIPT = `0:00 Run judge demo.
 0:45 Close with the theme: this art depends on code, metadata, computation, and motion.`
 
 const PROOF_REEL_BRIEF = `Sub-50-second proof reel:
-Hosted proof reel: ${PROOF_REEL_PUBLIC_URL}
+Hosted MP4 proof reel: ${PROOF_REEL_PUBLIC_URL}
+WebM fallback: ${PROOF_REEL_WEBM_PUBLIC_URL}
 Record the deployed judge path: ${LIVE_DEMO_URL}
 Title card: the live judge URL is visible on the opening frame (${LIVE_DEMO_URL}).
 Opening frame: the Santa Cruz Afterimage exhibit is already alive, with the live URL visible.
@@ -188,8 +191,9 @@ const demoScriptSteps = [
 ]
 
 const proofReelLines = [
-  'Sub-50-second proof reel: hosted public video asset for Devpost judges.',
-  `Open hosted proof reel: ${PROOF_REEL_PUBLIC_URL}`,
+  'Sub-50-second proof reel: hosted MP4 video asset for Devpost judges.',
+  `Open hosted MP4 proof reel: ${PROOF_REEL_PUBLIC_URL}`,
+  `WebM fallback: ${PROOF_REEL_WEBM_PUBLIC_URL}`,
   `Record the deployed judge path: ${LIVE_DEMO_URL}`,
   `Title card shows the live judge URL: ${LIVE_DEMO_URL}`,
   'Opening frame: Santa Cruz Afterimage is already alive with the live URL visible.',
@@ -747,8 +751,9 @@ export function SubmissionPanel() {
               playsInline
               poster={PROOF_REEL_POSTER_PATH}
               preload="none"
-              src={PROOF_REEL_ASSET_PATH}
             >
+              <source src={PROOF_REEL_ASSET_PATH} type="video/mp4" />
+              <source src={PROOF_REEL_WEBM_ASSET_PATH} type="video/webm" />
               The hosted proof reel shows the live Afterimage judge path.
             </video>
             <ul>

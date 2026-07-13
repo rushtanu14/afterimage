@@ -3,7 +3,8 @@ import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
 const demoFolder = resolve(process.cwd(), 'public/demo/santa-cruz-demo-photos')
-const proofReelPath = '/submission/afterimage-proof-reel.webm'
+const proofReelPath = '/submission/afterimage-proof-reel.mp4'
+const proofReelWebmPath = '/submission/afterimage-proof-reel.webm'
 const proofReelPosterPath = '/submission/afterimage-proof-reel-poster.png'
 
 const canvasSnapshot = async (canvas: Locator) =>
@@ -90,14 +91,18 @@ test('submission panel offers hosted proof reel evidence', async ({ page }) => {
 
   const proofReel = page.getByRole('region', { name: /proof reel/i })
   await expect(proofReel).toContainText(/Sub-50-second proof reel/i)
-  await expect(proofReel).toContainText(/Hosted proof reel/i)
+  await expect(proofReel).toContainText(/Hosted MP4 proof reel/i)
+  await expect(proofReel).toContainText(/WebM fallback/i)
   await expect(proofReel).toContainText(/Record the deployed judge path/i)
   await expect(proofReel).toContainText(/Title card shows the live judge URL/i)
   await expect(proofReel).toContainText(/Leave an afterimage/i)
   await expect(proofReel).toContainText(/https:\/\/afterimage-omega\.vercel\.app\/\?judge=1/i)
-  await expect(proofReel.locator('video')).toHaveAttribute('src', proofReelPath)
   await expect(proofReel.locator('video')).toHaveAttribute('poster', proofReelPosterPath)
   await expect(proofReel.locator('video')).toHaveAttribute('preload', 'none')
+  await expect(proofReel.locator('video source').nth(0)).toHaveAttribute('src', proofReelPath)
+  await expect(proofReel.locator('video source').nth(0)).toHaveAttribute('type', 'video/mp4')
+  await expect(proofReel.locator('video source').nth(1)).toHaveAttribute('src', proofReelWebmPath)
+  await expect(proofReel.locator('video source').nth(1)).toHaveAttribute('type', 'video/webm')
   await expect(
     proofReel.getByRole('link', { name: /open hosted proof reel/i }),
   ).toHaveAttribute('href', proofReelPath)
@@ -237,6 +242,9 @@ test('hosted submission pack exposes judge handoff links', async ({ page }) => {
   await expect(
     page.getByRole('link', { name: /Hosted proof reel/i }),
   ).toHaveAttribute('href', proofReelPath)
+  await expect(
+    page.getByRole('link', { name: /WebM proof fallback/i }),
+  ).toHaveAttribute('href', proofReelWebmPath)
   await expect(
     page.getByRole('link', { name: /Public source repository/i }),
   ).toHaveAttribute('href', 'https://github.com/rushtanu14/afterimage')
@@ -653,8 +661,13 @@ test('hosted proof reel asset is public and playable', async ({ page, request })
 
   const response = await request.get(proofReelPath)
   expect(response.ok()).toBe(true)
-  expect(response.headers()['content-type']).toContain('video/webm')
+  expect(response.headers()['content-type']).toContain('video/mp4')
   expect(Number(response.headers()['content-length'] ?? '0')).toBeGreaterThan(50_000)
+
+  const webmResponse = await request.get(proofReelWebmPath)
+  expect(webmResponse.ok()).toBe(true)
+  expect(webmResponse.headers()['content-type']).toContain('video/webm')
+  expect(Number(webmResponse.headers()['content-length'] ?? '0')).toBeGreaterThan(50_000)
 
   await page.goto(proofReelPath)
   const video = page.locator('video')
