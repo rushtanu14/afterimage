@@ -197,11 +197,23 @@ test('submission panel offers a copyable source handoff', async ({ page }) => {
 
   const sourceRepository = page.getByRole('region', { name: /source repository/i })
   await expect(sourceRepository).toContainText(/https:\/\/github.com\/rushtanu14\/afterimage/i)
+  await expect(
+    sourceRepository.getByRole('link', { name: /github.com\/rushtanu14\/afterimage/i }),
+  ).toHaveAttribute('href', 'https://github.com/rushtanu14/afterimage')
   await page.getByRole('button', { name: /copy source url/i }).click()
   await expect(sourceRepository).toContainText(/Source URL copied/i)
 
   const liveDemo = page.getByRole('region', { name: /live demo/i })
   await expect(liveDemo).toContainText(/https:\/\/afterimage-omega\.vercel\.app\/\?judge=1/i)
+  await expect(
+    liveDemo.getByRole('link', { name: /afterimage-omega\.vercel\.app\/\?judge=1/i }),
+  ).toHaveAttribute('href', 'https://afterimage-omega.vercel.app/?judge=1')
+  await expect(
+    liveDemo.getByRole('link', {
+      name: 'https://afterimage-omega.vercel.app',
+      exact: true,
+    }),
+  ).toHaveAttribute('href', 'https://afterimage-omega.vercel.app')
   await page.getByRole('button', { name: /copy live demo url/i }).click()
   await expect(liveDemo).toContainText(/Live demo URL copied/i)
 

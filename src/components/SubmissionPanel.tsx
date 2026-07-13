@@ -645,7 +645,16 @@ export function SubmissionPanel() {
           <section className="source-repository" aria-label="Source repository">
             <span className="eyebrow">Source repository</span>
             <ul>
-              <li>{SOURCE_REPOSITORY_URL}</li>
+              <li>
+                <a
+                  className="brief-link"
+                  href={SOURCE_REPOSITORY_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {SOURCE_REPOSITORY_URL}
+                </a>
+              </li>
               <li>{SOURCE_COMMIT_PROOF} is pushed to origin/main.</li>
               <li>Ready for the Devpost source-code field.</li>
             </ul>
@@ -660,8 +669,27 @@ export function SubmissionPanel() {
           <section className="live-demo" aria-label="Live demo">
             <span className="eyebrow">Live demo</span>
             <ul>
-              <li>{LIVE_DEMO_URL}</li>
-              <li>{LIVE_DEMO_ROOT_URL} is the production root.</li>
+              <li>
+                <a
+                  className="brief-link"
+                  href={LIVE_DEMO_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {LIVE_DEMO_URL}
+                </a>
+              </li>
+              <li>
+                <a
+                  className="brief-link"
+                  href={LIVE_DEMO_ROOT_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {LIVE_DEMO_ROOT_URL}
+                </a>{' '}
+                is the production root.
+              </li>
               <li>Ready for the Devpost demo-link field.</li>
             </ul>
             <button className="brief-copy-button" type="button" onClick={handleLiveDemoCopy}>
