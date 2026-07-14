@@ -143,8 +143,10 @@ test('submission panel offers a copyable attribution block', async ({ page }) =>
   await page.getByRole('tab', { name: 'Proof' }).click()
   const attributionBlock = page.getByRole('region', { name: /attribution block/i })
   await expect(attributionBlock).toContainText(/Demo photos: procedural generated assets/i)
+  await expect(attributionBlock).toContainText(/Higgsfield Cinema Studio Image 2\.5/i)
   await expect(attributionBlock).toContainText(/Libraries: React, TypeScript, Canvas 2D, exifr, lucide-react/i)
   await expect(attributionBlock).toContainText(/Optional providers: Mapillary, Panoramax, and KartaView/i)
+  await expect(attributionBlock).toContainText(/No runtime AI call or paid map API/i)
 
   await page.getByRole('button', { name: /copy attribution/i }).click()
   await expect(attributionBlock).toContainText(/Attribution copied/i)
@@ -256,7 +258,8 @@ test('hosted submission pack exposes judge handoff links', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Judging Criteria Map' })).toBeVisible()
   await expect(page.getByText(/Creativity & Originality \(30%\)/i)).toBeVisible()
   await expect(page.getByText(/Theme Alignment \(10%\)/i)).toBeVisible()
-  await expect(page.getByText(/No paid map, AI, or proprietary image provider/i)).toBeVisible()
+  await expect(page.getByText(/Higgsfield Cinema Studio Image 2\.5/i)).toBeVisible()
+  await expect(page.getByText(/No runtime AI call or paid map API/i)).toBeVisible()
 })
 
 test('judge path can switch from proof dashboard into immersive exhibit mode', async ({
@@ -285,6 +288,54 @@ test('judge path can switch from proof dashboard into immersive exhibit mode', a
   await expect(exhibit).toBeHidden()
   await expect(exhibitTrigger).toBeFocused()
   await expect(page.getByRole('region', { name: /submission brief/i })).toBeVisible()
+})
+
+test('Higgsfield plate adds responsive depth behind the living canvas', async ({ page }) => {
+  await page.goto('/?judge=1')
+  await expect(page.getByRole('status')).toContainText(/judge demo built/i)
+
+  const scene = page.locator('.scene-shell').first()
+  const plate = scene.getByTestId('cinematic-memory-plate')
+  const canvas = scene.getByTestId('memory-canvas')
+
+  await expect(plate).toHaveAttribute(
+    'src',
+    '/demo/afterimage-higgsfield-santa-cruz.webp',
+  )
+  await expect(plate).toHaveAttribute('aria-hidden', 'true')
+  await expect
+    .poll(() => plate.evaluate((image: HTMLImageElement) => image.naturalWidth))
+    .toBeGreaterThanOrEqual(1_600)
+  await expect(canvas).toBeVisible()
+  await canvas.scrollIntoViewIfNeeded()
+
+  const beforeTransform = await plate.evaluate(
+    (image) => window.getComputedStyle(image).transform,
+  )
+  const box = await canvas.boundingBox()
+  expect(box).toBeTruthy()
+  if (!box) {
+    throw new Error('Living canvas bounds missing for Higgsfield depth test')
+  }
+
+  await page.mouse.move(box.x + box.width * 0.45, box.y + box.height * 0.52)
+  await page.mouse.down()
+  await page.mouse.move(box.x + box.width * 0.68, box.y + box.height * 0.62, {
+    steps: 4,
+  })
+  await page.mouse.up()
+
+  await expect
+    .poll(() => plate.evaluate((image) => window.getComputedStyle(image).transform))
+    .not.toBe(beforeTransform)
+
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await expect
+    .poll(() => plate.evaluate((image) => window.getComputedStyle(image).transform))
+    .toBe('none')
+  await expect
+    .poll(() => plate.evaluate((image) => window.getComputedStyle(image).transitionDuration))
+    .toBe('0s')
 })
 
 test('judge path starts with a skippable guided source-to-canvas reveal', async ({

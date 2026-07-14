@@ -560,7 +560,24 @@ export const MemoryCanvas = forwardRef<MemoryCanvasHandle, MemoryCanvasProps>(
   }
 
   return (
-    <div className="scene-shell" data-painting={isPainting ? 'true' : 'false'}>
+    <div
+      className="scene-shell"
+      data-has-plate={photos.length > 0 ? 'true' : 'false'}
+      data-painting={isPainting ? 'true' : 'false'}
+    >
+      {photos.length > 0 ? (
+        <img
+          className="cinematic-memory-plate"
+          data-testid="cinematic-memory-plate"
+          src="/demo/afterimage-higgsfield-santa-cruz.webp"
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          style={{
+            transform: `translate3d(${-scene.parallax.x * 12}px, ${-scene.parallax.y * 9}px, 0) scale(1.045)`,
+          }}
+        />
+      ) : null}
       <canvas
         ref={canvasRef}
         className="memory-canvas"

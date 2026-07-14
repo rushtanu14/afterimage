@@ -1098,12 +1098,31 @@ h2 {
   cursor: crosshair;
 }
 
+.cinematic-memory-plate {
+  position: absolute;
+  inset: -3%;
+  width: 106%;
+  height: 106%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  filter: saturate(0.82) contrast(1.06) brightness(0.72);
+  transform-origin: center;
+  transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
 .memory-canvas {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
   min-height: 440px;
   cursor: grab;
+}
+
+.scene-shell[data-has-plate='true'] .memory-canvas {
+  opacity: 0.76;
 }
 
 .memory-canvas:active {
@@ -1292,6 +1311,14 @@ h2 {
 
 .exhibit-mode .memory-canvas {
   min-height: min(58vh, 620px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-memory-plate {
+    transform: none !important;
+    transition: none;
+    will-change: auto;
+  }
 }
 
 .exhibit-mode-proof {

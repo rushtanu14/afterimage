@@ -18,7 +18,7 @@ Description:
 Afterimage is a computational artwork for Hack the Arts. It transforms a folder of Santa Cruz beach photos into a living place-memory by extracting metadata confidence, GPS proximity, timestamps, color palettes, sky/water/sand ratios, and brush motion. The result is not a filter or a static gallery: the canvas keeps evolving after composition, and the final exhibit label preserves the evidence trail behind the artwork.
 
 Built with:
-React, TypeScript, Canvas 2D, EXIF parsing, local image color sampling, procedural demo assets, and optional Mapillary / Panoramax / KartaView place-source lookups.
+React, TypeScript, Canvas 2D, EXIF parsing, local image color sampling, procedural demo assets, one disclosed Higgsfield Cinema Studio Image 2.5 environment plate, and optional Mapillary / Panoramax / KartaView place-source lookups.
 
 Implementation:
 EXIF, GPS, and timestamps become confidence and place evidence. Browser pixel sampling becomes sky, water, sand, warmth, haze, and palette ratios. Brush motion and time phase keep the Canvas scene evolving after composition.
@@ -60,7 +60,7 @@ Execution (15%): one-click judge demo, PNG export, responsive layout, and automa
 Theme Alignment (10%): the artwork depends on code, metadata, computation, and motion.
 
 Attribution:
-Demo photos are procedural generated assets in public/demo/santa-cruz-demo-photos. Runtime libraries include React, TypeScript, Canvas 2D browser APIs, exifr, and lucide-react. Optional street-image provider lookups reference Mapillary, Panoramax, and KartaView only where coverage exists.`
+Demo photos are procedural generated assets in public/demo/santa-cruz-demo-photos. The cinematic depth plate is one Higgsfield Cinema Studio Image 2.5 generation stored at public/demo/afterimage-higgsfield-santa-cruz.webp and used beneath the live Canvas; no runtime AI call is made. Runtime libraries include React, TypeScript, Canvas 2D browser APIs, exifr, and lucide-react. Optional street-image provider lookups reference Mapillary, Panoramax, and KartaView only where coverage exists.`
 
 const DEMO_SCRIPT = `0:00 Run judge demo.
 0:04 Use the Guided reveal: source evidence, extracted signals, and Leave an afterimage on the living canvas.
@@ -96,9 +96,10 @@ Artifact: exported afterimage-santa-cruz-memory-space.png with title, evidence, 
 Video: sub-50-second proof reel with a URL-visible title card, cursor input, computation receipt, Exhibit mode, evolving canvas, export, and source proof visible.`
 
 const ATTRIBUTION_BLOCK = `Demo photos: procedural generated assets in public/demo/santa-cruz-demo-photos.
+Cinematic environment plate: one Higgsfield Cinema Studio Image 2.5 generation in public/demo/afterimage-higgsfield-santa-cruz.webp.
 Libraries: React, TypeScript, Canvas 2D, exifr, lucide-react.
 Optional providers: Mapillary, Panoramax, and KartaView place-source lookups are referenced only where coverage exists.
-No paid map, AI, or proprietary image provider is required for the judge demo.`
+No runtime AI call or paid map API is required for the judge demo; the disclosed generated plate is bundled locally.`
 
 const IMPLEMENTATION_RECEIPT = `EXIF, GPS, and timestamps become confidence and place evidence.
 Browser pixel sampling becomes sky, water, sand, and palette ratios.
@@ -213,9 +214,10 @@ const mediaKitLines = [
 
 const attributionLines = [
   'Demo photos: procedural generated assets in public/demo/santa-cruz-demo-photos.',
+  'Cinematic environment plate: one Higgsfield Cinema Studio Image 2.5 generation in public/demo/afterimage-higgsfield-santa-cruz.webp.',
   'Libraries: React, TypeScript, Canvas 2D, exifr, lucide-react.',
   'Optional providers: Mapillary, Panoramax, and KartaView.',
-  'No paid map, AI, or proprietary image provider is required for the judge demo.',
+  'No runtime AI call or paid map API is required for the judge demo; the disclosed generated plate is bundled locally.',
 ]
 
 const implementationLines = [
