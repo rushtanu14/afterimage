@@ -1,8 +1,10 @@
+import * as exifr from 'exifr'
 import { describe, expect, it, vi } from 'vitest'
 import { createDemoPhotos, SANTA_CRUZ_ANCHOR } from '../data/demo'
 import type { ColorSample } from '../types'
 import {
   aggregateMemorySignal,
+  analyzeMemoryFile,
   analyzePixelSamples,
   classifySceneRatios,
   MAX_MEMORY_FILE_BYTES,
@@ -11,6 +13,10 @@ import {
   revokeMemoryPreviewUrls,
   selectMemoryImageFiles,
 } from './analysis'
+
+vi.mock('exifr', () => ({
+  parse: vi.fn(),
+}))
 
 describe('local image signal analysis', () => {
   it('extracts aggregate color warmth and brightness from demo photos', () => {
@@ -102,6 +108,30 @@ describe('local image signal analysis', () => {
         ),
       ),
     ).toThrow('total 256 MB or less')
+  })
+
+  it('preserves HEIC EXIF metadata when pixel decoding is unsupported', async () => {
+    vi.mocked(exifr.parse).mockResolvedValueOnce({
+      latitude: 36.9642,
+      longitude: -122.0245,
+      DateTimeOriginal: new Date('2026-07-01T02:00:00.000Z'),
+    })
+    const createObjectURL = vi
+      .spyOn(URL, 'createObjectURL')
+      .mockReturnValue('blob:afterimage-heic')
+
+    const photo = await analyzeMemoryFile(
+      new File(['heic'], 'santa-cruz.heic', { type: 'image/heic' }),
+      'heic-photo',
+    )
+
+    expect(photo).toMatchObject({
+      gps: { lat: 36.9642, lng: -122.0245 },
+      takenAt: '2026-07-01T02:00:00.000Z',
+      metadataSource: 'exif',
+      analysis: { status: 'unsupported' },
+    })
+    createObjectURL.mockRestore()
   })
 
   it('revokes only imported blob preview URLs', () => {

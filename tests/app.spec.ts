@@ -145,7 +145,9 @@ test('submission panel offers a copyable attribution block', async ({ page }) =>
   await expect(attributionBlock).toContainText(/Demo photos: procedural generated assets/i)
   await expect(attributionBlock).toContainText(/Higgsfield Cinema Studio Image 2\.5/i)
   await expect(attributionBlock).toContainText(/Libraries: React, TypeScript, Canvas 2D, exifr, lucide-react/i)
-  await expect(attributionBlock).toContainText(/Optional providers: Mapillary, Panoramax, and KartaView/i)
+  await expect(attributionBlock).toContainText(
+    /Provider adapter slots: Mapillary, Panoramax, and KartaView; no live provider requests run in this build/i,
+  )
   await expect(attributionBlock).toContainText(/No runtime AI call or paid map API/i)
 
   await page.getByRole('button', { name: /copy attribution/i }).click()
@@ -406,7 +408,7 @@ test('submission panel exposes judging proof and keyboard tab navigation', async
     /React \+ TypeScript \/ Canvas 2D \/ EXIF and color sampling/i,
   )
   await expect(page.getByRole('region', { name: /submission brief/i })).toContainText(
-    /Procedural demo photos; optional Mapillary, Panoramax, and KartaView lookups/i,
+    /Procedural demo photos; Manual provider only, with inactive open-provider adapter slots/i,
   )
   await expect(page.getByRole('region', { name: /live medium proof/i })).toContainText(
     /Responds/i,
@@ -457,6 +459,7 @@ test('imports a folder, confirms confidence, paints, undoes, resets, and auto-co
   await page.goto('/', { waitUntil: 'domcontentloaded' })
 
   await expect(page.getByTestId('provider-picker')).toBeHidden()
+  await expect(page.getByText(/Photos stay in this browser/i)).toBeVisible()
   await expect(page.getByText('Load photos first')).toBeVisible()
   await expect(page.getByText('Awaiting folder / procedural base')).toBeVisible()
 
@@ -464,6 +467,7 @@ test('imports a folder, confirms confidence, paints, undoes, resets, and auto-co
   await page.getByRole('button', { name: /import folder/i }).click()
   const fileChooser = await fileChooserPromise
   await fileChooser.setFiles(demoFolder)
+  await expect(page.getByLabel('Import photo folder')).toHaveValue('')
 
   await expect(page.getByRole('button', { name: /confirm santa cruz anchor/i })).toBeVisible()
   await expect(page.getByText('Manual', { exact: true })).toBeVisible()
@@ -569,6 +573,10 @@ test('imports a folder, confirms confidence, paints, undoes, resets, and auto-co
 
   await page.getByRole('button', { name: /open developer source picker/i }).click()
   await expect(page.getByTestId('provider-picker')).toBeVisible()
+  await expect(page.getByRole('button', { name: /close developer source picker/i })).toHaveAttribute(
+    'aria-expanded',
+    'true',
+  )
   await page.getByRole('radio', { name: 'Mapillary' }).click()
   await page.getByRole('radio', { name: 'Panoramax' }).click()
   await page.getByRole('radio', { name: 'KartaView' }).click()
@@ -707,6 +715,68 @@ test('one-click judge demo reaches the final exhibit state', async ({ page }) =>
   const evolvedSnapshot = await canvasSnapshot(canvas)
   expect(evolvedSnapshot.checksum).not.toBe(snapshot.checksum)
 
+  const pauseTransition = await page.evaluate(() => {
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-testid="memory-canvas"]')
+    const pauseButton = document.querySelector<HTMLButtonElement>(
+      'button[aria-label="Pause canvas motion"]',
+    )
+
+    if (!canvas || !pauseButton) {
+      throw new Error('Canvas or pause control was not found')
+    }
+
+    const checksum = () => {
+      const context = canvas.getContext('2d')
+      if (!context) {
+        return 0
+      }
+
+      const data = context.getImageData(0, 0, canvas.width, canvas.height).data
+      const step = Math.max(4, Math.floor(data.length / 3_000))
+      let value = 0
+      for (let index = 0; index < data.length; index += step) {
+        value = (
+          value
+          + data[index] * 3
+          + data[index + 1] * 5
+          + data[index + 2] * 7
+          + data[index + 3]
+        ) % 1_000_000_007
+      }
+      return value
+    }
+
+    const before = checksum()
+    pauseButton.click()
+
+    return new Promise<{ before: number; after: number }>((resolve) => {
+      window.requestAnimationFrame(() => resolve({ before, after: checksum() }))
+    })
+  })
+  expect(pauseTransition.after).toBe(pauseTransition.before)
+  const pausedSnapshot = await canvasSnapshot(canvas)
+  await page.waitForTimeout(450)
+  expect((await canvasSnapshot(canvas)).checksum).toBe(pausedSnapshot.checksum)
+  const pausedPhase = await canvas.getAttribute('data-motion-phase')
+  expect(Number(pausedPhase)).toBeGreaterThan(0)
+  const resumeButton = page.getByRole('button', { name: /resume canvas motion/i })
+  await expect(resumeButton).not.toHaveAttribute('aria-pressed')
+
+  await page.getByRole('button', { name: /enter exhibit mode/i }).click()
+  const exhibitDialog = page.getByRole('dialog', { name: /santa cruz afterimage/i })
+  await expect(exhibitDialog.getByRole('button', { name: /resume canvas motion/i })).toBeVisible()
+  await expect(exhibitDialog.getByTestId('memory-canvas')).toHaveAttribute(
+    'data-motion-phase',
+    pausedPhase ?? '',
+  )
+  await exhibitDialog.getByRole('button', { name: /exit exhibit mode/i }).click()
+  await expect(page.getByRole('button', { name: /resume canvas motion/i })).toBeVisible()
+  expect((await canvasSnapshot(canvas)).checksum).toBe(pausedSnapshot.checksum)
+
+  await page.getByRole('button', { name: /resume canvas motion/i }).click()
+  await page.waitForTimeout(450)
+  expect((await canvasSnapshot(canvas)).checksum).not.toBe(pausedSnapshot.checksum)
+
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
   expect(overflow).toBeLessThanOrEqual(1)
 })
@@ -750,6 +820,9 @@ test('judge presentation URL opens directly to the final exhibit state', async (
   ).toBeVisible()
   await expect(page.getByText(/4 photos \/ 4 GPS \/ evolving scene/i)).toBeVisible()
   await expect(page.getByRole('button', { name: /save memory-space png/i })).toBeEnabled()
+  await expect(page.getByRole('group', { name: 'Reveal steps' })).toBeVisible()
+  await expect(page.getByRole('group', { name: 'Computed art recipe colors' })).toBeVisible()
+  await expect(page.getByRole('group', { name: 'Scene rendering parameters' })).toBeVisible()
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
   expect(overflow).toBeLessThanOrEqual(1)

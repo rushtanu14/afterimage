@@ -1,11 +1,13 @@
 import {
   forwardRef,
+  type MutableRefObject,
   useCallback,
   useImperativeHandle,
   useLayoutEffect,
   useRef,
   useState,
 } from 'react'
+import { Pause, Play } from 'lucide-react'
 import type {
   BrushPoint,
   BrushStroke,
@@ -20,8 +22,11 @@ interface MemoryCanvasProps {
   scene: SceneState
   photos: MemoryPhoto[]
   readyToPaint: boolean
+  motionPaused: boolean
+  motionPhaseRef: MutableRefObject<number>
   onStroke: (stroke: BrushStroke) => void
   onParallaxChange: (parallax: SceneState['parallax']) => void
+  onMotionPausedChange: (paused: boolean) => void
 }
 
 export interface MemoryCanvasHandle {
@@ -396,13 +401,36 @@ const getSceneProof = (
 
 export const MemoryCanvas = forwardRef<MemoryCanvasHandle, MemoryCanvasProps>(
   function MemoryCanvas(
-    { scene, photos, readyToPaint, onStroke, onParallaxChange },
+    {
+      scene,
+      photos,
+      readyToPaint,
+      motionPaused,
+      motionPhaseRef,
+      onStroke,
+      onParallaxChange,
+      onMotionPausedChange,
+    },
     ref,
   ) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const dragRef = useRef<DragState | null>(null)
   const sequenceRef = useRef(0)
+  const previousAnimationTimeRef = useRef<number | null>(null)
   const [isPainting, setIsPainting] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+
+  useLayoutEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const handleChange = (event: MediaQueryListEvent) => {
+      setPrefersReducedMotion(event.matches)
+    }
+
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
 
   useImperativeHandle(ref, () => ({
     downloadPng: async (fileName = 'afterimage-memory-space.png') => {
@@ -442,11 +470,14 @@ export const MemoryCanvas = forwardRef<MemoryCanvasHandle, MemoryCanvasProps>(
     },
   }), [photos, scene])
 
-  const render = useCallback((motionPhase = 0) => {
+  const render = useCallback((motionPhase = motionPhaseRef.current) => {
     const canvas = canvasRef.current
     if (!canvas) {
       return
     }
+
+    motionPhaseRef.current = motionPhase
+    canvas.dataset.motionPhase = motionPhase.toFixed(6)
 
     const rect = canvas.getBoundingClientRect()
     const dpr = window.devicePixelRatio || 1
@@ -467,17 +498,21 @@ export const MemoryCanvas = forwardRef<MemoryCanvasHandle, MemoryCanvasProps>(
     context.setTransform(dpr, 0, 0, dpr, 0, 0)
     drawScene(context, width, height, scene, photos, motionPhase)
     context.restore()
-  }, [photos, scene])
+  }, [motionPhaseRef, photos, scene])
 
   useLayoutEffect(() => {
     let animationFrame = 0
-    render()
-    const onResize = () => render()
+    previousAnimationTimeRef.current = null
+    render(motionPhaseRef.current)
+    const onResize = () => render(motionPhaseRef.current)
     window.addEventListener('resize', onResize)
 
-    if (scene.autoComposed && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (scene.autoComposed && !motionPaused && !prefersReducedMotion) {
       const animate = (time: number) => {
-        render(time / 1000)
+        const previousTime = previousAnimationTimeRef.current
+        previousAnimationTimeRef.current = time
+        const elapsedSeconds = previousTime === null ? 0 : (time - previousTime) / 1000
+        render(motionPhaseRef.current + elapsedSeconds)
         animationFrame = window.requestAnimationFrame(animate)
       }
 
@@ -489,8 +524,9 @@ export const MemoryCanvas = forwardRef<MemoryCanvasHandle, MemoryCanvasProps>(
       if (animationFrame) {
         window.cancelAnimationFrame(animationFrame)
       }
+      previousAnimationTimeRef.current = null
     }
-  }, [render, scene.autoComposed])
+  }, [motionPaused, motionPhaseRef, prefersReducedMotion, render, scene.autoComposed])
 
   const getPoint = (event: React.PointerEvent<HTMLCanvasElement>): BrushPoint => {
     const rect = event.currentTarget.getBoundingClientRect()
@@ -592,6 +628,21 @@ export const MemoryCanvas = forwardRef<MemoryCanvasHandle, MemoryCanvasProps>(
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
       />
+      {scene.autoComposed && !prefersReducedMotion ? (
+        <button
+          className="motion-toggle"
+          type="button"
+          aria-label={`${motionPaused ? 'Resume' : 'Pause'} canvas motion`}
+          onClick={() => onMotionPausedChange(!motionPaused)}
+        >
+          {motionPaused ? (
+            <Play size={14} aria-hidden="true" />
+          ) : (
+            <Pause size={14} aria-hidden="true" />
+          )}
+          {motionPaused ? 'Resume motion' : 'Pause motion'}
+        </button>
+      ) : null}
       <div className="scene-proof" aria-live="polite">
         {getSceneProof(scene, photos, readyToPaint)}
       </div>

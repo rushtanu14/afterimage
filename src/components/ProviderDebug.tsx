@@ -25,13 +25,19 @@ export function ProviderDebug({
         className="icon-button"
         type="button"
         onClick={onToggle}
-        aria-label="Open developer source picker"
+        aria-label={`${open ? 'Close' : 'Open'} developer source picker`}
+        aria-expanded={open}
+        aria-controls="provider-source-picker"
         title="Developer sources"
       >
         {open ? <EyeOff size={18} aria-hidden="true" /> : <SlidersHorizontal size={18} aria-hidden="true" />}
       </button>
       {open ? (
-        <section className="provider-popover" data-testid="provider-picker">
+        <section
+          id="provider-source-picker"
+          className="provider-popover"
+          data-testid="provider-picker"
+        >
           <span className="eyebrow">Developer sources</span>
           <div className="segmented-control" role="radiogroup" aria-label="Street image source">
             {providers.map((name) => (

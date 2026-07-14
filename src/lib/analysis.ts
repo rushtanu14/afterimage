@@ -331,6 +331,7 @@ export const analyzeMemoryFile = async (
   id: string,
 ): Promise<MemoryPhoto> => {
   const previewUrl = URL.createObjectURL(file)
+  const exif = await parseExif(file)
 
   if (isHeicLike(file)) {
     return {
@@ -338,7 +339,9 @@ export const analyzeMemoryFile = async (
       file,
       fileName: file.name,
       previewUrl,
-      metadataSource: 'none',
+      gps: exif.gps,
+      takenAt: exif.takenAt,
+      metadataSource: exif.gps || exif.takenAt ? 'exif' : 'none',
       analysis: {
         ...EMPTY_ANALYSIS,
         status: 'unsupported',
@@ -346,8 +349,6 @@ export const analyzeMemoryFile = async (
       },
     }
   }
-
-  const exif = await parseExif(file)
 
   try {
     const image = await getImageDimensions(previewUrl)

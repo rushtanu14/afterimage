@@ -18,7 +18,7 @@ Description:
 Afterimage is a computational artwork for Hack the Arts. It transforms a folder of Santa Cruz beach photos into a living place-memory by extracting metadata confidence, GPS proximity, timestamps, color palettes, sky/water/sand ratios, and brush motion. The result is not a filter or a static gallery: the canvas keeps evolving after composition, and the final exhibit label preserves the evidence trail behind the artwork.
 
 Built with:
-React, TypeScript, Canvas 2D, EXIF parsing, local image color sampling, procedural demo assets, one disclosed Higgsfield Cinema Studio Image 2.5 environment plate, and optional Mapillary / Panoramax / KartaView place-source lookups.
+React, TypeScript, Canvas 2D, EXIF parsing, local image color sampling, procedural demo assets, one disclosed Higgsfield Cinema Studio Image 2.5 environment plate, and inactive adapter slots for Mapillary / Panoramax / KartaView. The Manual procedural base is the only active provider in this build.
 
 Implementation:
 EXIF, GPS, and timestamps become confidence and place evidence. Browser pixel sampling becomes sky, water, sand, warmth, haze, and palette ratios. Brush motion and time phase keep the Canvas scene evolving after composition.
@@ -60,7 +60,7 @@ Execution (15%): one-click judge demo, PNG export, responsive layout, and automa
 Theme Alignment (10%): the artwork depends on code, metadata, computation, and motion.
 
 Attribution:
-Demo photos are procedural generated assets in public/demo/santa-cruz-demo-photos. The cinematic depth plate is one Higgsfield Cinema Studio Image 2.5 generation stored at public/demo/afterimage-higgsfield-santa-cruz.webp and used beneath the live Canvas; no runtime AI call is made. Runtime libraries include React, TypeScript, Canvas 2D browser APIs, exifr, and lucide-react. Optional street-image provider lookups reference Mapillary, Panoramax, and KartaView only where coverage exists.`
+Demo photos are procedural generated assets in public/demo/santa-cruz-demo-photos. The cinematic depth plate is one Higgsfield Cinema Studio Image 2.5 generation stored at public/demo/afterimage-higgsfield-santa-cruz.webp and used beneath the live Canvas; no runtime AI call is made. Runtime libraries include React, TypeScript, Canvas 2D browser APIs, exifr, and lucide-react. Mapillary, Panoramax, and KartaView are inactive adapter slots; no live provider requests run in this build.`
 
 const DEMO_SCRIPT = `0:00 Run judge demo.
 0:04 Use the Guided reveal: source evidence, extracted signals, and Leave an afterimage on the living canvas.
@@ -98,7 +98,7 @@ Video: sub-50-second proof reel with a URL-visible title card, cursor input, com
 const ATTRIBUTION_BLOCK = `Demo photos: procedural generated assets in public/demo/santa-cruz-demo-photos.
 Cinematic environment plate: one Higgsfield Cinema Studio Image 2.5 generation in public/demo/afterimage-higgsfield-santa-cruz.webp.
 Libraries: React, TypeScript, Canvas 2D, exifr, lucide-react.
-Optional providers: Mapillary, Panoramax, and KartaView place-source lookups are referenced only where coverage exists.
+Provider adapter slots: Mapillary, Panoramax, and KartaView; no live provider requests run in this build.
 No runtime AI call or paid map API is required for the judge demo; the disclosed generated plate is bundled locally.`
 
 const IMPLEMENTATION_RECEIPT = `EXIF, GPS, and timestamps become confidence and place evidence.
@@ -216,7 +216,7 @@ const attributionLines = [
   'Demo photos: procedural generated assets in public/demo/santa-cruz-demo-photos.',
   'Cinematic environment plate: one Higgsfield Cinema Studio Image 2.5 generation in public/demo/afterimage-higgsfield-santa-cruz.webp.',
   'Libraries: React, TypeScript, Canvas 2D, exifr, lucide-react.',
-  'Optional providers: Mapillary, Panoramax, and KartaView.',
+  'Provider adapter slots: Mapillary, Panoramax, and KartaView; no live provider requests run in this build.',
   'No runtime AI call or paid map API is required for the judge demo; the disclosed generated plate is bundled locally.',
 ]
 
@@ -485,7 +485,7 @@ export function SubmissionPanel() {
         </div>
         <div>
           <dt>Attribution</dt>
-          <dd>Procedural demo photos; optional Mapillary, Panoramax, and KartaView lookups</dd>
+          <dd>Procedural demo photos; Manual provider only, with inactive open-provider adapter slots</dd>
         </div>
         <div>
           <dt>Judge link</dt>

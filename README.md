@@ -13,6 +13,7 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - One 2K Higgsfield Cinema Studio Image 2.5 Santa Cruz environment plate, layered beneath the live Canvas with pointer-responsive depth and a reduced-motion fallback.
 - Keyboard Canvas input: Enter or Space leaves an afterimage for the custom-photo flow.
 - Evolving composed canvas state after the final artwork appears.
+- Pause/resume control for the animated canvas, with reduced-motion support.
 - Modal Exhibit mode with Escape/focus restoration that lets judges hide the proof dashboard and view the living artwork as an immersive gallery piece.
 - Undo, Reset, and Auto-compose controls.
 - Transformation Engine panel that makes the photo -> signal -> living-scene computation visible.
@@ -38,8 +39,9 @@ The current build is a demo-first Santa Cruz Beach Boardwalk / Main Beach experi
 - Final exhibit label after Auto-compose, naming the generated artwork and its evidence trail.
 - One-click judge demo that runs the full transformation path without requiring manual brush input.
 - PNG export with title, evidence trail, artist statement, computation note, and motion delta for the submission gallery.
+- Clear pre-import notice that photo processing stays in the browser and may read embedded time/location metadata.
 - Prepared Santa Cruz sample folder at `public/demo/santa-cruz-demo-photos`.
-- Hidden developer source picker for Mapillary, Panoramax, KartaView, and Manual fallback.
+- Hidden developer adapter-status picker for Mapillary, Panoramax, KartaView, and the active Manual fallback.
 - GitHub CI for unit tests, lint, production build, dependency audit, and Chromium judge-flow coverage.
 
 ## Judge path
@@ -62,7 +64,7 @@ Afterimage is aimed at Hack the Arts: it is not a drawing app or a static galler
 
 - Demo photos are procedural generated assets in `public/demo/santa-cruz-demo-photos`.
 - The cinematic environment plate is one Higgsfield Cinema Studio Image 2.5 generation stored at `public/demo/afterimage-higgsfield-santa-cruz.webp`; it is a disclosed presentation layer beneath the live Canvas.
-- Optional place-source lookups reference Mapillary, Panoramax, and KartaView when coverage exists.
+- Mapillary, Panoramax, and KartaView are inactive provider adapter slots; no live provider requests run in this build.
 - Runtime libraries include React, TypeScript, Canvas 2D browser APIs, `exifr`, and `lucide-react`.
 - No runtime AI call or paid map API is required for the judge demo; the generated plate is bundled locally.
 
@@ -74,7 +76,7 @@ Tagline: Turn verified place photos into an evolving memory-space.
 
 Description: Afterimage is a computational artwork for Hack the Arts. It transforms a folder of Santa Cruz beach photos into a living place-memory by extracting metadata confidence, GPS proximity, timestamps, color palettes, sky/water/sand ratios, and brush motion. The result is not a filter or a static gallery: the canvas keeps evolving after composition, and the final exhibit label preserves the evidence trail behind the artwork.
 
-Built with: React, TypeScript, Canvas 2D, EXIF parsing, local image color sampling, procedural demo assets, one disclosed Higgsfield Cinema Studio Image 2.5 environment plate, and optional Mapillary / Panoramax / KartaView place-source lookups.
+Built with: React, TypeScript, Canvas 2D, EXIF parsing, local image color sampling, procedural demo assets, one disclosed Higgsfield Cinema Studio Image 2.5 environment plate, and inactive adapter slots for Mapillary / Panoramax / KartaView. The Manual procedural base is the only active provider in this build.
 
 Implementation: EXIF, GPS, and timestamps become confidence and place evidence. Browser pixel sampling becomes sky, water, sand, warmth, haze, and palette ratios. Brush motion and time phase keep the Canvas scene evolving after composition.
 
@@ -103,7 +105,7 @@ MCP launch plan:
 - Canva or recording workflow: assemble screenshots and the sub-50-second proof reel.
 - Devpost package: paste the copied description, source URL, attribution, and demo video.
 
-Attribution: Demo photos are procedural generated assets in `public/demo/santa-cruz-demo-photos`. The cinematic depth plate is one Higgsfield Cinema Studio Image 2.5 generation stored at `public/demo/afterimage-higgsfield-santa-cruz.webp` and used beneath the live Canvas; no runtime AI call is made. Runtime libraries include React, TypeScript, Canvas 2D browser APIs, `exifr`, and `lucide-react`. Optional street-image provider lookups reference Mapillary, Panoramax, and KartaView only where coverage exists. No paid map API is required for the judge demo.
+Attribution: Demo photos are procedural generated assets in `public/demo/santa-cruz-demo-photos`. The cinematic depth plate is one Higgsfield Cinema Studio Image 2.5 generation stored at `public/demo/afterimage-higgsfield-santa-cruz.webp` and used beneath the live Canvas; no runtime AI call is made. Runtime libraries include React, TypeScript, Canvas 2D browser APIs, `exifr`, and `lucide-react`. Mapillary, Panoramax, and KartaView are inactive adapter slots; no live provider requests run in this build. No paid map API is required for the judge demo.
 
 Judging fit:
 - Creativity & Originality (30%): place evidence becomes an evolving memory-space, not a conventional filter.

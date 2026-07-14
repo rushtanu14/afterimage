@@ -3,7 +3,10 @@ import { spawn } from 'node:child_process'
 import { dirname, resolve } from 'node:path'
 import { chromium } from '@playwright/test'
 
-const outputPath = resolve('public/submission/afterimage-proof-reel.webm')
+const outputPath = resolve(
+  process.env.PROOF_REEL_OUTPUT_PATH ??
+    'public/submission/afterimage-proof-reel.webm',
+)
 const recordingDir = resolve('.tmp-proof-reel-recording')
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:5173'
 const judgeURL = new URL('/?judge=1', baseURL).toString()
@@ -105,7 +108,7 @@ const main = async () => {
     await wait(3_000)
 
     await page.getByRole('button', { name: /enter exhibit mode/i }).click()
-    await page.getByRole('region', { name: /immersive exhibit mode/i }).waitFor({ state: 'visible' })
+    await page.getByRole('dialog', { name: /santa cruz afterimage/i }).waitFor({ state: 'visible' })
     await wait(4_000)
     await page.getByRole('button', { name: /exit exhibit mode/i }).click()
     await wait(800)

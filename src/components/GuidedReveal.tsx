@@ -146,7 +146,7 @@ export function GuidedReveal({
         </button>
       </div>
 
-      <div className="guided-stepper" aria-label="Reveal steps">
+      <div className="guided-stepper" role="group" aria-label="Reveal steps">
         {steps.map((step) => {
           const StepIcon = step.icon
           return (

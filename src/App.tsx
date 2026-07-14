@@ -46,6 +46,7 @@ const JUDGE_DEMO_POINTS = [
 function App() {
   const folderInputRef = useRef<HTMLInputElement | null>(null)
   const canvasRef = useRef<MemoryCanvasHandle | null>(null)
+  const motionPhaseRef = useRef(0)
   const exhibitExitRef = useRef<HTMLButtonElement | null>(null)
   const exhibitReturnFocusRef = useRef<HTMLElement | null>(null)
   const judgeDemoStartedRef = useRef(false)
@@ -61,11 +62,18 @@ function App() {
   const [confirmed, setConfirmed] = useState(false)
   const [providerDebugOpen, setProviderDebugOpen] = useState(false)
   const [exhibitMode, setExhibitMode] = useState(false)
+  const [motionPaused, setMotionPaused] = useState(false)
   const [showGuidedReveal, setShowGuidedReveal] = useState(
     () => new URLSearchParams(window.location.search).get('judge') === '1',
   )
   const [selectedProvider, setSelectedProvider] = useState<ProviderName>('Manual')
   const [providerResult, setProviderResult] = useState<ProviderResult | undefined>()
+
+  useEffect(() => {
+    if (!scene.autoComposed) {
+      setMotionPaused(false)
+    }
+  }, [scene.autoComposed])
 
   useEffect(() => {
     const input = folderInputRef.current
@@ -262,8 +270,8 @@ function App() {
     handleRunJudgeDemo()
   }, [handleRunJudgeDemo])
 
-  const handleFiles = async (fileList: FileList | null) => {
-    if (!fileList || fileList.length === 0) {
+  const handleFiles = async (files: File[]) => {
+    if (files.length === 0) {
       return
     }
 
@@ -273,7 +281,7 @@ function App() {
     loadRequestRef.current = requestId
 
     try {
-      const result = await scanMemoryFiles([...fileList], scene.anchor)
+      const result = await scanMemoryFiles(files, scene.anchor)
       if (loadRequestRef.current !== requestId) {
         revokeMemoryPreviewUrls(result.photos)
         return
@@ -395,7 +403,13 @@ function App() {
         multiple
         tabIndex={-1}
         aria-label="Import photo folder"
-        onChange={(event) => handleFiles(event.currentTarget.files)}
+        onChange={(event) => {
+          const files = event.currentTarget.files
+            ? [...event.currentTarget.files]
+            : []
+          event.currentTarget.value = ''
+          void handleFiles(files)
+        }}
       />
       <header className="app-topbar" inert={exhibitMode ? true : undefined}>
         <div>
@@ -483,7 +497,10 @@ function App() {
               scene={scene}
               photos={photos}
               readyToPaint={readyToPaint}
+              motionPaused={motionPaused}
+              motionPhaseRef={motionPhaseRef}
               onStroke={handleStroke}
+              onMotionPausedChange={setMotionPaused}
               onParallaxChange={(parallax) =>
                 setScene((current) => ({ ...current, parallax }))
               }
@@ -511,7 +528,10 @@ function App() {
               scene={scene}
               photos={photos}
               readyToPaint={readyToPaint}
+              motionPaused={motionPaused}
+              motionPhaseRef={motionPhaseRef}
               onStroke={handleStroke}
+              onMotionPausedChange={setMotionPaused}
               onParallaxChange={(parallax) =>
                 setScene((current) => ({ ...current, parallax }))
               }

@@ -81,7 +81,7 @@ export function TransformationPanel({ signal, scene }: TransformationPanelProps)
           </strong>
         </li>
       </ol>
-      <div className="recipe-swatches" aria-label="Computed art recipe colors">
+      <div className="recipe-swatches" role="group" aria-label="Computed art recipe colors">
         {recipeSwatches(signal).map((swatch) => (
           <div className="recipe-swatch" key={swatch.label}>
             <span style={{ backgroundColor: swatch.value }} />
@@ -89,7 +89,7 @@ export function TransformationPanel({ signal, scene }: TransformationPanelProps)
           </div>
         ))}
       </div>
-      <div className="signal-bars" aria-label="Scene rendering parameters">
+      <div className="signal-bars" role="group" aria-label="Scene rendering parameters">
         {[
           ['Warmth', signal.warmth],
           ['Haze', signal.haze],

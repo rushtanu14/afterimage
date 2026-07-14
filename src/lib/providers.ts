@@ -6,7 +6,7 @@ import type {
 } from '../types'
 
 const openStreetAttribution =
-  'Procedural Santa Cruz base. Open street-image sources supported where coverage exists.'
+  'Procedural Santa Cruz base. Provider adapter slots are inactive in this build.'
 
 export const manualProvider: ProviderAdapter = {
   name: 'Manual',
@@ -78,5 +78,5 @@ export const providerCopy = (provider: ProviderName) => {
     return 'Manual procedural base is active for the Santa Cruz demo.'
   }
 
-  return `${provider} is supported where open street-image coverage exists.`
+  return `${provider} adapter is not connected in this build. The Manual procedural base remains active.`
 }

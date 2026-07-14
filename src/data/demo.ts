@@ -10,7 +10,7 @@ export const SANTA_CRUZ_ANCHOR: PlaceAnchor = {
   provider: 'Manual',
   confidence: 'Verified',
   attribution:
-    'Santa Cruz demo anchor. Procedural 2.5D base with optional open street-image sources where coverage exists.',
+    'Santa Cruz demo anchor. Procedural 2.5D base; provider adapter slots are inactive in this build.',
 }
 
 export const demoPhotoDescriptors = [

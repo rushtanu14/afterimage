@@ -12,7 +12,7 @@ Generated from `package.json`, Vite config, Playwright config, and current proje
 3. Run unit verification with `npm run test`.
 4. Run lint verification with `npm run lint`.
 5. Run production build verification with `npm run build`.
-6. Run dependency verification with `npm audit --audit-level=high`.
+6. Run dependency verification with `npm audit --audit-level=moderate`.
 7. Run browser verification with `npm run test:e2e`.
 8. Confirm GitHub CI passes its Chromium judge-flow gate.
 9. Deploy the generated `dist/` directory to the static host.
@@ -52,7 +52,7 @@ There are no API health endpoints in the current app because it is a client-only
 |-------|-----|
 | Demo photos are missing or stale. | Run `npm run generate:demo`, then verify `public/demo/santa-cruz-demo-photos/`. |
 | A folder import is rejected. | Keep the selection to 64 supported photos, 25 MB per photo, and 256 MB total; Afterimage decodes four photos at a time. |
-| E2E cannot bind port `5173`. | Stop the existing local server or let Playwright reuse it when not running in CI. |
+| E2E cannot bind port `5177`. | Stop the process using port `5177`; Playwright intentionally requires that isolated port and does not reuse an existing server. |
 | Judge link opens the normal app state. | Confirm the URL includes `/?judge=1` exactly. |
 | PNG export does not start. | Load the demo or run judge mode first so the canvas has photo evidence. |
 | Build period proof is missing. | Keep public repo history and Devpost notes aligned with the July 1 to August 1, 2026 build window. |

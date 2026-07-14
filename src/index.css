@@ -5,7 +5,7 @@
   --panel: rgba(255, 250, 241, 0.9);
   --panel-strong: #fffaf1;
   --line: rgba(39, 50, 64, 0.14);
-  --teal: #1f9ba6;
+  --teal: #16727a;
   --blue: #315f7b;
   --coral: #ef775b;
   --gold: #f6c868;
@@ -54,7 +54,7 @@ button {
 
 button:focus-visible,
 input:focus-visible {
-  outline: 3px solid rgba(31, 155, 166, 0.42);
+  outline: 3px solid #0b5966;
   outline-offset: 3px;
 }
 
@@ -230,8 +230,8 @@ h2 {
 .primary-button {
   width: 100%;
   color: #fffdf8;
-  background: linear-gradient(135deg, var(--coral), #d65d63 52%, var(--blue));
-  box-shadow: 0 12px 28px rgba(239, 119, 91, 0.22);
+  background: linear-gradient(135deg, #b24732, var(--blue));
+  box-shadow: 0 12px 28px rgba(178, 71, 50, 0.22);
 }
 
 .ghost-button {
@@ -261,6 +261,12 @@ h2 {
   height: 1px;
   opacity: 0;
   pointer-events: none;
+}
+
+.privacy-note {
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+  line-height: 1.35;
 }
 
 .confidence-panel,
@@ -1132,6 +1138,26 @@ h2 {
 .memory-canvas:focus-visible {
   outline: 3px solid rgba(246, 200, 104, 0.9);
   outline-offset: -5px;
+}
+
+.motion-toggle {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 1;
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 253, 248, 0.3);
+  border-radius: 999px;
+  color: #fffdf8;
+  background: rgba(16, 24, 34, 0.82);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 760;
+  backdrop-filter: blur(12px);
 }
 
 .brush-badge {

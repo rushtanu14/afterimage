@@ -50,6 +50,10 @@ export function Controls({
           <FolderOpen size={18} aria-hidden="true" />
           Import folder
         </button>
+        <p className="privacy-note">
+          Photos stay in this browser. GPS, timestamps, and colors are read locally and
+          never uploaded.
+        </p>
       </div>
       <div className="tool-row">
         <button

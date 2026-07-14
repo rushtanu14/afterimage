@@ -1,9 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import { SANTA_CRUZ_ANCHOR } from '../data/demo'
 import type { ProviderAdapter } from '../types'
-import { findProviderResult } from './providers'
+import { findProviderResult, providerCopy } from './providers'
 
 describe('provider fallback', () => {
+  it('describes inactive provider adapters without claiming live lookups', () => {
+    expect(providerCopy('Mapillary')).toBe(
+      'Mapillary adapter is not connected in this build. The Manual procedural base remains active.',
+    )
+  })
+
   it('falls through unavailable open sources to manual base', async () => {
     const result = await findProviderResult(
       SANTA_CRUZ_ANCHOR,
